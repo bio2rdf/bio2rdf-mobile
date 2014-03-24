@@ -98,8 +98,8 @@ angular.module('starter.services', [])
   .factory('DatasetsService', function(){
     
     var databases = [
-      {id: 0, title: 'ChEBI', img: 'img/chebi.png'},
-      {id: 1, title: 'Disease Ontology', img: 'img/doid.png'}
+      {id: 0, title: 'ChEBI', img: 'img/chebi.png', nbOfTriples: 18000},
+      {id: 1, title: 'Disease Ontology', img: 'img/doid.png', nbOfTriples: 12000}
     ];
     
     return {

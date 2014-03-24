@@ -67,50 +67,8 @@ angular.module('starter.controllers', [])
     $scope.databases = DatasetsService.all();
 
     $scope.onItemHold = function(item) {
-      // alert("HOLD ON");
-
-      // Show the action sheet
-      $ionicActionSheet.show({
-
-	// The various non-destructive button choices
-	buttons: [
-          { text: 'Share' },
-          { text: 'Move' },
-	],
-
-	// The text of the red destructive button
-	destructiveText: 'Delete',
-
-	// The title text at the top
-	titleText: 'Modify your album',
-
-	// The text of the cancel button
-	cancelText: 'Cancel',
-
-	// Called when the sheet is cancelled, either from triggering the
-	// cancel button, or tapping the backdrop, or using escape on the keyboard
-	cancel: function() {
-	},
-
-	// Called when one of the non-destructive buttons is clicked, with
-	// the index of the button that was clicked. Return
-	// "true" to tell the action sheet to close. Return false to not close.
-	buttonClicked: function(index) {
-          return true;
-	},
-
-	// Called when the destructive button is clicked. Return true to close the
-	// action sheet. False to keep it open
-	destructiveButtonClicked: function() {
-          return true;
-	}
-      });
-      
+      alert("HOLD ON");
     }
-
-    $scope.onItemDelete = function(item) {
-      $scope.items.splice($scope.items.indexOf(item), 1);
-    };
 
   })
 
