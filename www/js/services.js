@@ -3,6 +3,115 @@ angular.module('starter.services', [])
 /**
  * A simple example service that returns some data.
  */
+
+  .constant('bio2rdfURL', "http://mobile.bio2rdf.org/")
+
+  .value('queryConfig', { "namespace" : "ontobee",
+			  "method" : "search_ns",
+			  "format" : "json-ld",
+			  "parameters" : {
+			    "parm1" : "asthma",
+			    "parm2" : "DOID"
+			  }
+			}
+	)
+
+
+  .factory('SearchService', function(){
+
+    var searchResultsFun = function(context, graph) {
+      
+    }
+
+  })
+
+
+  .factory('RestUrlBuilderService', function(bio2rdfURL) {
+
+    var buildRestURL = function(urlConfig) {
+      var params = "";
+      for (var k in urlConfig.parameters) {
+	if(params.length > 0){
+    	  params += "&";
+	}
+	params += k + "=" + urlConfig.parameters[k];
+      }
+
+      var url = bio2rdfURL.concat(urlConfig.namespace, "/", 
+    				  urlConfig.method, "/", 
+    				  urlConfig.format, "?",
+    				  params
+    				 );
+
+      return encodeURI(url) + "&callback=JSON_CALLBACK";
+    }
+
+    return {
+      restURL: buildRestURL
+    };
+
+  })
+
+
+  .factory('GetJsonService', function($http) {
+
+    var getJsonFun = function(url) {
+      return $http.jsonp(url);
+    };
+
+    return {
+      getJson: getJsonFun
+    };
+
+  })
+
+
+  .factory('replacePrefixesService', function() {
+
+    var idSplit = "";
+    function traverse(context, o) {
+      for (i in o) {
+	if (i == "@id"){
+	  // console.log();
+	  idSplit = o[i].split(":");
+	  o[i] = context[idSplit[0]] + idSplit[1];
+	  console.log(o[i]);
+	}
+        if (typeof(o[i])=="object") {
+          traverse(context, o[i]);
+        }
+      }
+    }
+
+    var replacePrefixFun = function (context, graph) {
+      traverse(context, graph);
+    }
+
+    return {
+      replacePrefix: replacePrefixFun
+    }
+
+  })
+
+
+
+  .factory('DatasetsService', function(){
+    
+    var databases = [
+      {id: 0, title: 'ChEBI', img: 'img/chebi.png'},
+      {id: 1, title: 'Disease Ontology', img: 'img/doid.png'}
+    ];
+    
+    return {
+      all: function() {
+	return databases;
+      }
+ 
+    }
+
+  })
+
+
   .factory('PetService', function() {
     // Might use a resource here that returns a JSON array
 
@@ -26,42 +135,5 @@ angular.module('starter.services', [])
 
   })
 
+;
 
-  .factory('RestUrlBuilderService', function() {
-
-    var buildURL = function(urlConfig) {
-      var params = "";
-      for (var k in urlConfig.parameters) {
-	if(params.length > 0){
-    	  params += "&";
-	}
-	params += k + "=" + urlConfig.parameters[k];
-      }
-
-      var url = "http://mobile.bio2rdf.org/".concat(urlConfig.namespace, "/", 
-    						    urlConfig.method, "/", 
-    						    urlConfig.format, "?",
-    						    params
-    						   );
-      return encodeURI(url) + "&callback=JSON_CALLBACK";
-    }
-
-
-    return {
-      buildURL: buildURL
-    };
-
-  })
-
-
-  .factory('GetJsonService', function($http) {
-
-    var getJsonFunction = function(url) {
-      return $http.jsonp(url);
-    };
-
-    return {
-      getJson: getJsonFunction
-    };
-
-  });

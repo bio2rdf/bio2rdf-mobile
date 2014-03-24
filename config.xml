@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.ionicframework.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>StarterApp</name>
+    <name>Bio2RDF-mobile</name>
     <description>
-        A sample Ionic Framework app using Cordova and AngularJS
+      Bio2RDF provide a mobile application to browse into Bio2RDF connected biological databases.
     </description>
-    <author email="support@drifty.com" href="http://ionicframework.com/">
-        Ionic Framework Team
+    <author email="Arnaud.Droit@crchudequebec.ulaval.ca" href="http://bio2rdf.org">
+        Bio2RDF mobile team.
     </author>
     <content src="index.html" />
     <access origin="*" />

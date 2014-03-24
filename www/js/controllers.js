@@ -2,22 +2,11 @@ angular.module('starter.controllers', [])
 
 
 // A simple controller that fetches a list of data from a service
-  .controller('SearchCtrl', function($scope, $http, PetService, RestUrlBuilderService, GetJsonService) {
+// TODO : Group together Queryer services
+  .controller('SearchCtrl', function($scope, $http, RestUrlBuilderService, GetJsonService, queryConfig, replacePrefixesService) {
 
     // "Pets" is a service returning mock data (services.js)
     // $scope.pets = PetService.all();
-
-    // TODO : create services .value for namespace variable
-    var urlConfig = { "namespace" : "ontobee",
-                      "method" : "search_ns",
-                      "format" : "json-ld",
-                      "parameters" : {
-			"parm2" : "DOID",
-			"parm1" : "asthma"
-                      }
-                    };
-
-    console.log(urlConfig);
 
     $scope.querySearch = function () {
 
@@ -25,23 +14,25 @@ angular.module('starter.controllers', [])
 
       console.log(angular.lowercase(this.queryTerm));
 
-      urlConfig.parameters.parm1 = this.queryTerm;
-      var url = RestUrlBuilderService.buildURL(urlConfig);
+      queryConfig.parameters.parm1 = this.queryTerm;
 
+      var url = RestUrlBuilderService.restURL(queryConfig);
 
       GetJsonService.getJson(url).success(function(data) {
 
-	// TODO : switch the prefix in @id with the comple url from @context 
-	// $scope.context = 
+	// Switch the prefix in @id with the complete url from @context 
+	replacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
 	$scope.searchResultGraph = data["@graph"];
-	console.log(data);
 
       })
 
-
     };
 
+  })
 
+  .controller('DescribeCtrl', function($scope, $stateParams) {
+
+    $scope.uri = $stateParams.uri;
 
   })
 
@@ -64,6 +55,14 @@ angular.module('starter.controllers', [])
       $scope.sideMenuController.toggleRight();
     };
 
-  });
+  })
 
+
+// LeftMenuCtrl:
+// 	Need :
+// 		Fetch All databases from dbdev and list them
+// 		Filter the databases based on the search box
+  .controller('LeftMenuCtrl', function($scope,DatasetsService) {
+    $scope.databases = DatasetsService.all();
+  });
 

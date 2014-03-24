@@ -15,6 +15,8 @@
     <!-- ionic/angularjs scripts -->
     <script src="lib/js/ionic.bundle.js"></script>
     
+    
+
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
     
@@ -22,9 +24,9 @@
     <script src="js/app.js"></script>
     <script src="js/services.js"></script>
     <script src="js/controllers.js"></script>
-    
+
   </head>
-  
+
 
   <!-- 
        'starter' is the name of this angular module (js/app.js)
@@ -36,49 +38,50 @@
       <!-- Center content -->
       <ion-pane ion-side-menu-content>
 
-	  <!-- 
-	       The nav bar that will be updated as we navigate between views
-	       Additional attributes set its look, ion-nav-bar animation and icons
-	       Icons provided by Ionicons: http://ionicons.com/ 
-	    -->
-	  <!-- DEFAULT HEADER - page name only ... -->
-	  <!-- <ion-nav-bar type="bar-stable" -->
-	  <!-- 	       animation="nav-title-slide-ios7" -->
-	  <!-- 	       back-button-type="button-icon button-clear" -->
-	  <!-- 	       back-button-icon="ion-ios7-arrow-back"> -->
-	  <!-- </ion-nav-bar> -->
-	    
-
-	  <div class="bar bar-header bar-stable" ng-controller="HeaderCtrl">	   
-
-	    <button class="button icon ion-navicon" ng-click="toggleLeftPanel()"></button>
-	    <!-- <h1 class="title">Header Buttons</h1> -->
-	    
-	    <h1 class="title">
-	      <img src="img/bio2rdf.png" style="height:45px;"/>
-	    </h1>
-	    
-	    <button class="button icon ion-gear-b" ng-click="toggleRightPanel()"></button>
-
-	  </div>
-
-
-	  <!-- 
-	       The views will be rendered in the <ion-nav-view> directive below
-	       Templates are in the /templates folder (but you could also
-	       have templates inline in this html file if you'd like).
-	    -->
-	  <ion-nav-view></ion-nav-view>
-
+	<!-- Global Header Bar for all ion-nav-view -->
+	<!-- Need to have dynamic logo- based on current database -->
+	<div class="bar bar-header bar-stable" ng-controller="HeaderCtrl">
+	  <button class="button icon ion-navicon" ng-click="toggleLeftPanel()"></button>    
+	  <h1 class="title">
+	    <img src="img/bio2rdf.png" style="height:45px;"/>
+	  </h1>
+	  <button class="button icon ion-gear-b" ng-click="toggleRightPanel()"></button>
+	</div>
+	
+	<!-- 
+	     The views will be rendered in the <ion-nav-view> directive below
+	     Templates are in the /templates folder (but you could also
+	     have templates inline in this html file if you'd like).
+	  -->
+	<ion-nav-view></ion-nav-view>
+	
       </ion-pane>
 
       <!-- Left menu -->
-      <!-- <ion-side-menu side="left" style="background-color: GhostWhite"> -->
-      <ion-side-menu side="left" style="background-color: #e6e6e6">
+      <!-- Database Selection -->
+      <ion-side-menu side="left" style="background-color: GhostWhite" ng-controller="LeftMenuCtrl">
+	<h3 style="display: table; margin: 0 auto; padding: 10px">
+	  <img src="img/bio2rdf.png" style="height:45px; vertical-align:middle"/>
+	  <img src="img/rdfDB.png" style="margin-left: 10px; height: 35px; vertical-align:middle">
+	</h3>
+
+	<input ng-model="searchText" style="border-radius:10px; width: 250px; margin-left: 12.5px">
+
+	<ion-list style="margin-top: 25px">
+	  <ion-item ng-repeat="db in databases | filter:searchText" type="item-text-wrap" onclick="toggleCurrentDB()">
+	    <img src="{{db.img}}" style="display: inline; height:45px; vertical-align:middle"/>
+            <h2 style="display: inline; margin-left: 10px">{{db.title}}</h2>
+	  </ion-item>	  
+	</ion-list>
+
       </ion-side-menu>
-      
+
       <!-- Right menu -->
+      <!-- Settings Selections -->
+      <!-- Different View (Skins) Selection -->
       <ion-side-menu side="right" style="background-color: lightsteelblue;">
+	<h2 style="display: table; margin: 0 auto;"> Settings </h2>
+	<ion-toggle  ng-checked="true">Normal Mode</ion-toggle>
       </ion-side-menu>
 
     </ion-side-menus>

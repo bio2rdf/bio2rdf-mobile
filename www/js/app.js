@@ -43,14 +43,23 @@ angular.module('starter', ['ionic', 'starter.services', 'starter.controllers'])
       	}
       })
 
-
       .state('tab.describe', {
-	url: '/describe',
+	url: '/describe?uri',
 	views: {
           'describe-tab': {
-            templateUrl: 'templates/describe.html'
+            templateUrl: 'templates/describe.html',
+	    controller: 'DescribeCtrl'
           }
 	}
+      })
+
+      .state('tab.describe-null', {
+      	url: '/describe',
+      	views: {
+          'describe-tab': {
+            templateUrl: 'templates/describe-null.html'
+          }
+      	}
       })
 
       .state('tab.favorite', {
