@@ -14,8 +14,6 @@
     
     <!-- ionic/angularjs scripts -->
     <script src="lib/js/ionic.bundle.js"></script>
-    
-    
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
@@ -68,10 +66,10 @@
 	<input ng-model="searchText" style="border-radius:10px; width: 250px; margin-left: 12.5px">
 
 	<ion-list style="margin-top: 25px">
-	  <ion-item ng-repeat="db in databases | filter:searchText" type="item-text-wrap" onclick="toggleCurrentDB()">
+	  <ion-item ng-repeat="db in databases | filter:searchText" type="item-text-wrap" item="db.title" my-on-hold="onItemHold(item)">
 	    <img src="{{db.img}}" style="display: inline; height:45px; vertical-align:middle"/>
             <h2 style="display: inline; margin-left: 10px">{{db.title}}</h2>
-	  </ion-item>	  
+	  </ion-item>
 	</ion-list>
 
       </ion-side-menu>

@@ -62,7 +62,69 @@ angular.module('starter.controllers', [])
 // 	Need :
 // 		Fetch All databases from dbdev and list them
 // 		Filter the databases based on the search box
-  .controller('LeftMenuCtrl', function($scope,DatasetsService) {
+  .controller('LeftMenuCtrl', function($scope, $ionicActionSheet, DatasetsService) {
+
     $scope.databases = DatasetsService.all();
-  });
+
+    $scope.onItemHold = function(item) {
+      // alert("HOLD ON");
+
+      // Show the action sheet
+      $ionicActionSheet.show({
+
+	// The various non-destructive button choices
+	buttons: [
+          { text: 'Share' },
+          { text: 'Move' },
+	],
+
+	// The text of the red destructive button
+	destructiveText: 'Delete',
+
+	// The title text at the top
+	titleText: 'Modify your album',
+
+	// The text of the cancel button
+	cancelText: 'Cancel',
+
+	// Called when the sheet is cancelled, either from triggering the
+	// cancel button, or tapping the backdrop, or using escape on the keyboard
+	cancel: function() {
+	},
+
+	// Called when one of the non-destructive buttons is clicked, with
+	// the index of the button that was clicked. Return
+	// "true" to tell the action sheet to close. Return false to not close.
+	buttonClicked: function(index) {
+          return true;
+	},
+
+	// Called when the destructive button is clicked. Return true to close the
+	// action sheet. False to keep it open
+	destructiveButtonClicked: function() {
+          return true;
+	}
+      });
+      
+    }
+
+    $scope.onItemDelete = function(item) {
+      $scope.items.splice($scope.items.indexOf(item), 1);
+    };
+
+  })
+
+  .directive('myOnHold', function($ionicGesture) {
+    return {
+      restrict: 'A',
+      link: function($scope, $element, $attr) {
+	$ionicGesture.on('hold', function(e) {
+          $scope.$eval($attr.myOnHold);
+	}, $element);
+      }
+    }
+  })
+
+;
+
 
