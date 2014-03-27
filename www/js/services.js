@@ -6,15 +6,59 @@ angular.module('starter.services', [])
 
   .constant('bio2rdfURL', "http://mobile.bio2rdf.org/")
 
-  .value('queryConfig', { "namespace" : "ontobee",
-			  "method" : "search_ns",
-			  "format" : "json-ld",
-			  "parameters" : {
-			    "parm1" : "asthma",
-			    "parm2" : "DOID"
-			  }
+  .value('queryConfig', { "namespace" : "",
+			  "method" : "",
+			  "format" : "",
+			  "parameters" : {}
 			}
 	)
+
+  .value('restURL', "")
+
+  .value('currentDB', "")
+
+
+// TODO: build a queryer to encapsulate resturlbuilder, getjson services ...
+  .factory('Queryer', function(queryConfig, restURL, bio2rdfURL, $http) {
+
+    // Utilitary Function to build the actual rest url based on the queryConfig value
+    function buildRestURL() {
+      var params = "";
+      for (var k in queryConfig.parameters) {
+	if(params.length > 0){
+    	  params += "&";
+	}
+	params += k + "=" + queryConfig.parameters[k];
+      }
+
+      var url = bio2rdfURL.concat(queryConfig.namespace, "/", 
+    				  queryConfig.method, "/", 
+    				  queryConfig.format, "?",
+    				  params
+    				 );
+
+      restURL = encodeURI(url) + "&callback=JSON_CALLBACK";
+
+    }
+
+    var setQueryConfig = function(namespace, method, format, params) { 
+      queryConfig.namespace = namespace;
+      queryConfig.method = method;
+      queryConfig.format = format;
+      queryConfig.parameters = params;
+      buildRestURL();
+    }
+
+    var getJsonFun = function() {
+      return $http.jsonp(restURL);
+    };
+
+    return {
+      setQuery: setQueryConfig,
+      getJson: getJsonFun
+    }
+
+  })
 
 
   .factory('SearchService', function(){
@@ -25,47 +69,6 @@ angular.module('starter.services', [])
 
   })
 
-
-  .factory('RestUrlBuilderService', function(bio2rdfURL) {
-
-    var buildRestURL = function(urlConfig) {
-      var params = "";
-      for (var k in urlConfig.parameters) {
-	if(params.length > 0){
-    	  params += "&";
-	}
-	params += k + "=" + urlConfig.parameters[k];
-      }
-
-      var url = bio2rdfURL.concat(urlConfig.namespace, "/", 
-    				  urlConfig.method, "/", 
-    				  urlConfig.format, "?",
-    				  params
-    				 );
-
-      return encodeURI(url) + "&callback=JSON_CALLBACK";
-    }
-
-    return {
-      restURL: buildRestURL
-    };
-
-  })
-
-
-  .factory('GetJsonService', function($http) {
-
-    var getJsonFun = function(url) {
-      return $http.jsonp(url);
-    };
-
-    return {
-      getJson: getJsonFun
-    };
-
-  })
-
-
   .factory('replacePrefixesService', function() {
 
     var idSplit = "";
@@ -74,12 +77,31 @@ angular.module('starter.services', [])
 	if (i == "@id"){
 	  // console.log();
 	  idSplit = o[i].split(":");
-	  o[i] = context[idSplit[0]] + idSplit[1];
-	  console.log(o[i]);
+	  if(context[idSplit[0]] != undefined){
+	    o[i] = context[idSplit[0]] + idSplit[1];
+	  }
+	  // console.log(o[i]);
 	}
+
+	// For predicate- needed ?
+	// else if (i.indexOf(":") != -1 ){
+	//   idSplit = i.split(":");
+	//   if(context[idSplit[0]] != undefined){
+	//     i = context[idSplit[0]] + idSplit[1];
+	//     console.log(i);
+	//   }
+	// }
+
         if (typeof(o[i])=="object") {
           traverse(context, o[i]);
         }
+	else if (o[i] instanceof Array) {
+	  alert("Array");
+	  if (typeof(o[i][j])=="object") {
+            traverse(context, o[i][j]);
+          }
+	}
+
       }
     }
 
@@ -91,22 +113,27 @@ angular.module('starter.services', [])
       replacePrefix: replacePrefixFun
     }
 
+
   })
 
 
+  .factory('DatasetService', function(Queryer){
 
-  .factory('DatasetsService', function(){
-    
     var databases = [
       {id: 0, title: 'ChEBI', img: 'img/chebi.png', nbOfTriples: 18000},
       {id: 1, title: 'Disease Ontology', img: 'img/doid.png', nbOfTriples: 12000}
     ];
-    
+
+    var listDatabases = function () {
+      Queryer.setQuery('endpoint_mother','listDB','json-ld',{});
+      return Queryer;
+    }
+
     return {
       all: function() {
 	return databases;
-      }
- 
+      },
+      listDB: listDatabases
     }
 
   })

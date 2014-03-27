@@ -3,7 +3,7 @@ angular.module('starter.controllers', [])
 
 // A simple controller that fetches a list of data from a service
 // TODO : Group together Queryer services
-  .controller('SearchCtrl', function($scope, $http, RestUrlBuilderService, GetJsonService, queryConfig, replacePrefixesService) {
+  .controller('SearchCtrl', function($scope, Queryer, replacePrefixesService) {
 
     // "Pets" is a service returning mock data (services.js)
     // $scope.pets = PetService.all();
@@ -11,19 +11,14 @@ angular.module('starter.controllers', [])
     $scope.querySearch = function () {
 
       // $scope.pets = PetService.all();
+      // console.log(angular.lowercase(this.queryTerm));
 
-      console.log(angular.lowercase(this.queryTerm));
+      Queryer.setQuery('ontobee','search_ns', 'json-ld', {"parm1" : this.queryTerm, "parm2" : "DOID"});
 
-      queryConfig.parameters.parm1 = this.queryTerm;
-
-      var url = RestUrlBuilderService.restURL(queryConfig);
-
-      GetJsonService.getJson(url).success(function(data) {
-
+      Queryer.getJson().success(function(data) {
 	// Switch the prefix in @id with the complete url from @context 
 	replacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
 	$scope.searchResultGraph = data["@graph"];
-
       })
 
     };
@@ -34,13 +29,6 @@ angular.module('starter.controllers', [])
 
     $scope.uri = $stateParams.uri;
 
-  })
-
-
-// A simple controller that shows a tapped item's data
-  .controller('PetDetailCtrl', function($scope, $stateParams, PetService) {
-    // "Pets" is a service returning mock data (services.js)
-    $scope.pet = PetService.get($stateParams.petId);
   })
 
 
@@ -61,16 +49,38 @@ angular.module('starter.controllers', [])
 // LeftMenuCtrl:
 // 	Need :
 // 		Fetch All databases from dbdev and list them
-// 		Filter the databases based on the search box
-  .controller('LeftMenuCtrl', function($scope, $ionicActionSheet, DatasetsService) {
+  .controller('LeftMenuCtrl', function($scope, $ionicActionSheet, DatasetService, replacePrefixesService) {
 
-    $scope.databases = DatasetsService.all();
+    // $scope.databases = DatasetService.all();
+    $scope.databases = [];
 
+    DatasetService.listDB().getJson().success(function(data) {
+
+      replacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
+
+      for (var i in data["@graph"]){
+	if(data["@graph"][i]["dc:title"] != "namespace:endpoints_mother"){
+	  $scope.databases.push(data["@graph"][i]);
+	}else{
+	  $scope.header = data["@graph"][i];
+	}
+      }
+
+    });
+
+
+    // Put it somewhere else ?
     $scope.onItemHold = function(item) {
       alert("HOLD ON");
-    }
+    };
+
+
+    $scope.changeCurrentDatabase = function(db) {
+      console.log(db);
+    };
 
   })
+
 
   .directive('myOnHold', function($ionicGesture) {
     return {
@@ -81,6 +91,14 @@ angular.module('starter.controllers', [])
 	}, $element);
       }
     }
+  })
+
+
+
+// A simple controller that shows a tapped item's data
+  .controller('PetDetailCtrl', function($scope, $stateParams, PetService) {
+    // "Pets" is a service returning mock data (services.js)
+    $scope.pet = PetService.get($stateParams.petId);
   })
 
 ;
