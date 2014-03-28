@@ -33,16 +33,6 @@ angular.module('starter', ['ionic', 'starter.services', 'starter.controllers'])
       	}
       })
 
-      .state('tab.pet-detail', {
-      	url: '/pet/:petId',
-      	views: {
-          'search-tab': {
-            templateUrl: 'templates/pet-detail.html',
-            controller: 'PetDetailCtrl'
-          }
-      	}
-      })
-
       .state('tab.describe', {
 	url: '/describe?uri',
 	views: {
