@@ -28,7 +28,7 @@ var module = angular.module('starter.controllers', [])
   module.controller('DescribeCtrl', function($scope, $stateParams) {
 
     $scope.uri = $stateParams.uri;
-
+    
   })
 
 

@@ -64,7 +64,7 @@
 	  <img src="{{header['http://xmlns.com/foaf/0.1/depiction']['@id']}}" style="height:45px; vertical-align:middle"/>
 	</h3>
 
-	<input ng-model="searchText" style="border-radius:10px; width: 250px; margin-left: 12.5px">
+	<input ng-model="searchText" placeholder="Filter" style="border-radius:10px; width: 250px; margin-left: 12.5px">
 
 	<ion-list style="margin-top: 25px">
 	    <ion-item ng-repeat="db in databases | filter:searchText" type="item-text-wrap" item="db.title" ng-click="changeCurrentDatabase({{db}});" my-on-hold="onItemHold(item)">

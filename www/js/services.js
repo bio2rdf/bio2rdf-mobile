@@ -17,7 +17,6 @@ angular.module('starter.services', [])
 
   .value('currentDB', "")
 
-
 // TODO: build a queryer to encapsulate resturlbuilder, getjson services ...
   .factory('Queryer', function(queryConfig, restURL, bio2rdfURL, $http) {
 
