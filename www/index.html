@@ -59,17 +59,19 @@
       <!-- Database Selection -->
       <ion-side-menu side="left" style="background-color: GhostWhite" ng-controller="LeftMenuCtrl">
 	<h3 style="display: table; margin: 0 auto; padding: 10px">
-	  <img src="img/bio2rdf.png" style="height:45px; vertical-align:middle"/>
-	  <img src="img/rdfDB.png" style="margin-left: 10px; height: 35px; vertical-align:middle">
+	  <!-- <img src="img/bio2rdf.png" style="height:45px; vertical-align:middle"/> -->
+	  <!-- <img src="img/rdfDB.png" style="margin-left: 10px; height: 35px; vertical-align:middle"> -->
+	  <img src="{{header['http://xmlns.com/foaf/0.1/depiction']['@id']}}" style="height:45px; vertical-align:middle"/>
 	</h3>
 
 	<input ng-model="searchText" style="border-radius:10px; width: 250px; margin-left: 12.5px">
 
 	<ion-list style="margin-top: 25px">
-	  <ion-item ng-repeat="db in databases | filter:searchText" type="item-text-wrap" item="db.title" my-on-hold="onItemHold(item)">
-	    <img src="{{db.img}}" style="display: inline; height:45px; vertical-align:middle"/>
-            <h2 style="display: inline; margin-left: 10px">{{db.title}}</h2>
-	  </ion-item>
+	    <ion-item ng-repeat="db in databases | filter:searchText" type="item-text-wrap" item="db.title" ng-click="changeCurrentDatabase({{db}});" my-on-hold="onItemHold(item)">
+	      <img src="{{db['http://xmlns.com/foaf/0.1/depiction']['@id']}}" style="display: inline; height:45px; vertical-align:middle"/>
+              <h2 style="display: inline; margin-left: 10px">{{db['dc:title']}}</h2>
+	      <p style="text-align: right; font-style: italic"> {{db['bm:bio2rdf_vocabulary:triple_count']}} triples </p>
+	    </ion-item>
 	</ion-list>
 
       </ion-side-menu>
@@ -78,8 +80,8 @@
       <!-- Settings Selections -->
       <!-- Different View (Skins) Selection -->
       <ion-side-menu side="right" style="background-color: lightsteelblue;">
-	<h2 style="display: table; margin: 0 auto;"> Settings </h2>
-	<ion-toggle  ng-checked="true">Normal Mode</ion-toggle>
+	<h2 style="display: table; margin: 0 auto; margin-top: 10px;"> Settings </h2>
+	<ion-toggle  ng-checked="true" style="margin-top: 20px;">Normal Mode</ion-toggle>
       </ion-side-menu>
 
     </ion-side-menus>

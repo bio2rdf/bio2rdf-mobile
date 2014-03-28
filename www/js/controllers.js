@@ -1,9 +1,9 @@
-angular.module('starter.controllers', [])
+var module = angular.module('starter.controllers', [])
 
 
 // A simple controller that fetches a list of data from a service
 // TODO : Group together Queryer services
-  .controller('SearchCtrl', function($scope, $http, RestUrlBuilderService, GetJsonService, queryConfig, replacePrefixesService) {
+  module.controller('SearchCtrl', function($scope, Queryer, replacePrefixesService) {
 
     // "Pets" is a service returning mock data (services.js)
     // $scope.pets = PetService.all();
@@ -11,41 +11,29 @@ angular.module('starter.controllers', [])
     $scope.querySearch = function () {
 
       // $scope.pets = PetService.all();
+      // console.log(angular.lowercase(this.queryTerm));
 
-      console.log(angular.lowercase(this.queryTerm));
+      Queryer.setQuery('ontobee','search_ns', 'json-ld', {"parm1" : this.queryTerm, "parm2" : "DOID"});
 
-      queryConfig.parameters.parm1 = this.queryTerm;
-
-      var url = RestUrlBuilderService.restURL(queryConfig);
-
-      GetJsonService.getJson(url).success(function(data) {
-
+      Queryer.getJson().success(function(data) {
 	// Switch the prefix in @id with the complete url from @context 
 	replacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
 	$scope.searchResultGraph = data["@graph"];
-
       })
 
     };
 
   })
 
-  .controller('DescribeCtrl', function($scope, $stateParams) {
+  module.controller('DescribeCtrl', function($scope, $stateParams) {
 
     $scope.uri = $stateParams.uri;
 
   })
 
 
-// A simple controller that shows a tapped item's data
-  .controller('PetDetailCtrl', function($scope, $stateParams, PetService) {
-    // "Pets" is a service returning mock data (services.js)
-    $scope.pet = PetService.get($stateParams.petId);
-  })
-
-
 // Event controller to toggle side panels with buttons
-  .controller('HeaderCtrl', function($scope) {
+  module.controller('HeaderCtrl', function($scope) {
 
     $scope.toggleLeftPanel = function() {
       $scope.sideMenuController.toggleLeft();
@@ -61,60 +49,40 @@ angular.module('starter.controllers', [])
 // LeftMenuCtrl:
 // 	Need :
 // 		Fetch All databases from dbdev and list them
-// 		Filter the databases based on the search box
-  .controller('LeftMenuCtrl', function($scope, $ionicActionSheet, DatasetsService) {
+  module.controller('LeftMenuCtrl', function($scope, $ionicActionSheet, DatasetService, replacePrefixesService) {
 
-    $scope.databases = DatasetsService.all();
+    // $scope.databases = DatasetService.all();
+    $scope.databases = [];
 
-    $scope.onItemHold = function(item) {
-      // alert("HOLD ON");
+    DatasetService.listDB().getJson().success(function(data) {
 
-      // Show the action sheet
-      $ionicActionSheet.show({
+      replacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
 
-	// The various non-destructive button choices
-	buttons: [
-          { text: 'Share' },
-          { text: 'Move' },
-	],
-
-	// The text of the red destructive button
-	destructiveText: 'Delete',
-
-	// The title text at the top
-	titleText: 'Modify your album',
-
-	// The text of the cancel button
-	cancelText: 'Cancel',
-
-	// Called when the sheet is cancelled, either from triggering the
-	// cancel button, or tapping the backdrop, or using escape on the keyboard
-	cancel: function() {
-	},
-
-	// Called when one of the non-destructive buttons is clicked, with
-	// the index of the button that was clicked. Return
-	// "true" to tell the action sheet to close. Return false to not close.
-	buttonClicked: function(index) {
-          return true;
-	},
-
-	// Called when the destructive button is clicked. Return true to close the
-	// action sheet. False to keep it open
-	destructiveButtonClicked: function() {
-          return true;
+      for (var i in data["@graph"]){
+	if(data["@graph"][i]["dc:title"] != "namespace:endpoints_mother"){
+	  $scope.databases.push(data["@graph"][i]);
+	}else{
+	  $scope.header = data["@graph"][i];
 	}
-      });
-      
-    }
+      }
 
-    $scope.onItemDelete = function(item) {
-      $scope.items.splice($scope.items.indexOf(item), 1);
+    });
+
+
+    // Put it somewhere else ?
+    $scope.onItemHold = function(item) {
+      alert("HOLD ON");
+    };
+
+
+    $scope.changeCurrentDatabase = function(db) {
+      console.log(db);
     };
 
   })
 
-  .directive('myOnHold', function($ionicGesture) {
+
+  module.directive('myOnHold', function($ionicGesture) {
     return {
       restrict: 'A',
       link: function($scope, $element, $attr) {
@@ -123,6 +91,14 @@ angular.module('starter.controllers', [])
 	}, $element);
       }
     }
+  })
+
+
+
+// A simple controller that shows a tapped item's data
+  .controller('PetDetailCtrl', function($scope, $stateParams, PetService) {
+    // "Pets" is a service returning mock data (services.js)
+    $scope.pet = PetService.get($stateParams.petId);
   })
 
 ;
