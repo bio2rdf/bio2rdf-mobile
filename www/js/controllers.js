@@ -1,9 +1,9 @@
-angular.module('starter.controllers', [])
+var module = angular.module('starter.controllers', [])
 
 
 // A simple controller that fetches a list of data from a service
 // TODO : Group together Queryer services
-  .controller('SearchCtrl', function($scope, Queryer, replacePrefixesService) {
+  module.controller('SearchCtrl', function($scope, Queryer, replacePrefixesService) {
 
     // "Pets" is a service returning mock data (services.js)
     // $scope.pets = PetService.all();
@@ -25,7 +25,7 @@ angular.module('starter.controllers', [])
 
   })
 
-  .controller('DescribeCtrl', function($scope, $stateParams) {
+  module.controller('DescribeCtrl', function($scope, $stateParams) {
 
     $scope.uri = $stateParams.uri;
 
@@ -33,7 +33,7 @@ angular.module('starter.controllers', [])
 
 
 // Event controller to toggle side panels with buttons
-  .controller('HeaderCtrl', function($scope) {
+  module.controller('HeaderCtrl', function($scope) {
 
     $scope.toggleLeftPanel = function() {
       $scope.sideMenuController.toggleLeft();
@@ -49,7 +49,7 @@ angular.module('starter.controllers', [])
 // LeftMenuCtrl:
 // 	Need :
 // 		Fetch All databases from dbdev and list them
-  .controller('LeftMenuCtrl', function($scope, $ionicActionSheet, DatasetService, replacePrefixesService) {
+  module.controller('LeftMenuCtrl', function($scope, $ionicActionSheet, DatasetService, replacePrefixesService) {
 
     // $scope.databases = DatasetService.all();
     $scope.databases = [];
@@ -82,7 +82,7 @@ angular.module('starter.controllers', [])
   })
 
 
-  .directive('myOnHold', function($ionicGesture) {
+  module.directive('myOnHold', function($ionicGesture) {
     return {
       restrict: 'A',
       link: function($scope, $element, $attr) {
