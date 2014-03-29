@@ -9,11 +9,10 @@
     <!-- ionic css -->
     <link href="lib/css/ionic.css" rel="stylesheet">
     
-    <!-- your app's css -->
-    <link href="css/app.css" rel="stylesheet">
-    
     <!-- ionic/angularjs scripts -->
     <script src="lib/js/ionic.bundle.js"></script>
+    <!-- your app's css -->
+    <link href="css/app.css" rel="stylesheet">
 
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
@@ -63,10 +62,15 @@
 	  <!-- <img src="img/rdfDB.png" style="margin-left: 10px; height: 35px; vertical-align:middle"> -->
 	  <img src="{{header['http://xmlns.com/foaf/0.1/depiction']['@id']}}" style="height:45px; vertical-align:middle"/>
 	</h3>
+        
+        <div class="list list-inset">       
+          <label class-"item item-input bio2rdfinput">
+          <!--<input ng-model="searchText" placeholder="Filter" style="border-radius:10px; width: 250px; margin-left: 12.5px"></input>-->
+            <input ng-model="searchText" placeholder="Filter" ></input>
+          <label>
+        </div>
 
-	<input ng-model="searchText" placeholder="Filter" style="border-radius:10px; width: 250px; margin-left: 12.5px">
-
-	<ion-list style="margin-top: 25px">
+	<ion-list style="margin-top: 10px">
 	    <ion-item ng-repeat="db in databases | filter:searchText" type="item-text-wrap" item="db.title" ng-click="changeCurrentDatabase({{db}});" my-on-hold="onItemHold(item)">
 	      <img src="{{db['http://xmlns.com/foaf/0.1/depiction']['@id']}}" style="display: inline; height:45px; vertical-align:middle"/>
               <h2 style="display: inline; margin-left: 10px">{{db['dc:title']}}</h2>

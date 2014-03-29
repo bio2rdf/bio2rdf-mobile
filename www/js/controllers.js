@@ -25,9 +25,10 @@ var module = angular.module('starter.controllers', [])
 
   })
 
-  module.controller('DescribeCtrl', function($scope, $stateParams) {
-
+  module.controller('DescribeCtrl', function($scope, $stateParams, $http) {
     $scope.uri = $stateParams.uri;
+    // Temporairement json hardcoder
+    $scope.jsonld = $http.jsonp("http://mobile.bio2rdf.org/pubmed/describe/json-ld?uri=http://bio2rdf.org/pubmed:122906")
     
   })
 
