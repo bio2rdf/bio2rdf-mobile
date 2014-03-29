@@ -75,16 +75,20 @@ angular.module('starter.services', [])
       for (i in o) {
 	      if (i == "@id"){
 	      // console.log();
+        /*idSplit = o[i].split(":");*/
+        /*var uri=[]*/
+        /*_(idSplit).each(function(str){*/
+          /*if (context[str] != undefined){*/
+          /*uri.push(context[str]);*/
+          /*} else {*/
+          /*uri.push(str);*/
+          /*}*/
+          /*});*/
+        /*o[i] = uri.join("");*/
           idSplit = o[i].split(":");
-          var uri=[]
-          _(idSplit).each(function(str){
-            if (context[str] != undefined){
-              uri.push(context[str]);
-            } else {
-              uri.push(str);
-            }
-          });
-          o[i] = uri.join(':');
+          if(context[idSplit[0]] != undefined){
+            o[i] = context[idSplit[0]] + idSplit.slice(1).join(":");
+          }
 	      }
 
 	// For predicate- needed ?
