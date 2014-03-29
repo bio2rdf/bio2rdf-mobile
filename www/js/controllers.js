@@ -25,12 +25,18 @@ var module = angular.module('starter.controllers', [])
 
   })
 
-  module.controller('DescribeCtrl', function($scope, $stateParams, $http) {
+  module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, replacePrefixesService) {
     $scope.uri = $stateParams.uri;
     // Temporairement json hardcoder
-    $scope.jsonld = $http.jsonp("http://mobile.bio2rdf.org/pubmed/describe/json-ld?uri=http://bio2rdf.org/pubmed:122906")
-    
-  })
+    uriHandler={}
+    Queryer.setQuery('pubmed','describe', 'json-ld', {"uri" : $scope.uri});
+    Queryer.getJson().success(function(data){
+      replacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
+      _.each(data["@graph"],function(id){
+        console.log(id["@id"]);
+      });
+    })
+  });
 
 
 // Event controller to toggle side panels with buttons

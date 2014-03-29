@@ -73,14 +73,19 @@ angular.module('starter.services', [])
     var idSplit = "";
     function traverse(context, o) {
       for (i in o) {
-	if (i == "@id"){
-	  // console.log();
-	  idSplit = o[i].split(":");
-	  if(context[idSplit[0]] != undefined){
-	    o[i] = context[idSplit[0]] + idSplit[1];
-	  }
-	  // console.log(o[i]);
-	}
+	      if (i == "@id"){
+	      // console.log();
+          idSplit = o[i].split(":");
+          var uri=[]
+          _(idSplit).each(function(str){
+            if (context[str] != undefined){
+              uri.push(context[str]);
+            } else {
+              uri.push(str);
+            }
+          });
+          o[i] = uri.join(':');
+	      }
 
 	// For predicate- needed ?
 	// else if (i.indexOf(":") != -1 ){
@@ -94,13 +99,12 @@ angular.module('starter.services', [])
         if (typeof(o[i])=="object") {
           traverse(context, o[i]);
         }
-	else if (o[i] instanceof Array) {
-	  alert("Array");
-	  if (typeof(o[i][j])=="object") {
+	      else if (o[i] instanceof Array) {
+	        alert("Array");
+	        if (typeof(o[i][j])=="object") {
             traverse(context, o[i][j]);
           }
-	}
-
+	      }
       }
     }
 
@@ -137,6 +141,16 @@ angular.module('starter.services', [])
 
   })
 
+  .factory('ProcessGraph',function(){
+    var process = function(graph){
+        uriContainer={}
+        //_.each(graph, function(index){uriHandler[].push(graph[i]["@id"]);});
+    }
+    return {
+      graph : process
+    }
+  })
+
 
   .factory('PetService', function() {
     // Might use a resource here that returns a JSON array
@@ -160,6 +174,5 @@ angular.module('starter.services', [])
     }
 
   })
-
 ;
 
