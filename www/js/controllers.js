@@ -3,7 +3,7 @@ var module = angular.module('starter.controllers', [])
 
 // A simple controller that fetches a list of data from a service
 // TODO : Group together Queryer services
-  module.controller('SearchCtrl', function($scope, Queryer, replacePrefixesService) {
+  module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService) {
 
     // "Pets" is a service returning mock data (services.js)
     // $scope.pets = PetService.all();
@@ -17,7 +17,7 @@ var module = angular.module('starter.controllers', [])
 
       Queryer.getJson().success(function(data) {
 	// Switch the prefix in @id with the complete url from @context 
-	replacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
+	ReplacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
 	$scope.searchResultGraph = data["@graph"];
       })
 
@@ -25,17 +25,25 @@ var module = angular.module('starter.controllers', [])
 
   })
 
-  module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, replacePrefixesService) {
+  module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, ProcessGraph) {
     $scope.uri = $stateParams.uri;
     // Temporairement json hardcoder
-    uriHandler={}
-    Queryer.setQuery('pubmed','describe', 'json-ld', {"uri" : $scope.uri});
+    Queryer.setQuery('doid','describe2', 'json-ld', {"uri" : $scope.uri});
     Queryer.getJson().success(function(data){
-      replacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
-      _.each(data["@graph"],function(id){
-        console.log(id["@id"]);
+      console.log(data);
+      var idList=ProcessGraph.graph(data);
+      var main = idList[$stateParams.uri]
+      $scope.title = main["rdfs:label"]
+      $scope.abstract = idList[main["dcterms:abstract"]["@id"]]["pubmed_vocabulary:abstract_text"]
+      
+      $scope.authors = []
+      _.each(main["pubmed_vocabulary:author"], function(elem) {
+        $scope.authors.push(idList[elem["@id"]]);
       });
-    })
+        
+
+
+    });
   });
 
 
@@ -56,14 +64,14 @@ var module = angular.module('starter.controllers', [])
 // LeftMenuCtrl:
 // 	Need :
 // 		Fetch All databases from dbdev and list them
-  module.controller('LeftMenuCtrl', function($scope, $ionicActionSheet, DatasetService, replacePrefixesService) {
+  module.controller('LeftMenuCtrl', function($scope, $ionicActionSheet, DatasetService, ReplacePrefixesService) {
 
     // $scope.databases = DatasetService.all();
     $scope.databases = [];
 
     DatasetService.listDB().getJson().success(function(data) {
 
-      replacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
+      ReplacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
 
       for (var i in data["@graph"]){
 	if(data["@graph"][i]["dc:title"] != "namespace:endpoints_mother"){

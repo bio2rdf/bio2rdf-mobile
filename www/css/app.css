@@ -15,5 +15,9 @@
     margin:0 auto;
 }
 
-.bio2rdfinput {
+.appComment {
+        padding:10px;
+        border:1px solid gray;
+        background-color=white;
+        
 }

@@ -68,23 +68,12 @@ angular.module('starter.services', [])
 
   })
 
-  .factory('replacePrefixesService', function() {
+  .factory('ReplacePrefixesService', function() {
 
     var idSplit = "";
     function traverse(context, o) {
       for (i in o) {
 	      if (i == "@id"){
-	      // console.log();
-        /*idSplit = o[i].split(":");*/
-        /*var uri=[]*/
-        /*_(idSplit).each(function(str){*/
-          /*if (context[str] != undefined){*/
-          /*uri.push(context[str]);*/
-          /*} else {*/
-          /*uri.push(str);*/
-          /*}*/
-          /*});*/
-        /*o[i] = uri.join("");*/
           idSplit = o[i].split(":");
           if(context[idSplit[0]] != undefined){
             o[i] = context[idSplit[0]] + idSplit.slice(1).join(":");
@@ -145,10 +134,14 @@ angular.module('starter.services', [])
 
   })
 
-  .factory('ProcessGraph',function(){
-    var process = function(graph){
-        uriContainer={}
-        //_.each(graph, function(index){uriHandler[].push(graph[i]["@id"]);});
+  .factory('ProcessGraph',function(ReplacePrefixesService){
+    var process = function(data){
+      ReplacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
+      uriContainer={}
+      _.each(data["@graph"], function(sub){
+        uriContainer[sub["@id"]]=sub;
+      });
+      return uriContainer;
     }
     return {
       graph : process
