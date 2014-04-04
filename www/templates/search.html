@@ -19,7 +19,7 @@
     </div>
 
     <ion-list>
-      <ion-item ng-repeat="elem in searchResultGraph" type="item-text-wrap" href="#/tab/describe?uri={{elem['@id']}}?endpoint={{}}">
+      <ion-item ng-repeat="elem in searchResultGraph" type="item-text-wrap" href="#/tab/describe?uri={{elem['@id']}}&endpoint=doid">
       <!-- <ion-item ng-repeat="elem in searchResultGraph" type="item-text-wrap" href="#/tab/describe"> -->
         <h3>{{elem['rdfs:label']}}</h3>
       </ion-item>
