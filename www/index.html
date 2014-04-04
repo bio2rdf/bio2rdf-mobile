@@ -71,11 +71,13 @@
           </label>
         </div>
 
-	<ion-list style="margin-top: 10px">
-	    <ion-item ng-repeat="db in databases | filter:searchText" type="item-text-wrap" item="db.title" ng-click="changeCurrentDatabase({{db}});" my-on-hold="onItemHold(item)">
-	      <img src="{{db['http://xmlns.com/foaf/0.1/depiction']['@id']}}" style="display: inline; height:45px; vertical-align:middle"/>
-              <h2 style="display: inline; margin-left: 10px">{{db['dc:title']}}</h2>
-	      <p style="text-align: right; font-style: italic"> {{db['bm:bio2rdf_vocabulary:triple_count']}} triples </p>
+	<input ng-model="searchText" style="border-radius:10px; width: 250px; margin-left: 12.5px">
+
+	<ion-list style="margin-top: 25px">
+	    <ion-item ng-repeat="db in databases | filter:searchText | orderBy:'tripleCount':true" type="item-text-wrap" item="db.title" ng-click="changeCurrentDatabase({{}});" my-on-hold="onItemHold(item)">
+	      <img src="{{db.foafDepiction}}" style="display: inline; height:45px; vertical-align:middle"/>
+              <h2 style="display: inline; margin-left: 10px">{{db.title}}</h2>
+	      <p style="text-align: right; font-style: italic"> {{db.tripleCount | number}} triples </p>
 	    </ion-item>
 	</ion-list>
 

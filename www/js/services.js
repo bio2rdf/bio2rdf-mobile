@@ -6,6 +6,9 @@ angular.module('starter.services', [])
 
   .constant('bio2rdfURL', "http://mobile.bio2rdf.org/")
 
+
+// These VALUE queryConfig is initalized once and are being
+// changed each time a query is being made (good strategy ?)
   .value('queryConfig', { "namespace" : "",
 			  "method" : "",
 			  "format" : "",
@@ -14,7 +17,13 @@ angular.module('starter.services', [])
 	)
 
   .value('restURL', "")
+//
 
+
+// Populated from server at boot.
+  .value('DatasetStore' , [])
+
+// Change each time we switch into another database for a search/describe
   .value('currentDB', "")
 
 // TODO: build a queryer to encapsulate resturlbuilder, getjson services ...
@@ -60,6 +69,8 @@ angular.module('starter.services', [])
   })
 
 
+
+// Not done yet- managed in the Controller
   .factory('SearchService', function(){
 
     var searchResultsFun = function(context, graph) {
@@ -68,7 +79,9 @@ angular.module('starter.services', [])
 
   })
 
-  .factory('ReplacePrefixesService', function() {
+// Replace Prefixes from Context in Graph Data
+// .. predicate keep their prefix at this point #FIX ME
+  .factory('replacePrefixesService', function() {
 
     var idSplit = "";
     function traverse(context, o) {
@@ -80,7 +93,7 @@ angular.module('starter.services', [])
           }
 	      }
 
-	// For predicate- needed ?
+	// For predicate-
 	// else if (i.indexOf(":") != -1 ){
 	//   idSplit = i.split(":");
 	//   if(context[idSplit[0]] != undefined){
@@ -115,21 +128,19 @@ angular.module('starter.services', [])
 
   .factory('DatasetService', function(Queryer){
 
-    var databases = [
-      {id: 0, title: 'ChEBI', img: 'img/chebi.png', nbOfTriples: 18000},
-      {id: 1, title: 'Disease Ontology', img: 'img/doid.png', nbOfTriples: 12000}
-    ];
-
     var listDatabases = function () {
       Queryer.setQuery('endpoint_mother','listDB','json-ld',{});
       return Queryer;
     }
 
+    var setUpDatasetOjb = function() {
+      return "yoyo";
+    }
+
+    
     return {
-      all: function() {
-	return databases;
-      },
-      listDB: listDatabases
+      listDB: listDatabases,
+      setUpDataset: setUpDatasetOjb
     }
 
   })
@@ -170,6 +181,5 @@ angular.module('starter.services', [])
       }
     }
 
-  })
-;
+  });
 
