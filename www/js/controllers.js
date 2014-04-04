@@ -3,7 +3,7 @@ var module = angular.module('starter.controllers', [])
 
 // A simple controller that fetches a list of data from a service
 // TODO : Group together Queryer services
-module.controller('SearchCtrl', function($scope, Queryer, replacePrefixesService) {
+module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService, DatasetStore) {
 
   // "Pets" is a service returning mock data (services.js)
   // $scope.pets = PetService.all();
@@ -15,29 +15,46 @@ module.controller('SearchCtrl', function($scope, Queryer, replacePrefixesService
 
     Queryer.setQuery('ontobee','search_ns', 'json-ld', {"parm1" : this.queryTerm, "parm2" : "DOID"});
 
-      Queryer.getJson().success(function(data) {
-	// Switch the prefix in @id with the complete url from @context 
-	ReplacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
-	$scope.searchResultGraph = data["@graph"];
-      })
+    Queryer.getJson().success(function(data) {
+    // Switch the prefix in @id with the complete url from @context 
+    ReplacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
+    $scope.searchResultGraph = data["@graph"];
+    })
   };
 
 });
 
 module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, ProcessGraph) {
   $scope.uri = $stateParams.uri;
+  $scopre.endpoint = $stateParams.endpoint;
   // Temporairement json hardcoder
   Queryer.setQuery('doid','describe2', 'json-ld', {"uri" : $scope.uri});
+  Queryer.getJson().success(function(data){
+    var idList=ProcessGraph.graph(data);
+    var main = idList[$stateParams.uri]
+
+    $scope.title = main["rdfs:label"]
+    $scope.obodef = main["obolibrary:IAO_0000115"]
+
+    $scope.subclassof = []
+    _.each(main["rdfs:subClassOf"]
+
+  });
+
+
+  
+  Queryer.setQuery('pubmed','describe','json-ld', {"uri" : $scope.uri});
   Queryer.getJson().success(function(data){
     console.log(data);
     var idList=ProcessGraph.graph(data);
     var main = idList[$stateParams.uri]
+
     $scope.title = main["rdfs:label"]
-    $scope.abstract = idList[main["dcterms:abstract"]["@id"]]["pubmed_vocabulary:abstract_text"]
+    $scope.pmabstract = idList[main["dcterms:abstract"]["@id"]]["pubmed_vocabulary:abstract_text"]
     
-    $scope.authors = []
+    $scope.pmauthors = []
     _.each(main["pubmed_vocabulary:author"], function(elem) {
-      $scope.authors.push(idList[elem["@id"]]);
+      $scope.pmauthors.push(idList[elem["@id"]]);
     });
       
 
@@ -47,17 +64,11 @@ module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, Proces
 
 
 // Event controller to toggle side panels with buttons
-module.controller('HeaderCtrl', function($scope) {
+module.controller('HeaderCtrl', function($scope, DatasetStore) {
 
   $scope.toggleLeftPanel = function() {
     $scope.sideMenuController.toggleLeft();
   };
-tasetStore.push({
-    title: data["@graph"][i]["dc:title"], 
-    tripleCount: data["@graph"][i]["bm:bio2rdf_vocabulary:triple_count"],
-    foafDepiction: data["@graph"][i]['http://xmlns.com/foaf/0.1/depiction']['@id']
-  });
-
   $scope.toggleRightPanel = function() {
     $scope.sideMenuController.toggleRight();
   };
@@ -66,11 +77,8 @@ tasetStore.push({
 
 
 // LeftMenuCtrl:
-// 	Need :
-// 		Fetch All databases from dbdev and list them
-module.controller('LeftMenuCtrl', function($scope, $ionicActionSheet, DatasetService, ReplacePrefixesService, DatasetStore) {
-
-  // $scope.databases = DatasetService.all();
+//
+module.controller('LeftMenuCtrl',function($scope, DatasetStore, DatasetService, ReplacePrefixesService){
   $scope.databases = [];
 
   DatasetService.listDB().getJson().success(function(data) {

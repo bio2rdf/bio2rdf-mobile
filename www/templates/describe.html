@@ -3,31 +3,33 @@
 -->
 <ion-view title="'Describe Page'">
   <ion-content has-header="true" has-tabs="true" padding="true">
+  <div>
     <h1> {{ title }} </h1>
-  
-    <h4><b>is a class of :</b><h4>
+    <h4 ng-show="obosublasses"><b>is a class of :</b></h4>
+      <span ng-repeat="i in obosubclasses">
+        <span><a href="#/tab/describe&uri={{i['@id']}}">{{i['rdfs:label']}}</a> &mdash; </span>
+      </span>
+    <h4><b>Has sublasses :</b></h4>
 
-    <h4><b>Has sublasses :</b><h4>
-  
-    <h4><b>Definition</b><h4>
-    <p class="appComment">{{ definition }}</p>
-    </div>
-    
+    <h4><b>Definition</b></h4>
+    <p class="appComment">{{ obodef }}</p>
+  </div>
 
 
 
-    <!--PUBMED-->
-    <!--<span>-->
-    <!--<h4><b>Authors</b><h4>-->
-    <!--<span ng-repeat="author in authors" >-->
-    <!--<span><a> {{author["pubmed_vocabulary:fore_name"]}} {{author["pubmed_vocabulary:last_name"]}} </a></span>-->
-    <!--</span>-->
-    <!--</span>  -->
-    <!---->
-    <!--<div>-->
-    <!--<h4><b>Abstract</b><h4>-->
-    <!--<p class="appComment">{{ abstract }}</p>-->
-    <!--</div>-->
+
+  <!--PUBMED-->
+  <!--<span>-->
+  <!--<h4 ng-show="pmauthors"><b>Authors</b><h4>-->
+  <!--<span ng-repeat="author in authors" >-->
+  <!--<span><a> {{pmauthor["pubmed_vocabulary:fore_name"]}} {{pmauthor["pubmed_vocabulary:last_name"]}} </a></span>-->
+  <!--</span>-->
+  <!--</span>  -->
+  <!---->
+  <!--<div>-->
+  <!--<h4 ng-show="abstract"><b>Abstract</b><h4>-->
+  <!--<p class="appComment">{{ abstract }}</p>-->
+  <!--</div>-->
 
   </ion-content>
 </ion-view>

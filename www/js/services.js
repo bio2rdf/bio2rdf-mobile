@@ -79,9 +79,9 @@ angular.module('starter.services', [])
 
   })
 
-// Replace Prefixes from Context in Graph Data
-// .. predicate keep their prefix at this point #FIX ME
-  .factory('replacePrefixesService', function() {
+// Replace Prefixes from Context in Graph pleData
+
+  .factory('ReplacePrefixesService', function() {
 
     var idSplit = "";
     function traverse(context, o) {
