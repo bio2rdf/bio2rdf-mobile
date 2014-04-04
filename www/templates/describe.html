@@ -5,14 +5,16 @@
   <ion-content has-header="true" has-tabs="true" padding="true">
   <div>
     <h1> {{ title }} </h1>
-    <h4 ng-show="obosublasses"><b>is a class of :</b></h4>
+    <h4 ng-show="obosubclasses"><b>is a class of :</b></h4>
       <span ng-repeat="i in obosubclasses">
-        <span><a href="#/tab/describe&uri={{i['@id']}}">{{i['rdfs:label']}}</a> &mdash; </span>
+        <span><a class="button button-small button-positive" href="/#/tab/describe?uri={{i['@id']}}&endpoint=doid">{{i['rdfs:label']}}</a>  </span>
       </span>
     <h4><b>Has sublasses :</b></h4>
-
-    <h4><b>Definition</b></h4>
-    <p class="appComment">{{ obodef }}</p>
+      
+    <div ng-show="obodef">
+      <h4><b>Definition</b></h4>
+      <p class="appComment">{{ obodef }}</p>
+    </div>
   </div>
 
 

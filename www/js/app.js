@@ -34,7 +34,7 @@ angular.module('starter', ['ionic', 'starter.services', 'starter.controllers'])
       })
 
       .state('tab.describe', {
-	url: '/describe?uri',
+	url: '/describe?uri&endpoint',
 	views: {
           'describe-tab': {
             templateUrl: 'templates/describe.html',
