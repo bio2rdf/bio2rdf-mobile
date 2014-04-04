@@ -36,13 +36,12 @@ module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, Proces
     $scope.title = main["rdfs:label"]
     $scope.obodef = main["obolibrary:IAO_0000115"]
 
-    $scope.subclassof = []
-    _.each(main["rdfs:subClassOf"]
+    // $scope.subclassof = []
+    // _.each(main["rdfs:subClassOf"]
 
   });
 
 
-  
   Queryer.setQuery('pubmed','describe','json-ld', {"uri" : $scope.uri});
   Queryer.getJson().success(function(data){
     console.log(data);
@@ -56,7 +55,7 @@ module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, Proces
     _.each(main["pubmed_vocabulary:author"], function(elem) {
       $scope.pmauthors.push(idList[elem["@id"]]);
     });
-      
+
 
 
   });
@@ -64,7 +63,7 @@ module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, Proces
 
 
 // Event controller to toggle side panels with buttons
-module.controller('HeaderCtrl', function($scope, DatasetStore) {
+module.controller('MainCtrl', function($scope, DatasetStore) {
 
   $scope.toggleLeftPanel = function() {
     $scope.sideMenuController.toggleLeft();
@@ -73,37 +72,52 @@ module.controller('HeaderCtrl', function($scope, DatasetStore) {
     $scope.sideMenuController.toggleRight();
   };
 
+  $scope.setHeaderImg = function () {
+    $scope.headerImg = DatasetStore.all[DatasetStore.current].foafDepiction;
+    console.log(DatasetStore.all[DatasetStore.current].foafDepiction);
+  };
+
+  $scope.setHeaderImg();
+
 });
 
 
 // LeftMenuCtrl:
 //
 module.controller('LeftMenuCtrl',function($scope, DatasetStore, DatasetService, ReplacePrefixesService){
+
   $scope.databases = [];
 
   DatasetService.listDB().getJson().success(function(data) {
 
     ReplacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
-    
+
     for (var i in data["@graph"]){
       if(data["@graph"][i]["dc:title"] != "namespace:endpoints_mother"){
 
+	var id = data["@graph"][i]["@id"].split(/:/).pop();
+	console.log(id);
         $scope.databases.push({
+	  id: id,
           title: data["@graph"][i]["dc:title"], 
           tripleCount: data["@graph"][i]["bm:bio2rdf_vocabulary:triple_count"],
           foafDepiction: data["@graph"][i]['http://xmlns.com/foaf/0.1/depiction']['@id']
         });
-        DatasetStore.push({
-          title: data["@graph"][i]["dc:title"], 
+
+        DatasetStore.all[id] = {
+          title: data["@graph"][i]["dc:title"],
           tripleCount: data["@graph"][i]["bm:bio2rdf_vocabulary:triple_count"],
-          foafDepiction: data["@graph"][i]['http://xmlns.com/foaf/0.1/depiction']['@id']
-        });
+          foafDepiction: data["@graph"][i]['http://xmlns.com/foaf/0.1/depiction']['@id'],
+	  endpoint: data["@graph"][i]['bm:bio2rdf_vocabulary:endpoint']['@id']
+	};
+
       } else {
         $scope.header = data["@graph"][i];
       }
     }
-    
+
     console.log(DatasetStore);
+
   });
 
   // Put it somewhere else ?
@@ -111,8 +125,10 @@ module.controller('LeftMenuCtrl',function($scope, DatasetStore, DatasetService, 
     alert("HOLD ON");
   };
 
-  $scope.changeCurrentDatabase = function(db) {
-    console.log(db);
+  $scope.changeCurrentDatabase = function(dbId) {
+    DatasetStore.current = [dbId];
+    $scope.setHeaderImg();
+    console.log(DatasetStore.current[0]);
   };
 
 });
