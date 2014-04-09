@@ -57,22 +57,27 @@
 
       <!-- Left menu -->
       <!-- Database Selection -->
-      <ion-side-menu side="left" style="background-color: GhostWhite" ng-controller="LeftMenuCtrl">
-	<h3 style="display: table; margin: 0 auto; padding: 10px">
-	  <!-- <img src="img/bio2rdf.png" style="height:45px; vertical-align:middle"/> -->
-	  <!-- <img src="img/rdfDB.png" style="margin-left: 10px; height: 35px; vertical-align:middle"> -->
-	  <img src="{{header['http://xmlns.com/foaf/0.1/depiction']['@id']}}" style="height:45px; vertical-align:middle"/>
-	</h3>
+      <ion-side-menu side="left" style="background-color: GhostWhite" ng-controller="LeftMenuCtrl" drag-content="true">
 
-	<input ng-model="searchText" placeholder="Search a DB" style="width: 250px; margin: 10px 10px;">
+	<ion-content>
 
-	<ion-list style="margin-top: 25px">
+	  <h3 style="display: table; margin: 0 auto; padding: 10px">
+	    <!-- <img src="img/bio2rdf.png" style="height:45px; vertical-align:middle"/> -->
+	    <!-- <img src="img/rdfDB.png" style="margin-left: 10px; height: 35px; vertical-align:middle"> -->
+	    <img src="{{header['http://xmlns.com/foaf/0.1/depiction']['@id']}}" style="height:45px; vertical-align:middle"/>
+	  </h3>
+
+	  <input ng-model="searchText" placeholder="Search a DB" style="width: 250px; margin: 10px 10px;">
+	
+	  <ion-list style="margin-top: 25px;">
 	    <ion-item ng-repeat="db in databases | filter:searchText | orderBy:'tripleCount':true" type="item-text-wrap" item="db.title" ng-click="changeCurrentDatabase(db.id);" my-on-hold="onItemHold(item)">
 	      <img src="{{db.foafDepiction}}" style="display: inline; height:45px; vertical-align:middle"/>
               <h2 style="display: inline; margin-left: 10px">{{db.title}}</h2>
 	      <p style="text-align: right; font-style: italic"> {{db.tripleCount | number}} triples </p>
 	    </ion-item>
-	</ion-list>
+	  </ion-list>
+
+	</ion-content>
 
       </ion-side-menu>
 
