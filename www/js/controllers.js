@@ -13,7 +13,8 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
     // $scope.pets = PetService.all();
     // console.log(angular.lowercase(this.queryTerm));
 
-    Queryer.setQuery('ontobee','search_ns', 'json-ld', {"parm1" : this.queryTerm, "parm2" : "DOID"});
+    console.log(DatasetStore.current[0]);
+    Queryer.setQuery(DatasetStore.current[0],'search_ns', 'json-ld', {"parm1" : this.queryTerm});
 
     Queryer.getJson().success(function(data) {
     // Switch the prefix in @id with the complete url from @context 
