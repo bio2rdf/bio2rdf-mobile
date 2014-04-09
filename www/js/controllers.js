@@ -4,23 +4,18 @@ var module = angular.module('starter.controllers', [])
 // A simple controller that fetches a list of data from a service
 // TODO : Group together Queryer services
 module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService, DatasetStore) {
-
-  // "Pets" is a service returning mock data (services.js)
-  // $scope.pets = PetService.all();
-
+  
   $scope.querySearch = function () {
 
-    // $scope.pets = PetService.all();
-    // console.log(angular.lowercase(this.queryTerm));
-
-    console.log(DatasetStore.current[0]);
     Queryer.setQuery(DatasetStore.current[0],'search_ns', 'json-ld', {"parm1" : this.queryTerm});
 
     Queryer.getJson().success(function(data) {
-    // Switch the prefix in @id with the complete url from @context 
-    ReplacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
-    $scope.searchResultGraph = data["@graph"];
+
+      // Switch the prefix in @id with the complete url from @context 
+      ReplacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
+      $scope.searchResultGraph = data["@graph"];
     })
+
   };
 
 });
@@ -44,7 +39,6 @@ module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, Proces
     _.each(main["rdfs:subClassOf"], function(elem) {
       $scope.obosubclasses.push(idList[elem["@id"]]);
     });
-
 
   });
 
@@ -89,8 +83,7 @@ module.controller('MainCtrl', function($scope, DatasetStore) {
 
 
 // LeftMenuCtrl:
-//
-module.controller('LeftMenuCtrl',function($scope, DatasetStore, DatasetService, ReplacePrefixesService){
+module.controller('LeftMenuCtrl',function($scope, $location, DatasetStore, DatasetService, ReplacePrefixesService){
 
   $scope.databases = [];
 
@@ -99,10 +92,11 @@ module.controller('LeftMenuCtrl',function($scope, DatasetStore, DatasetService, 
     ReplacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
 
     for (var i in data["@graph"]){
+
       if(data["@graph"][i]["dc:title"] != "namespace:endpoints_mother"){
 
 	var id = data["@graph"][i]["@id"].split(/:/).pop();
-	console.log(id);
+
         $scope.databases.push({
 	  id: id,
           title: data["@graph"][i]["dc:title"], 
@@ -135,6 +129,7 @@ module.controller('LeftMenuCtrl',function($scope, DatasetStore, DatasetService, 
     DatasetStore.current = [dbId];
     $scope.setHeaderImg();
     console.log(DatasetStore.current[0]);
+    $location.path("/#/tab/search");
   };
 
 });
@@ -158,5 +153,4 @@ module.controller('PetDetailCtrl', function($scope, $stateParams, PetService) {
   // "Pets" is a service returning mock data (services.js)
   $scope.pet = PetService.get($stateParams.petId);
 });
-
 
