@@ -128,8 +128,8 @@ module.controller('LeftMenuCtrl',function($scope, $location, DatasetStore, Datas
   $scope.changeCurrentDatabase = function(dbId) {
     DatasetStore.current = [dbId];
     $scope.setHeaderImg();
-    console.log(DatasetStore.current[0]);
     $location.path("/#/tab/search");
+    $scope.sideMenuController.toggleLeft();    
   };
 
 });
