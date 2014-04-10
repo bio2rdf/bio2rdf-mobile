@@ -1,0 +1,51 @@
+# Uniprot #
+http://uniprotlabels.bio2rdf.org/sparql
+
+# search_ns
+CONSTRUCT {
+  ?subject ?predicate ?object .
+  ?subject rdf:type ?graph .
+} WHERE { GRAPH ?graph {
+  ?subject ?predicate ?object .
+  FILTER(bif:contains(?object, '"$PARM1$*"')) .
+  FILTER(?graph = <http://uniprotlabels.nt> ) .
+}} LIMIT 20 OFFSET $PARM2$
+
+
+# Pubmed
+
+
+# Ontobee (obo ontologies)
+http://sparql.hegroup.org/sparql
+
+# search_ns
+CONSTRUCT {
+  ?subject rdfs:label ?object .
+  ?subject rdf:type ?graph .
+} WHERE { GRAPH ?graph {
+  ?subject ?predicate ?object .
+  FILTER(bif:contains(?object, '"$PARM1$*"')) .
+  FILTER(?graph = <http://purl.obolibrary.org/obo/merged/GO> ) .
+  FILTER((?predicate = <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym>) OR (?predicate= rdfs:label) ) .
+}}LIMIT 20 OFFSET $PARM2$
+
+
+# DrugBank
+http://drugbank.bio2rdf.org/sparql
+
+# search_ns
+CONSTRUCT {
+?s rdfs:label ?label
+}
+WHERE {
+ {
+   SELECT ?s rdfs:label str($o) AS ?label
+   WHERE {
+    ?s rdfs:label ?o .
+    ?s a ?type .
+    ?o bif:contains '"?PARM1?*"' .
+    FILTER (?type = <http://bio2rdf.org/drugbank_vocabulary:Drug>) .
+   }
+ }
+}LIMIT 20 OFFSET $PARM2$
+

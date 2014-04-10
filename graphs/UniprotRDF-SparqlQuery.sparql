@@ -1,0 +1,249 @@
+# URL SOURCE
+http://beta.sparql.uniprot.org/sparql
+
+# Fetch Gene Name from Organism 238 that contains blaB
+PREFIX up:<http://purl.uniprot.org/core/>  
+PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>  
+PREFIX skos:<http://www.w3.org/2004/02/skos/core#> 
+PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+SELECT ?name ?dbsource ?rev
+WHERE 
+{
+  ?protein a up:Protein .
+  ?protein up:organism <http://purl.uniprot.org/taxonomy/238> .
+  ?protein up:encodedBy ?gene . 
+  ?protein up:reviewed ?rev .
+  ?gene skos:prefLabel ?name . 
+  ?protein rdfs:seeAlso ?link .
+  ?link up:locatedOn ?dbsource .
+  FILTER CONTAINS(?name, 'blaB')
+} ORDER BY ?name
+
+
+# Really too slow - fetch bacterial proteins that
+#                  gene name contains NDM-1
+PREFIX up:<http://purl.uniprot.org/core/>  
+PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>  
+PREFIX skos:<http://www.w3.org/2004/02/skos/core#>  
+PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+SELECT ?name ?dbsource ?rev
+WHERE 
+{
+  ?protein a up:Protein .   
+  ?protein up:organism ?taxon . 
+  ?taxon rdf:subClassOf* <http://purl.uniprot.org/taxonomy/2> . 
+  ?protein up:encodedBy ?gene . 
+  ?protein up:reviewed "true"^^xsd:boolean .
+  ?gene skos:prefLabel ?name . 
+  ?protein rdfs:seeAlso ?link .
+  ?link up:locatedOn ?dbsource .
+  FILTER CONTAINS(?name, 'NDM-1')
+} ORDER BY ?name
+
+
+# Fetch annotation comment from a protein with embl-cds
+PREFIX up:<http://purl.uniprot.org/core/>
+PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>  
+PREFIX skos:<http://www.w3.org/2004/02/skos/core#> 
+PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+SELECT ?comment
+WHERE
+{
+  ?protein a up:Protein .
+  ?protein rdfs:seeAlso <http://purl.uniprot.org/embl-cds/CAZ39946.1> .
+  ?protein up:annotation ?sha .
+  ?sha rdf:type up:Function_Annotation .
+  ?sha rdfs:comment ?comment}
+
+# Fetch annotation comment from a protein with uniprotID
+PREFIX up:<http://purl.uniprot.org/core/>
+PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>  
+PREFIX skos:<http://www.w3.org/2004/02/skos/core#> 
+PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+SELECT ?comment
+WHERE 
+{
+  <http://purl.uniprot.org/uniprot/P0A579> up:annotation ?sha .
+  ?sha rdf:type up:Function_Annotation .
+  ?sha rdfs:comment ?comment
+}
+
+
+# Also measuredAffinity for Antibiotics
+# Example ID is NDM-1 C7C422
+PREFIX up:<http://purl.uniprot.org/core/>
+PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>  
+PREFIX skos:<http://www.w3.org/2004/02/skos/core#> 
+PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+SELECT ?annotation ?comment
+WHERE 
+{
+  {
+    <http://purl.uniprot.org/uniprot/C7C422> up:annotation ?sha .
+    ?sha rdf:type ?annotation .
+    ?sha up:measuredAffinity ?comment
+  }
+  UNION
+  {
+    <http://purl.uniprot.org/uniprot/C7C422> up:annotation ?sha .
+    ?sha rdf:type ?annotation .
+    ?sha rdfs:comment ?comment .
+  }
+}
+
+# Fetch Uniprot RecommandedName for a protein using his ID
+# RecommandedName if Swissprot if Uniprot only SubmittedName..
+PREFIX up:<http://purl.uniprot.org/core/> 
+SELECT ?name
+WHERE 
+{
+  { 
+    <http://purl.uniprot.org/uniprot/C7C422> up:recommendedName ?nameSha .
+    ?nameSha up:fullName ?name .
+  }
+  union
+  {
+    <http://purl.uniprot.org/uniprot/C7C422> up:submittedName ?nameSha .
+    ?nameSha up:fullName ?name .
+  }
+}
+
+
+# Fetch Uniprot SubmittedName and optionally RecommandedName for a protein using his ID
+PREFIX up:<http://purl.uniprot.org/core/> 
+SELECT ?recName ?subName
+WHERE {
+  optional {
+    <http://purl.uniprot.org/uniprot/C7C422> up:recommendedName ?nameSha .
+    ?nameSha up:fullName ?recName .
+  }
+  optional { 
+    <http://purl.uniprot.org/uniprot/C7C422> up:submittedName ?nameSha2 .
+    ?nameSha2 up:fullName ?subName .
+  }
+}
+
+
+# Fetch GeneName - TrEMBL
+PREFIX up:<http://purl.uniprot.org/core/>
+PREFIX skos:<http://www.w3.org/2004/02/skos/core#> 
+SELECT ?protein ?geneName
+WHERE 
+{ 
+  <http://purl.uniprot.org/uniprot/C7C422> up:encodedBy ?gene .
+  ?gene skos:prefLabel ?geneName
+}
+
+
+# Gene with Biological process keyword (uniprotKB) "Antibiotic Resistance"
+PREFIX up:<http://purl.uniprot.org/core/>
+PREFIX skos:<http://www.w3.org/2004/02/skos/core#> 
+SELECT ?protein ?geneName ?aa
+WHERE 
+{
+  ?protein a up:Protein . 
+  ?protein up:classifiedWith <http://purl.uniprot.org/keywords/46> .
+  ?protein up:encodedBy ?gene .
+  ?gene skos:prefLabel ?geneName . 
+  ?protein up:sequence ?sequence .
+  ?sequence rdf:value ?aa
+}
+
+# CONSTRUCT the subgraph
+PREFIX up:<http://purl.uniprot.org/core/>
+PREFIX skos:<http://www.w3.org/2004/02/skos/core#> 
+CONSTRUCT
+WHERE 
+{
+  ?protein a up:Protein . 
+  ?protein up:classifiedWith <http://purl.uniprot.org/keywords/46> .
+  ?protein up:encodedBy ?gene .
+  ?gene skos:prefLabel ?geneName . 
+  ?protein up:sequence ?sequence .
+  ?sequence rdf:value ?aa
+}
+
+
+# Gene with Biological process - GO "response to antibiotic"
+PREFIX up:<http://purl.uniprot.org/core/>
+PREFIX skos:<http://www.w3.org/2004/02/skos/core#> 
+SELECT ?protein ?geneName ?aa
+WHERE 
+{
+  ?protein a up:Protein . 
+  ?protein up:classifiedWith <http://purl.uniprot.org/go/0046677> .
+  ?protein up:encodedBy ?gene .
+  ?gene skos:prefLabel ?geneName . 
+  ?protein up:sequence ?sequence .
+  ?sequence rdf:value ?aa
+}
+
+
+# Fetch all taxon under Bacteria (2)
+PREFIX up:<http://purl.uniprot.org/core/> 
+PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> 
+SELECT ?taxon ?parent ?name 
+WHERE 
+{ 
+  ?taxon a up:Taxon .
+  ?taxon up:scientificName ?name . 
+  ?taxon rdfs:subClassOf* <http://purl.uniprot.org/taxonomy/2> .
+  ?taxon rdfs:subClassOf ?parent
+}
+
+
+# Fetch info with multiple ID by shot
+PREFIX up:<http://purl.uniprot.org/core/>  
+PREFIX skos:<http://www.w3.org/2004/02/skos/core#>  
+SELECT $prot $orgName $recName $subName $geneName $function 
+WHERE                                                 
+{                                                     
+  $prot a up:Protein .                                
+  $prot up:encodedBy $gene .                          
+  $prot up:organism $org .                            
+  $org up:scientificName $orgName .                   
+  optional {                                          
+    $prot up:annotation ?sha .                        
+    $sha a up:Function_Annotation .                   
+    $sha rdfs:comment $function .                     
+  }                                                   
+  optional {                                          
+    $gene skos:prefLabel $geneName .                  
+  }                                                   
+  optional {                                          
+    $prot up:recommendedName $nameSha .               
+    $nameSha up:fullName $recName .                   
+  }                                                   
+  optional {                                          
+    $prot up:submittedName $nameSha .                 
+    $nameSha up:fullName $subName .                   
+  }                                                   
+  filter ($prot in(
+                   # <http://purl.uniprot.org/uniprot/_+id+_>
+                   <http://purl.uniprot.org/uniprot/A5VV34>,
+                   <http://purl.uniprot.org/uniprot/A3ME84>,
+                   <http://purl.uniprot.org/uniprot/Q63KN7>,
+                   <http://purl.uniprot.org/uniprot/Q87YW7>
+                   ) 
+          )        
+}
+
+
+# SEARCH 
+# Fetch Uniprot RecommandedName for a protein using his ID
+# RecommandedName if Swissprot if Uniprot only SubmittedName..
+PREFIX up:<http://purl.uniprot.org/core/>
+SELECT ?prot ?name
+WHERE 
+{
+  { 
+    ?prot up:recommendedName ?nameSha .
+    ?nameSha up:fullName ?name .
+  }
+  union
+  {
+    ?prot up:submittedName ?nameSha .
+    ?nameSha up:fullName ?name .
+  }
+}
+
