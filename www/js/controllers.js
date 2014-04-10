@@ -23,7 +23,9 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
 	$scope.searchResultGraph = data["@graph"];
       }
 
-      if(data["@graph"].length >= 20){
+      if(data["@graph"] == undefined){
+	$scope.moreItemsAvailable = false;
+      } else if(data["@graph"].length >= 20){
 	$scope.moreItemsAvailable = true;
 	$scope.offset = $scope.offset + 20;
 	console.log("Continue");
@@ -31,7 +33,7 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
 	$scope.moreItemsAvailable = false;
       }
 
-      console.log($scope.offset);
+      // console.log($scope.offset);
       $scope.$broadcast('scroll.infiniteScrollComplete');
 
     })

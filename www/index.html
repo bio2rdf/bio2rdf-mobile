@@ -71,7 +71,7 @@
 	
 	  <ion-list style="margin-top: 25px;">
 	    <ion-item ng-repeat="db in databases | filter:searchText | orderBy:'tripleCount':true" type="item-text-wrap" item="db.title" ng-click="changeCurrentDatabase(db.id);" my-on-hold="onItemHold(item)">
-	      <img src="{{db.foafDepiction}}" style="display: inline; height:45px; vertical-align:middle"/>
+	      <img src="{{db.foafDepiction}}" style="display: inline; height: 40px; vertical-align:middle"/>
               <h2 style="display: inline; margin-left: 10px">{{db.title}}</h2>
 	      <p style="text-align: right; font-style: italic"> {{db.tripleCount | number}} triples </p>
 	    </ion-item>
