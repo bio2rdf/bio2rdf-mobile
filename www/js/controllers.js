@@ -5,18 +5,41 @@ var module = angular.module('starter.controllers', [])
 // TODO : Group together Queryer services
 module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService, DatasetStore) {
   
-  $scope.querySearch = function () {
+  $scope.querySearch = function (isNew) {
 
-    Queryer.setQuery(DatasetStore.current[0],'search_ns', 'json-ld', {"parm1" : this.queryTerm});
+    if(isNew == 1){
+      $scope.offset = 0;
+    }
+
+    Queryer.setQuery(DatasetStore.current[0],'search_ns', 'json-ld', {"parm1" : this.queryTerm, "parm2" : $scope.offset});
 
     Queryer.getJson().success(function(data) {
-
       // Switch the prefix in @id with the complete url from @context 
       ReplacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
-      $scope.searchResultGraph = data["@graph"];
-    })
 
+      if(isNew != 1){
+	$scope.searchResultGraph = $scope.searchResultGraph.concat(data["@graph"]);
+      }else{
+	$scope.searchResultGraph = data["@graph"];
+      }
+
+      if(data["@graph"].length >= 20){
+	$scope.moreItemsAvailable = true;
+	$scope.offset = $scope.offset + 20;
+	console.log("Continue");
+      }else{
+	$scope.moreItemsAvailable = false;
+      }
+
+      console.log($scope.offset);
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+
+    })
   };
+
+  $scope.searchResultGraph = [];
+  $scope.moreItemsAvailable = false;
+  $scope.offset = 0;
 
 });
 

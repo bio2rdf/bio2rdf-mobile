@@ -5,13 +5,13 @@
 -->
 <ion-view title="'Search'">
 
-  <ion-content has-header="true" has-tabs="true">
+  <ion-content has-header="true" has-tabs="true" on-infinite-scroll="querySearch(0)">
 
     <!-- SEARCH BAR -->
     <div class="list list-inset">
       <label class="item item-input bio2rdfinput">
 	<i class="icon ion-search placeholder-icon"></i>
-	<input type="text" placeholder="Typeahead Search" ng-model="queryTerm" ng-change="querySearch()">
+	<input type="text" placeholder="Typeahead Search" ng-model="queryTerm" ng-change="querySearch(1)">
         <button class="button button-clear" ng-click="">
           &times;
         </button>
@@ -19,11 +19,12 @@
     </div>
 
     <ion-list>
-      <ion-item ng-repeat="elem in searchResultGraph" type="item-text-wrap" href="#/tab/describe?uri={{elem['@id']}}&endpoint=doid">
-      <!-- <ion-item ng-repeat="elem in searchResultGraph" type="item-text-wrap" href="#/tab/describe"> -->
+      <ion-item ng-repeat="elem in searchResultGraph" item="elem" type="item-text-wrap" href="#/tab/describe?uri={{elem['@id']}}&endpoint=doid">
         <h3>{{elem['rdfs:label']}}</h3>
       </ion-item>
     </ion-list>
+
+    <ion-infinite-scroll ng-if="moreItemsAvailable"></ion-infinite-scroll>
 
   </ion-content>
 </ion-view>
