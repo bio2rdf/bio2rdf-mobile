@@ -35,16 +35,16 @@ angular.module('starter.services', [])
       var params = "";
       for (var k in queryConfig.parameters) {
 	if(params.length > 0){
-    	  params += "&";
+	  params += "&";
 	}
 	params += k + "=" + queryConfig.parameters[k];
       }
 
       var url = bio2rdfURL.concat(queryConfig.namespace, "/", 
-    				  queryConfig.method, "/", 
-    				  queryConfig.format, "?",
-    				  params
-    				 );
+				  queryConfig.method, "/", 
+				  queryConfig.format, "?",
+				  params
+				 );
 
       restURL = encodeURI(url) + "&callback=JSON_CALLBACK";
 
@@ -75,7 +75,7 @@ angular.module('starter.services', [])
   .factory('SearchService', function(){
 
     var searchResultsFun = function(context, graph) {
-      
+
     }
 
   })
@@ -88,10 +88,10 @@ angular.module('starter.services', [])
     function traverse(context, o) {
       for (i in o) {
 	if (i == "@id"){
-          idSplit = o[i].split(":");
-          if(context[idSplit[0]] != undefined){
-            o[i] = context[idSplit[0]] + idSplit.slice(1).join(":");
-          }
+	  idSplit = o[i].split(":");
+	  if(context[idSplit[0]] != undefined){
+	    o[i] = context[idSplit[0]] + idSplit.slice(1).join(":");
+	  }
 	}
 
 	// For predicate-
@@ -103,14 +103,14 @@ angular.module('starter.services', [])
 	//   }
 	// }
 
-        if (typeof(o[i])=="object") {
-          traverse(context, o[i]);
-        }
+	if (typeof(o[i])=="object") {
+	  traverse(context, o[i]);
+	}
 	else if (o[i] instanceof Array) {
 	  alert("Array");
 	  if (typeof(o[i][j])=="object") {
-            traverse(context, o[i][j]);
-          }
+	    traverse(context, o[i][j]);
+	  }
 	}
       }
     }
@@ -138,7 +138,7 @@ angular.module('starter.services', [])
       return "yoyo";
     }
 
-    
+
     return {
       listDB: listDatabases,
       setUpDataset: setUpDatasetOjb
@@ -151,7 +151,7 @@ angular.module('starter.services', [])
       ReplacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
       uriContainer={}
       _.each(data["@graph"], function(sub){
-        uriContainer[sub["@id"]]=sub;
+	uriContainer[sub["@id"]]=sub;
       });
       return uriContainer;
     }
@@ -183,4 +183,3 @@ angular.module('starter.services', [])
     }
 
   });
-
