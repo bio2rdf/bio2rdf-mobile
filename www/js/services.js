@@ -25,7 +25,7 @@ angular.module('starter.services', [])
 			  })
 
 // Change each time we switch into another database for a search/describe
-  // .value('currentDB', "")
+// .value('currentDB', "")
 
 // TODO: build a queryer to encapsulate resturlbuilder, getjson services ...
   .factory('Queryer', function(queryConfig, restURL, bio2rdfURL, $http) {
@@ -87,12 +87,12 @@ angular.module('starter.services', [])
     var idSplit = "";
     function traverse(context, o) {
       for (i in o) {
-	      if (i == "@id"){
+	if (i == "@id"){
           idSplit = o[i].split(":");
           if(context[idSplit[0]] != undefined){
             o[i] = context[idSplit[0]] + idSplit.slice(1).join(":");
           }
-	      }
+	}
 
 	// For predicate-
 	// else if (i.indexOf(":") != -1 ){
@@ -106,12 +106,12 @@ angular.module('starter.services', [])
         if (typeof(o[i])=="object") {
           traverse(context, o[i]);
         }
-	      else if (o[i] instanceof Array) {
-	        alert("Array");
-	        if (typeof(o[i][j])=="object") {
+	else if (o[i] instanceof Array) {
+	  alert("Array");
+	  if (typeof(o[i][j])=="object") {
             traverse(context, o[i][j]);
           }
-	      }
+	}
       }
     }
 

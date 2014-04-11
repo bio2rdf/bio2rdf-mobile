@@ -133,7 +133,8 @@ module.controller('LeftMenuCtrl',function($scope, $location, DatasetStore, Datas
           title: data["@graph"][i]["dc:title"],
           tripleCount: data["@graph"][i]["bm:bio2rdf_vocabulary:triple_count"],
           foafDepiction: data["@graph"][i]['http://xmlns.com/foaf/0.1/depiction']['@id'],
-	  endpoint: data["@graph"][i]['bm:bio2rdf_vocabulary:endpoint']['@id']
+	  endpoint: data["@graph"][i]['bm:bio2rdf_vocabulary:endpoint']['@id'],
+	  url_identifier: data["@graph"][i]['bm:bio2rdf_vocabulary:url_identifier']
 	};
 
       } else {
