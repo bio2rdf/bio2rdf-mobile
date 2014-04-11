@@ -10,19 +10,19 @@ angular.module('starter.services', [])
 // These VALUE queryConfig is initalized once and are being
 // changed each time a query is being made (good strategy ?)
   .value('queryConfig', { "namespace" : "",
-			  "method" : "",
-			  "format" : "",
-			  "parameters" : {}
-			}
-	)
+                          "method" : "",
+                          "format" : "",
+                          "parameters" : {}
+                        }
+        )
 
   .value('restURL', "")
 //
 
 // Populated from server at boot.
   .value('DatasetStore' , { all: {"init":{foafDepiction: "img/bio2rdf.png"}},
-			    current: ["init"]
-			  })
+                            current: ["init"]
+                          })
 
 // Change each time we switch into another database for a search/describe
 // .value('currentDB', "")
@@ -34,17 +34,17 @@ angular.module('starter.services', [])
     function buildRestURL() {
       var params = "";
       for (var k in queryConfig.parameters) {
-	if(params.length > 0){
-	  params += "&";
-	}
-	params += k + "=" + queryConfig.parameters[k];
+        if(params.length > 0){
+          params += "&";
+        }
+        params += k + "=" + queryConfig.parameters[k];
       }
 
       var url = bio2rdfURL.concat(queryConfig.namespace, "/", 
-				  queryConfig.method, "/", 
-				  queryConfig.format, "?",
-				  params
-				 );
+                                  queryConfig.method, "/", 
+                                  queryConfig.format, "?",
+                                  params
+                                 );
 
       restURL = encodeURI(url) + "&callback=JSON_CALLBACK";
 
@@ -87,31 +87,31 @@ angular.module('starter.services', [])
     var idSplit = "";
     function traverse(context, o) {
       for (i in o) {
-	if (i == "@id"){
-	  idSplit = o[i].split(":");
-	  if(context[idSplit[0]] != undefined){
-	    o[i] = context[idSplit[0]] + idSplit.slice(1).join(":");
-	  }
-	}
+        if (i == "@id"){
+          idSplit = o[i].split(":");
+          if(context[idSplit[0]] != undefined){
+            o[i] = context[idSplit[0]] + idSplit.slice(1).join(":");
+          }
+        }
 
-	// For predicate-
-	// else if (i.indexOf(":") != -1 ){
-	//   idSplit = i.split(":");
-	//   if(context[idSplit[0]] != undefined){
-	//     i = context[idSplit[0]] + idSplit[1];
-	//     console.log(i);
-	//   }
-	// }
+        // For predicate-
+        // else if (i.indexOf(":") != -1 ){
+        //   idSplit = i.split(":");
+        //   if(context[idSplit[0]] != undefined){
+        //     i = context[idSplit[0]] + idSplit[1];
+        //     console.log(i);
+        //   }
+        // }
 
-	if (typeof(o[i])=="object") {
-	  traverse(context, o[i]);
-	}
-	else if (o[i] instanceof Array) {
-	  alert("Array");
-	  if (typeof(o[i][j])=="object") {
-	    traverse(context, o[i][j]);
-	  }
-	}
+        if (typeof(o[i])=="object") {
+          traverse(context, o[i]);
+        }
+        else if (o[i] instanceof Array) {
+          alert("Array");
+          if (typeof(o[i][j])=="object") {
+            traverse(context, o[i][j]);
+          }
+        }
       }
     }
 
@@ -151,7 +151,7 @@ angular.module('starter.services', [])
       ReplacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
       uriContainer={}
       _.each(data["@graph"], function(sub){
-	uriContainer[sub["@id"]]=sub;
+        uriContainer[sub["@id"]]=sub;
       });
       return uriContainer;
     }
@@ -174,11 +174,11 @@ angular.module('starter.services', [])
 
     return {
       all: function() {
-	return pets;
+        return pets;
       },
       get: function(petId) {
-	// Simple index lookup
-	return pets[petId];
+        // Simple index lookup
+        return pets[petId];
       }
     }
 
