@@ -4,12 +4,28 @@ http://uniprotlabels.bio2rdf.org/sparql
 # search_ns
 CONSTRUCT {
   ?subject ?predicate ?object .
-  ?subject rdf:type ?graph .
+  ?subject ?desc ?taxon .
 } WHERE { GRAPH ?graph {
   ?subject ?predicate ?object .
-  FILTER(bif:contains(?object, '"$PARM1$*"')) .
+  ?subject ?desc ?taxon .
+  FILTER(bif:contains(?object, '"hydroxy*"')) .
+  FILTER(?predicate = rdfs:label)
+  FILTER(?desc = <http://bio2rdf.org/m_vocabulary:description>) .
   FILTER(?graph = <http://uniprotlabels.nt> ) .
-}} LIMIT 20 OFFSET $PARM2$
+}} LIMIT 20 OFFSET 0
+
+
+PREFIX up:<http://purl.uniprot.org/core/> 
+PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> 
+SELECT ?protein ?org
+WHERE
+{
+	?protein a up:Protein .
+  	?protein up:organism ?org .
+	# ?org up:Taxon ?taxon .
+	# ?taxon up:scientificName ?name .
+} limit 10
+
 
 
 # Pubmed
@@ -18,16 +34,61 @@ CONSTRUCT {
 # Ontobee (obo ontologies)
 http://sparql.hegroup.org/sparql
 
-# search_ns
+## GO
+
 CONSTRUCT {
-  ?subject rdfs:label ?object .
-  ?subject rdf:type ?graph .
+  ?subject ?predicate ?object .
+  ?subject <http://bio2rdf.org/m_vocabulary:description> ?subject .
 } WHERE { GRAPH ?graph {
   ?subject ?predicate ?object .
+  ?subject <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> ?description .
   FILTER(bif:contains(?object, '"$PARM1$*"')) .
   FILTER(?graph = <http://purl.obolibrary.org/obo/merged/GO> ) .
   FILTER((?predicate = <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym>) OR (?predicate= rdfs:label) ) .
-}}LIMIT 20 OFFSET $PARM2$
+}}limit 20 offset $PARM2$
+
+
+## CHEBI
+
+CONSTRUCT {
+  ?subject ?predicate ?object .
+  ?subject <http://bio2rdf.org/m_vocabulary:description> ?subject .
+} WHERE { GRAPH ?graph {
+  ?subject ?predicate ?object .
+  ?subject <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> ?description .
+  FILTER(bif:contains(?object, '"$PARM1$*"')) .
+  FILTER(?graph = <http://purl.obolibrary.org/obo/merged/CHEBI> ) .
+  FILTER((?predicate = <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym>) OR (?predicate= rdfs:label) ) .
+}}limit 20 offset $PARM2$
+
+
+## DOID
+CONSTRUCT {
+  ?subject ?predicate ?object .
+  ?subject <http://bio2rdf.org/m_vocabulary:description> ?subject .
+} WHERE { GRAPH ?graph {
+  ?subject ?predicate ?object .
+  ?subject <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> ?description .
+  FILTER(bif:contains(?object, '"$PARM1$*"')) .
+  FILTER(?graph = <http://purl.obolibrary.org/obo/merged/DOID> ) .
+  FILTER((?predicate = <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym>) OR (?predicate= rdfs:label) ) .
+}}limit 20 offset $PARM2$
+
+
+# describe chebi- need to manage subClassOf
+construct
+{
+  <http://purl.obolibrary.org/obo/CHEBI_28790> ?p ?o .
+  <http://purl.obolibrary.org/obo/CHEBI_28790> ?p2 ?o2 .
+} where 
+{
+  <http://purl.obolibrary.org/obo/CHEBI_28790> ?p ?o .
+  optional{
+    <http://purl.obolibrary.org/obo/CHEBI_28790> ?p2 ?o2 .
+    filter ()
+  }
+} 
+
 
 
 # DrugBank
@@ -48,4 +109,5 @@ WHERE {
    }
  }
 }LIMIT 20 OFFSET $PARM2$
+
 

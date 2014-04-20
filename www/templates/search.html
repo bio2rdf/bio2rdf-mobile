@@ -12,15 +12,16 @@
       <label class="item item-input bio2rdfinput">
 	<i class="icon ion-search placeholder-icon"></i>
 	<input type="text" placeholder="Typeahead Search" ng-model="queryTerm" ng-change="querySearch(1)">
-        <button class="button button-clear" ng-click="">
+        <button class="button button-clear" ng-click="queryTerm=''">
           &times;
         </button>
       </label>
     </div>
 
     <ion-list>
-      <ion-item ng-repeat="elem in searchResultGraph" item="elem" type="item-text-wrap" href="#/tab/describe?uri={{elem['@id']}}&endpoint=doid">
-        <h2>{{elem['rdfs:label']}}</h2>
+      <ion-item ng-repeat="elem in searchResultGraph" item="elem" type="item-text-wrap" href="#/tab/describe-{{currentDB}}?uri={{elem.uri}}">
+        <h2>{{elem.label}}</h2>
+	<h3 style="margin-left: 30px; font-style:italic; color: grey">{{elem.description}}</h3>
       </ion-item>
     </ion-list>
 

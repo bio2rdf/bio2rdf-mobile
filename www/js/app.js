@@ -56,7 +56,8 @@ angular.module('starter', ['ionic', 'starter.services', 'starter.controllers'])
 	url: '/favorite',
 	views: {
           'favorite-tab': {
-            templateUrl: 'templates/favorite.html'
+            templateUrl: 'templates/favorite.html',
+            controller: 'FavoriteCtrl'
           }
 	}
       });

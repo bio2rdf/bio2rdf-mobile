@@ -3,9 +3,16 @@ var module = angular.module('starter.controllers', [])
 
 // A simple controller that fetches a list of data from a service
 // TODO : Group together Queryer services
-module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService, DatasetStore) {
-  
+module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService, DatasetStore, SearchService) {
+
+  $scope.$on('$locationChangeSuccess', function(event) {
+    $scope.searchResultGraph = [];
+    $scope.moreItemsAvailable = false;
+  });
+
   $scope.querySearch = function (isNew) {
+
+    $scope.currentDB = DatasetStore.current[0];
 
     if(isNew == 1){
       $scope.offset = 0;
@@ -14,38 +21,47 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
     Queryer.setQuery(DatasetStore.current[0],'search_ns', 'json-ld', {"parm1" : this.queryTerm, "parm2" : $scope.offset});
 
     Queryer.getJson().success(function(data) {
-      // Switch the prefix in @id with the complete url from @context 
+      // Switch the prefix in @id with the complete url from @context
       ReplacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
 
       if(isNew != 1){
-	$scope.searchResultGraph = $scope.searchResultGraph.concat(data["@graph"]);
+        $scope.searchResultGraph = $scope.searchResultGraph.concat(SearchService.getGraphQuery(data["@graph"]));
       }else{
-	$scope.searchResultGraph = data["@graph"];
+        $scope.searchResultGraph = SearchService.getGraphQuery(data["@graph"]);
       }
 
+      // Look if there are more items available
       if(data["@graph"] == undefined){
 	$scope.moreItemsAvailable = false;
       } else if(data["@graph"].length >= 20){
 	$scope.moreItemsAvailable = true;
 	$scope.offset = $scope.offset + 20;
-	console.log("Continue");
       }else{
 	$scope.moreItemsAvailable = false;
       }
 
-      // console.log($scope.offset);
       $scope.$broadcast('scroll.infiniteScrollComplete');
 
     })
   };
 
+
+  $scope.clearSearch = function () {
+    $scope.queryTerm = '';
+  };
+
+
   $scope.searchResultGraph = [];
   $scope.moreItemsAvailable = false;
   $scope.offset = 0;
 
+
+
 });
 
 module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, ProcessGraph) {
+
+  $scope.showForm = false;
   $scope.uri = $stateParams.uri;
   var endpoint = $stateParams.endpoint;
   // Temporairement json hardcoder
@@ -67,8 +83,6 @@ module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, Proces
 
   });
 
-
-  
   /*Queryer.setQuery('pubmed','describe','json-ld', {"uri" : $scope.uri});*/
   /*Queryer.getJson().success(function(data){*/
   /*console.log(data);*/
@@ -88,7 +102,16 @@ module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, Proces
 
 
 // Event controller to toggle side panels with buttons
-module.controller('MainCtrl', function($scope, DatasetStore) {
+module.controller('MainCtrl', function($scope, $location, DatasetStore) {
+
+  $scope.$on('$locationChangeSuccess', function(event) {
+    if($location.url() != '/tab/favorite'){
+      $scope.setHeaderImg(DatasetStore.all[DatasetStore.current].foafDepiction);
+    }else {
+      $scope.setHeaderImg("img/bookmark.png");
+    }
+
+  });
 
   $scope.toggleLeftPanel = function() {
     $scope.sideMenuController.toggleLeft();
@@ -97,18 +120,17 @@ module.controller('MainCtrl', function($scope, DatasetStore) {
     $scope.sideMenuController.toggleRight();
   };
 
-  $scope.setHeaderImg = function () {
-    $scope.headerImg = DatasetStore.all[DatasetStore.current].foafDepiction;
-    console.log(DatasetStore.all[DatasetStore.current].foafDepiction);
+  $scope.setHeaderImg = function (img) {
+    $scope.headerImg = img;
   };
 
-  $scope.setHeaderImg();
+  $scope.setHeaderImg(DatasetStore.all[DatasetStore.current].foafDepiction);    
 
 });
 
 
 // LeftMenuCtrl:
-module.controller('LeftMenuCtrl',function($scope, $location, DatasetStore, DatasetService, ReplacePrefixesService){
+module.controller('LeftMenuCtrl', function($scope, $location, $ionicLoading, DatasetStore, DatasetService, ReplacePrefixesService){
 
   $scope.databases = [];
 
@@ -142,9 +164,7 @@ module.controller('LeftMenuCtrl',function($scope, $location, DatasetStore, Datas
       }
     }
 
-    console.log(DatasetStore);
-
-  });
+ });
 
   // Put it somewhere else ?
   $scope.onItemHold = function(item) {
@@ -153,13 +173,19 @@ module.controller('LeftMenuCtrl',function($scope, $location, DatasetStore, Datas
 
   $scope.changeCurrentDatabase = function(dbId) {
     DatasetStore.current = [dbId];
-    $scope.setHeaderImg();
-    $location.path("/#/tab/search");
-    $scope.sideMenuController.toggleLeft();    
+    $scope.setHeaderImg(DatasetStore.all[DatasetStore.current].foafDepiction);
+    $location.path("#/tab/search");
+    $scope.sideMenuController.toggleLeft();
   };
 
 });
 
+
+module.controller('FavoriteCtrl', function($scope, $location, DatasetStore, DatasetService, ReplacePrefixesService){
+
+
+
+});
 
 module.directive('myOnHold', function($ionicGesture) {
   return {
@@ -179,4 +205,3 @@ module.controller('PetDetailCtrl', function($scope, $stateParams, PetService) {
   // "Pets" is a service returning mock data (services.js)
   $scope.pet = PetService.get($stateParams.petId);
 });
-

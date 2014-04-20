@@ -74,9 +74,54 @@ angular.module('starter.services', [])
 // Not done yet- managed in the Controller
   .factory('SearchService', function(){
 
-    var searchResultsFun = function(context, graph) {
+    // var searchResultGraph = [];    
 
+    var searchResultsFun = function(graph) {
+      var resGraph = [];
+      for (var res in graph){
+        var result = {};
+        for (var k in graph[res]){
+          // console.log("k =" + k);
+          if(k=="@id"){
+            result.uri = graph[res][k];
+          }else if (k=="bm:m_vocabulary:description"){
+            if(graph[res][k] !== null && typeof graph[res][k] === 'object'){
+              result.description = graph[res][k]["@id"];
+            }else {
+              result.description = graph[res][k];
+            }
+          }else{
+            if(graph[res][k] instanceof Array){
+              result.label = graph[res][k][0];
+            }else{
+              result.label = graph[res][k];
+            }
+          }
+        }
+        resGraph.push(result);
+      }
+      return resGraph;
+
+      // if(mode == "append"){
+      //   searchResultGraph.concat(resGraph);
+      // } else {
+      //   searchResultGraph = resGraph;
+      // }
+
+      // console.log(searchResultGraph);
+      
+    };
+
+
+    var getSearchResultGraph = function () {
+      return searchResultGraph;      
     }
+
+    return {
+      getGraphQuery: searchResultsFun,
+      getSearchResults: getSearchResultGraph
+    }
+
 
   })
 

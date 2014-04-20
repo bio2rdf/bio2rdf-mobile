@@ -37,9 +37,8 @@
       <ion-pane ion-side-menu-content>
 
 	<!-- Global Header Bar for all ion-nav-view -->
-	<!-- Need to have dynamic logo- based on current database -->
-	<div class="bar bar-header bar-stable">
-	  <button class="button icon ion-navicon" ng-click="toggleLeftPanel()"></button>    
+	<div class="bar bar-header bar-stable">  
+	  <button class="button icon ion-navicon" ng-click="toggleLeftPanel()"></button>
 	  <h1 class="title">
 	    <img src="{{headerImg}}" style="height:45px;"/>
 	  </h1>
@@ -57,22 +56,20 @@
 
       <!-- Left menu -->
       <!-- Database Selection -->
-      <ion-side-menu side="left" style="background-color: GhostWhite" ng-controller="LeftMenuCtrl" drag-content="true">
+      <ion-side-menu side="left" style="background-color: WhiteSmoke" ng-controller="LeftMenuCtrl" drag-content="true">
 
 	<ion-content>
 
 	  <h3 style="display: table; margin: 0 auto; padding: 10px">
-	    <!-- <img src="img/bio2rdf.png" style="height:45px; vertical-align:middle"/> -->
-	    <!-- <img src="img/rdfDB.png" style="margin-left: 10px; height: 35px; vertical-align:middle"> -->
 	    <img src="{{header['http://xmlns.com/foaf/0.1/depiction']['@id']}}" style="height:45px; vertical-align:middle"/>
 	  </h3>
 
 	  <input ng-model="searchText" placeholder="Search a DB" style="width: 250px; margin: 10px 10px;">
-	
-	  <ion-list style="margin-top: 25px;">
-	    <ion-item ng-repeat="db in databases | filter:searchText | orderBy:'tripleCount':true" type="item-text-wrap" item="db.title" ng-click="changeCurrentDatabase(db.id);" my-on-hold="onItemHold(item)">
+
+	  <ion-list style="margin-top: 15px">
+	    <ion-item class="dbItem" ng-repeat="db in databases | filter:searchText | orderBy:'tripleCount':true" type="item-text-wrap" item="db.title" ng-click="changeCurrentDatabase(db.id);" my-on-hold="onItemHold(item)">
 	      <img src="{{db.foafDepiction}}" style="display: inline; height: 40px; vertical-align:middle"/>
-              <h2 style="display: inline; margin-left: 10px">{{db.title}}</h2>
+	      <h2 style="display: inline; margin-left: 10px">{{db.title}}</h2>
 	      <p style="text-align: right; font-style: italic"> {{db.tripleCount | number}} triples </p>
 	    </ion-item>
 	  </ion-list>
