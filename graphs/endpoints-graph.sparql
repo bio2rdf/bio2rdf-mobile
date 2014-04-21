@@ -43,7 +43,6 @@ WHERE
 
 # Pubmed
 
-
 # Ontobee (obo ontologies)
 http://sparql.hegroup.org/sparql
 
@@ -101,8 +100,6 @@ construct
     filter ()
   }
 } 
-
-
 
 # DrugBank
 http://drugbank.bio2rdf.org/sparql

@@ -2,13 +2,13 @@ var module = angular.module('starter.dbcontrollers', [])
 
 
 // OBO
-module.controller('OboCtrl', function($scope, $stateParams, Queryer, ProcessGraph) {
+module.controller('OboCtrl', function($scope, $stateParams, Queryer, ProcessGraph, DatasetStore) {
+
+  
+  
   $scope.uri = $stateParams.uri;
-  console.log($scope.uri);
-  var endpoint = $stateParams.endpoint;
-  // Temporairement json hardcoder
-  /*Queryer.setQuery($stateParams.endpoint,'describe2', 'json-ld', {"uri" : $scope.uri});*/
-  Queryer.setQuery( 'doid' ,'describe3', 'json-ld', {"uri" : $scope.uri});
+
+  Queryer.setQuery(DatasetStore.current[0] ,'describe', 'json-ld', {"uri" : $scope.uri});
   Queryer.getJson().success(function(data){
     var idList=ProcessGraph.graph(data);
     var main = idList[$stateParams.uri]

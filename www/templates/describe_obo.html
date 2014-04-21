@@ -26,7 +26,7 @@
 	  SuperClasses
 	</div>
 	<div class="item item-text-wrap">
-	  <span ng-repeat="i in obosuperclasses track by $index" style="padding: 2px;">
+	  <span ng-repeat="i in obosuperclasses track by $index">
             <a class="button button-small button-royal" href="/#/tab/describe-chebi?uri={{i['@id']}}">{{i['rdfs:label']}}</a>
 	  </span>
 	</div>
@@ -39,7 +39,7 @@
             <a class="button button-small button-royal" href="/#/tab/describe-chebi?uri={{j['@id']}}">{{j['rdfs:label']}}</a>
 	  </span>
 	</div>
-	
+
 	<div class="item item-divider">
 	  Database cross-references
 	</div>

@@ -63,44 +63,8 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
 });
 
 module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, ProcessGraph) {
-
-  $scope.showForm = false;
-  $scope.uri = $stateParams.uri;
-  var endpoint = $stateParams.endpoint;
-  // Temporairement json hardcoder
-  /*Queryer.setQuery($stateParams.endpoint,'describe2', 'json-ld', {"uri" : $scope.uri});*/
-  console.log($scope.uri);
-  console.log(endpoint);
-  Queryer.setQuery( endpoint ,'describe2', 'json-ld', {"uri" : $scope.uri});
-  Queryer.getJson().success(function(data){
-    var idList=ProcessGraph.graph(data);
-    var main = idList[$stateParams.uri]
-
-    $scope.title = main["rdfs:label"]
-    $scope.obodef = main["obolibrary:IAO_0000115"]
-
-    $scope.obosubclasses = []
-    _.each(main["rdfs:subClassOf"], function(elem) {
-      $scope.obosubclasses.push(idList[elem["@id"]]);
-    });
-
-  });
-
-  /*Queryer.setQuery('pubmed','describe','json-ld', {"uri" : $scope.uri});*/
-  /*Queryer.getJson().success(function(data){*/
-  /*console.log(data);*/
-  /*var idList=ProcessGraph.graph(data);*/
-  /*var main = idList[$stateParams.uri]*/
-
-  /*$scope.title = main["rdfs:label"]*/
-  /*$scope.pmabstract = idList[main["dcterms:abstract"]["@id"]]["pubmed_vocabulary:abstract_text"]*/
-
-  /*$scope.pmauthors = []*/
-  /*_.each(main["pubmed_vocabulary:author"], function(elem) {*/
-  /*$scope.pmauthors.push(idList[elem["@id"]]);*/
-  /*});*/
-
-  /*});*/
+  console.log($stateParams);
+  console.log();
 });
 
 
