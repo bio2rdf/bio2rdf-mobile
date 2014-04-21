@@ -4,7 +4,6 @@ var module = angular.module('starter.controllers', [])
 // TODO : Group together Queryer services
 module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService, DatasetStore, SearchService) {
 
-  console.log((DatasetStore.current[0] == "init"));
   $scope.initPage = function () {
     return DatasetStore.current[0] == "init";
   }

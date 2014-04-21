@@ -4,6 +4,7 @@ var module = angular.module('starter.dbcontrollers', [])
 // OBO
 module.controller('OboCtrl', function($scope, $stateParams, Queryer, ProcessGraph) {
   $scope.uri = $stateParams.uri;
+  console.log($scope.uri);
   var endpoint = $stateParams.endpoint;
   // Temporairement json hardcoder
   /*Queryer.setQuery($stateParams.endpoint,'describe2', 'json-ld', {"uri" : $scope.uri});*/

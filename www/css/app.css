@@ -1,4 +1,4 @@
-/* Your app's CSS, go crazy, make it your own */
+/* app.css */
 
 .ionic-logo {
   display: block;
@@ -18,12 +18,10 @@
 .appComment {
         padding:10px;
         border:1px solid gray;
-        background-color=white;
-        
 }
 
 .uriButton {
-        background-color=blue;
+        background-color:blue;
 }
 
 .dbItem {
