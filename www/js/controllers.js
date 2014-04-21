@@ -18,7 +18,7 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
       $scope.offset = 0;
     }
 
-    Queryer.setQuery(DatasetStore.current[0],'search_ns', 'json-ld', {"parm1" : this.queryTerm, "parm2" : $scope.offset});
+    Queryer.setQuery(DatasetStore.current[0],SearchService.queryMode(this.queryTerm), 'json-ld', {"parm1" : this.queryTerm, "parm2" : $scope.offset});
 
     Queryer.getJson().success(function(data) {
       // Switch the prefix in @id with the complete url from @context

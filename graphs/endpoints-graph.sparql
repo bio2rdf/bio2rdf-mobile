@@ -1,14 +1,27 @@
 # Uniprot #
 http://uniprotlabels.bio2rdf.org/sparql
 
-# search_ns
+# search_ns_long
 CONSTRUCT {
   ?subject ?predicate ?object .
   ?subject ?desc ?taxon .
 } WHERE { GRAPH ?graph {
   ?subject ?predicate ?object .
   ?subject ?desc ?taxon .
-  FILTER(bif:contains(?object, '"hydroxy*"')) .
+  FILTER(bif:contains(?object, '"$PARM1$*"')) .
+  FILTER(?predicate = rdfs:label)
+  FILTER(?desc = <http://bio2rdf.org/m_vocabulary:description>) .
+  FILTER(?graph = <http://uniprotlabels.nt> ) .
+}} LIMIT 20 OFFSET $PARM2$
+
+#search_ns_short
+CONSTRUCT {
+  ?subject ?predicate ?object .
+  ?subject ?desc ?taxon .
+} WHERE { GRAPH ?graph {
+  ?subject ?predicate ?object .
+  ?subject ?desc ?taxon .
+  FILTER(bif:contains(?object, '"beta-lactamase ndm-1"')) .
   FILTER(?predicate = rdfs:label)
   FILTER(?desc = <http://bio2rdf.org/m_vocabulary:description>) .
   FILTER(?graph = <http://uniprotlabels.nt> ) .

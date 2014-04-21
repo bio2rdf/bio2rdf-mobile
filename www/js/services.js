@@ -100,16 +100,7 @@ angular.module('starter.services', [])
         }
         resGraph.push(result);
       }
-      return resGraph;
-
-      // if(mode == "append"){
-      //   searchResultGraph.concat(resGraph);
-      // } else {
-      //   searchResultGraph = resGraph;
-      // }
-
-      // console.log(searchResultGraph);
-      
+      return resGraph;      
     };
 
 
@@ -117,9 +108,25 @@ angular.module('starter.services', [])
       return searchResultGraph;      
     }
 
+
+    // Will return a long (1) or short (0) search mode based on the query string
+    var getQueryMode = function (queryTerm) {
+      var queryMode = 'search_ns_long';
+      var splitQuery = queryTerm.split(/[\s,-_]+/);
+      console.log("Split: " + splitQuery);
+      console.log(splitQuery[splitQuery.length-1]);
+      if(splitQuery[splitQuery.length-1] < 3){
+        queryMode = 'search_ns_short';
+      }
+      
+      return queryMode;
+    }
+
     return {
       getGraphQuery: searchResultsFun,
-      getSearchResults: getSearchResultGraph
+      getSearchResults: getSearchResultGraph,
+      queryMode: getQueryMode
+
     }
 
 
