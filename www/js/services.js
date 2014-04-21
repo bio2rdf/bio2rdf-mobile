@@ -40,8 +40,8 @@ angular.module('starter.services', [])
         params += k + "=" + queryConfig.parameters[k];
       }
 
-      var url = bio2rdfURL.concat(queryConfig.namespace, "/", 
-                                  queryConfig.method, "/", 
+      var url = bio2rdfURL.concat(queryConfig.namespace, "/",
+                                  queryConfig.method, "/",
                                   queryConfig.format, "?",
                                   params
                                  );
@@ -50,7 +50,7 @@ angular.module('starter.services', [])
 
     }
 
-    var setQueryConfig = function(namespace, method, format, params) { 
+    var setQueryConfig = function(namespace, method, format, params) {
       queryConfig.namespace = namespace;
       queryConfig.method = method;
       queryConfig.format = format;
@@ -73,8 +73,6 @@ angular.module('starter.services', [])
 
 // Not done yet- managed in the Controller
   .factory('SearchService', function(){
-
-    // var searchResultGraph = [];    
 
     var searchResultsFun = function(graph) {
       var resGraph = [];
@@ -100,12 +98,12 @@ angular.module('starter.services', [])
         }
         resGraph.push(result);
       }
-      return resGraph;      
+      return resGraph;
     };
 
 
     var getSearchResultGraph = function () {
-      return searchResultGraph;      
+      return searchResultGraph;
     }
 
 
@@ -118,7 +116,6 @@ angular.module('starter.services', [])
       if(splitQuery[splitQuery.length-1] < 3){
         queryMode = 'search_ns_short';
       }
-      
       return queryMode;
     }
 
@@ -126,7 +123,6 @@ angular.module('starter.services', [])
       getGraphQuery: searchResultsFun,
       getSearchResults: getSearchResultGraph,
       queryMode: getQueryMode
-
     }
 
 

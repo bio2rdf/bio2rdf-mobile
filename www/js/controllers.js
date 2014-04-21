@@ -1,6 +1,5 @@
 var module = angular.module('starter.controllers', [])
 
-
 // A simple controller that fetches a list of data from a service
 // TODO : Group together Queryer services
 module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService, DatasetStore, SearchService) {
@@ -32,12 +31,12 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
 
       // Look if there are more items available
       if(data["@graph"] == undefined){
-	$scope.moreItemsAvailable = false;
+        $scope.moreItemsAvailable = false;
       } else if(data["@graph"].length >= 20){
-	$scope.moreItemsAvailable = true;
-	$scope.offset = $scope.offset + 20;
+        $scope.moreItemsAvailable = true;
+        $scope.offset = $scope.offset + 20;
       }else{
-	$scope.moreItemsAvailable = false;
+        $scope.moreItemsAvailable = false;
       }
 
       $scope.$broadcast('scroll.infiniteScrollComplete');
@@ -142,11 +141,11 @@ module.controller('LeftMenuCtrl', function($scope, $location, $ionicLoading, Dat
 
       if(data["@graph"][i]["dc:title"] != "namespace:endpoints_mother"){
 
-	var id = data["@graph"][i]["@id"].split(/:/).pop();
+        var id = data["@graph"][i]["@id"].split(/:/).pop();
 
         $scope.databases.push({
-	  id: id,
-          title: data["@graph"][i]["dc:title"], 
+          id: id,
+          title: data["@graph"][i]["dc:title"],
           tripleCount: data["@graph"][i]["bm:bio2rdf_vocabulary:triple_count"],
           foafDepiction: data["@graph"][i]['http://xmlns.com/foaf/0.1/depiction']['@id']
         });
@@ -155,16 +154,16 @@ module.controller('LeftMenuCtrl', function($scope, $location, $ionicLoading, Dat
           title: data["@graph"][i]["dc:title"],
           tripleCount: data["@graph"][i]["bm:bio2rdf_vocabulary:triple_count"],
           foafDepiction: data["@graph"][i]['http://xmlns.com/foaf/0.1/depiction']['@id'],
-	  endpoint: data["@graph"][i]['bm:bio2rdf_vocabulary:endpoint']['@id'],
-	  url_identifier: data["@graph"][i]['bm:bio2rdf_vocabulary:url_identifier']
-	};
+          endpoint: data["@graph"][i]['bm:bio2rdf_vocabulary:endpoint']['@id'],
+          url_identifier: data["@graph"][i]['bm:bio2rdf_vocabulary:url_identifier']
+        };
 
       } else {
         $scope.header = data["@graph"][i];
       }
     }
 
- });
+  });
 
   // Put it somewhere else ?
   $scope.onItemHold = function(item) {

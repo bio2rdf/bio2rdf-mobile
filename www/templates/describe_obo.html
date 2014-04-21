@@ -1,0 +1,43 @@
+<!--
+  This template loads for the 'tab.describe' state (app.js)
+-->
+<ion-view title="'Describe Page'">
+  <ion-content has-header="true" has-tabs="true" padding="true">
+  <div>
+    <h1> {{ title }} </h1>
+    <h4 ng-show="obosubclasses"><b>is a class of :</b></h4>
+      <span ng-repeat="i in obosubclasses track by $index">
+        <a class="button button-small button-positive" href="/#/tab/describe-obo?uri={{i['@id']}}&endpoint=doid">{{i['rdfs:label']}}</a>
+      </span>
+    <h4><b>Has sublasses :</b></h4>
+      <span ng-repeat="j in obosuperclasses track by $index">
+        <a class="button button-small button-positive" href="/#/tab/describe-obo?uri={{j['@id']}}&endpoint=doid">{{j['rdfs:label']}}</a>
+      </span>
+    <div ng-show="obodef">
+      <h4><b>Definition :</b></h4>
+      <p class="appComment">{{ obodef }}</p>
+    </div>
+
+    <h4><b>Xrefs :</b></h4>
+    <ul class="mobileList">
+      <li class="mobileListItem" ng-repeat="refs in xrefs">{{ refs }}</li>
+    </ul>
+
+  </div>
+
+
+  <!--PUBMED-->
+  <!--<span>-->
+  <!--<h4 ng-show="pmauthors"><b>Authors</b><h4>-->
+  <!--<span ng-repeat="author in authors" >-->
+  <!--<span><a> {{pmauthor["pubmed_vocabulary:fore_name"]}} {{pmauthor["pubmed_vocabulary:last_name"]}} </a></span>-->
+  <!--</span>-->
+  <!--</span>  -->
+  <!---->
+  <!--<div>-->
+  <!--<h4 ng-show="abstract"><b>Abstract</b><h4>-->
+  <!--<p class="appComment">{{ abstract }}</p>-->
+  <!--</div>-->
+
+  </ion-content>
+</ion-view>

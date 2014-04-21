@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.services', 'starter.controllers'])
+angular.module('starter', ['ionic', 'starter.services', 'starter.controllers', 'starter.dbcontrollers'])
 
   .config(function($stateProvider, $urlRouterProvider) {
 
@@ -17,53 +17,63 @@ angular.module('starter', ['ionic', 'starter.services', 'starter.controllers'])
 
     // setup an abstract state for the tabs directive
       .state('tab', {
-	url: "/tab",
-	abstract: true,
-	templateUrl: "templates/tabs.html"
+        url: "/tab",
+        abstract: true,
+        templateUrl: "templates/tabs.html"
       })
 
     // the pet tab has its own child nav-view and history
       .state('tab.search', {
-      	url: '/search',
-      	views: {
+        url: '/search',
+        views: {
           'search-tab': {
             templateUrl: 'templates/search.html',
             controller: 'SearchCtrl'
           }
-      	}
+        }
       })
 
-      .state('tab.describe', {
-	url: '/describe?uri&endpoint',
-	views: {
+      .state('tab.describe-doid', {
+        url: '/describe-doid?uri',
+        views: {
           'describe-tab': {
-            templateUrl: 'templates/describe.html',
-	    controller: 'DescribeCtrl'
+            templateUrl: 'templates/describe_obo.html',
+            controller: 'OboCtrl'
           }
-	}
+        }
       })
 
-      .state('tab.describe-null', {
-      	url: '/describe',
-      	views: {
+      .state('tab.describe-go', {
+        url: '/describe-go?uri',
+        views: {
           'describe-tab': {
-            templateUrl: 'templates/describe-null.html'
+            templateUrl: 'templates/describe_obo.html',
+            controller: 'OboCtrl'
           }
-      	}
+        }
+      })
+
+      .state('tab.describe-chebi', {
+        url: '/describe-chebi?uri',
+        views: {
+          'describe-tab': {
+            templateUrl: 'templates/describe_obo.html',
+            controller: 'OboCtrl'
+          }
+        }
       })
 
       .state('tab.favorite', {
-	url: '/favorite',
-	views: {
+        url: '/favorite',
+        views: {
           'favorite-tab': {
             templateUrl: 'templates/favorite.html',
             controller: 'FavoriteCtrl'
           }
-	}
+        }
       });
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/tab/search');
 
   });
-
