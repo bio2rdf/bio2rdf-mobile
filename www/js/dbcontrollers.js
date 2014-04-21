@@ -16,25 +16,25 @@ module.controller('OboCtrl', function($scope, $stateParams, Queryer, ProcessGrap
     $scope.title = main["rdfs:label"]
     $scope.obodef = main["obolibrary:IAO_0000115"]
 
-    $scope.obosubclasses = []
+    $scope.obosuperclasses = []
     _.each(main["rdfs:subClassOf"], function(elem) {
       if (typeof elem == "string") {
       /*if (idList[elem].substring(0,1) != "_") {*/
-          $scope.obosubclasses.push(idList[elem])
-          /*}*/
+          $scope.obosuperclasses.push(idList[elem])
+        /*}*/
       } else {
         /*if {idList[elem["@id"]]}*/
         if (idList[elem["@id"]] != undefined) {
-          $scope.obosubclasses.push(idList[elem["@id"]]);
+          $scope.obosuperclasses.push(idList[elem["@id"]]);
         }
       }
     });
 
-    $scope.obosuperclasses = []
+    $scope.obosubclasses = []
     _.each(idList, function(elem) {
       if (elem["rdfs:subClassOf"] != undefined) {
         if (elem["rdfs:subClassOf"]["@id"] == $stateParams.uri ) {
-          $scope.obosuperclasses.push(idList[elem["@id"]])
+          $scope.obosubclasses.push(idList[elem["@id"]])
         }
       }
     });

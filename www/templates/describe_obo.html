@@ -26,16 +26,16 @@
 	  SuperClasses
 	</div>
 	<div class="item item-text-wrap">
-	  <span ng-repeat="i in obosuperclasses track by $index">
+	  <span ng-repeat="i in obosuperclasses track by $index" style="padding: 2px;">
             <a class="button button-small button-royal" href="/#/tab/describe-chebi?uri={{i['@id']}}">{{i['rdfs:label']}}</a>
 	  </span>
 	</div>
-	
+
 	<div class="item item-divider">
 	  SubClasses
 	</div>
 	<div class="item item-text-wrap">
-	  <span ng-repeat="j in obosubclasses track by $index">
+	  <span ng-repeat="j in obosubclasses track by $index" style="padding: 2px;">
             <a class="button button-small button-royal" href="/#/tab/describe-chebi?uri={{j['@id']}}">{{j['rdfs:label']}}</a>
 	  </span>
 	</div>
