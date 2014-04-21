@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
 
-    <!-- <title>Ionic Seed App</title> -->
+    <title>Bio2RDF-Mobile</title>
     
     <!-- ionic css -->
     <link href="lib/css/ionic.css" rel="stylesheet">
@@ -66,7 +66,10 @@
 	    <img src="{{header['http://xmlns.com/foaf/0.1/depiction']['@id']}}" style="height:45px; vertical-align:middle"/>
 	  </h3>
 
-	  <input ng-model="searchText" placeholder="Search a DB" style="width: 250px; margin: 10px 10px;">
+	  <div style="text-align: center">
+	    <input ng-model="searchText" placeholder="Search for a Database" style="display: inline; width: 200px; margin: 0 auto">
+	    <button type="button" ng-click="searchText=''" style="display: inline">x</button>
+	  </div>
 
 	  <ion-list style="margin-top: 15px">
 	    <ion-item class="dbItem" ng-repeat="db in databases | filter:searchText | orderBy:'tripleCount':true" type="item-text-wrap" item="db.title" ng-click="changeCurrentDatabase(db.id);" my-on-hold="onItemHold(item)">
