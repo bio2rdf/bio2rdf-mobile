@@ -79,7 +79,6 @@ angular.module('starter.services', [])
       for (var res in graph){
         var result = {};
         for (var k in graph[res]){
-          // console.log("k =" + k);
           if(k=="@id"){
             result.uri = graph[res][k];
           }else if (k=="bm:m_vocabulary:description"){
@@ -111,8 +110,6 @@ angular.module('starter.services', [])
     var getQueryMode = function (queryTerm) {
       var queryMode = 'search_ns_long';
       var splitQuery = queryTerm.split(/[\s,-_]+/);
-      console.log("Split: " + splitQuery);
-      console.log(splitQuery[splitQuery.length-1]);
       if(splitQuery[splitQuery.length-1] < 3){
         queryMode = 'search_ns_short';
       }
