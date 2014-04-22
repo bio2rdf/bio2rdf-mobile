@@ -74,29 +74,63 @@ angular.module('starter.services', [])
 // Not done yet- managed in the Controller
   .factory('SearchService', function(){
 
+
+    // Return an Array like this [ {uri: '', label: '', description ''}, {} .. ]
     var searchResultsFun = function(graph) {
       var resGraph = [];
-      for (var res in graph){
-        var result = {};
-        for (var k in graph[res]){
-          if(k=="@id"){
-            result.uri = graph[res][k];
-          }else if (k=="bm:m_vocabulary:description"){
-            if(graph[res][k] !== null && typeof graph[res][k] === 'object'){
-              result.description = graph[res][k]["@id"];
-            }else {
-              result.description = graph[res][k];
-            }
-          }else{
-            if(graph[res][k] instanceof Array){
-              result.label = graph[res][k][0];
+
+      if(graph["@graph"] != undefined){
+        subGraph = graph["@graph"];
+        for (var res in subGraph){
+          var result = {};
+          for (var k in subGraph[res]){
+            if(k=="@id"){
+              result.uri = subGraph[res][k];
+            }else if (k=="bm:m_vocabulary:description"){
+              if(subGraph[res][k] !== null && typeof subGraph[res][k] === 'object'){
+                result.description = subGraph[res][k]["@id"];
+              }else {
+                result.description = subGraph[res][k];
+              }
             }else{
-              result.label = graph[res][k];
+              if(subGraph[res][k] instanceof Array){
+                result.label = subGraph[res][k][0];
+              }else{
+                result.label = subGraph[res][k];
+              }
             }
           }
+          resGraph.push(result);
         }
-        resGraph.push(result);
+
+      } else {
+
+        var uri = "";
+        var description = "";
+        var label = "";
+
+        if (graph["@id"] != null){
+          uri = graph["@id"];
+        } else {
+          return [];
+        }
+
+        if(graph["bm:m_vocabulary:description"] !== null){
+          if(typeof graph["bm:m_vocabulary:description"] === 'object'){
+            description = graph["bm:m_vocabulary:description"]["@id"];
+          } else {
+            description = graph["bm:m_vocabulary:description"];
+          }
+        }
+
+        if(graph["rdfs:label"] !== null){
+          label = graph["rdfs:label"];
+        }
+
+        resGraph = [{uri: uri, label: label, description: description}];
       }
+
+      console.log(resGraph);
       return resGraph;
     };
 
@@ -128,43 +162,47 @@ angular.module('starter.services', [])
   .factory('ReplacePrefixesService', function() {
 
     var idSplit = "";
+
     function traverse(context, o) {
       for (i in o) {
-        if (i == "@id"){
-          idSplit = o[i].split(":");
-          if(context[idSplit[0]] != undefined){
-            o[i] = context[idSplit[0]] + idSplit.slice(1).join(":");
-          }
-        }
+        if(i != "@context") {
 
-        // For predicate-
-        // else if (i.indexOf(":") != -1 ){
-        //   idSplit = i.split(":");
-        //   if(context[idSplit[0]] != undefined){
-        //     i = context[idSplit[0]] + idSplit[1];
-        //     console.log(i);
-        //   }
-        // }
-
-        if (typeof(o[i])=="object") {
-          traverse(context, o[i]);
-        }
-        else if (o[i] instanceof Array) {
-          if (typeof(o[i][j])=="object") {
-            traverse(context, o[i][j]);
+          if (i == "@id"){
+            idSplit = o[i].split(":");
+            if(context[idSplit[0]] != undefined){
+              o[i] = context[idSplit[0]] + idSplit.slice(1).join(":");
+            }
           }
+          // For predicate-
+          // else if (i.indexOf(":") != -1 ){
+          //   idSplit = i.split(":");
+          //   if(context[idSplit[0]] != undefined){
+          //     i = context[idSplit[0]] + idSplit[1];
+          //     console.log(i);
+          //   }
+          // }
+          if (typeof(o[i])=="object") {
+            traverse(context, o[i]);
+          }
+          else if (o[i] instanceof Array) {
+            if (typeof(o[i][j])=="object") {
+              traverse(context, o[i][j]);
+            }
+          }
+
         }
       }
     }
 
-    var replacePrefixFun = function (context, graph) {
-      traverse(context, graph);
+    var replacePrefixFun = function (graph) {
+
+      traverse(graph["@context"], graph);
+
     }
 
     return {
       replacePrefix: replacePrefixFun
     }
-
 
   })
 
@@ -228,10 +266,9 @@ angular.module('starter.services', [])
 
   })
 
-
   .factory('ProcessGraph',function(ReplacePrefixesService){
     var process = function(data){
-      ReplacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
+      ReplacePrefixesService.replacePrefix(data);
       uriContainer={}
       _.each(data["@graph"], function(sub){
         uriContainer[sub["@id"]]=sub;

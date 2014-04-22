@@ -28,13 +28,13 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
     Queryer.setQuery(DatasetStore.current[0],SearchService.queryMode(this.queryTerm), 'json-ld', {"parm1" : this.queryTerm, "parm2" : $scope.offset});
 
     Queryer.getJson().success(function(data) {
-      // Switch the prefix in @id with the complete url from @context
-      ReplacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
+
+      ReplacePrefixesService.replacePrefix(data);
 
       if(isNew != 1){
-        $scope.searchResultGraph = $scope.searchResultGraph.concat(SearchService.getGraphQuery(data["@graph"]));
+        $scope.searchResultGraph = $scope.searchResultGraph.concat(SearchService.getGraphQuery(data));
       }else{
-        $scope.searchResultGraph = SearchService.getGraphQuery(data["@graph"]);
+        $scope.searchResultGraph = SearchService.getGraphQuery(data);
       }
 
       // Look if there are more items available
@@ -91,7 +91,7 @@ module.controller('LeftMenuCtrl', function($scope, $location, $ionicLoading, Dat
 
   DatasetService.listDB().getJson().success(function(data) {
 
-    ReplacePrefixesService.replacePrefix(data["@context"], data["@graph"]);
+    ReplacePrefixesService.replacePrefix(data["@context"], data);
 
     for (var i in data["@graph"]){
 
@@ -128,7 +128,6 @@ module.controller('LeftMenuCtrl', function($scope, $location, $ionicLoading, Dat
 
   $scope.changeCurrentDatabase = function(dbId) {
     DatasetStore.current = [dbId];
-    // $scope.setHeaderImg(DatasetStore.all[DatasetStore.current].foafDepiction);
     $location.path("/#/tab/search");
     $scope.sideMenuController.toggleLeft();
   };

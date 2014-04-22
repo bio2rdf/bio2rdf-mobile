@@ -51,14 +51,14 @@ http://sparql.hegroup.org/sparql
 # GO
 
 CONSTRUCT {
-  ?subject ?predicate ?object .
+  ?subject rdfs:label ?object .
   ?subject <http://bio2rdf.org/m_vocabulary:description> ?subject .
 } WHERE { GRAPH ?graph {
   ?subject ?predicate ?object .
   ?subject <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> ?description .
   FILTER(bif:contains(?object, '"$PARM1$*"')) .
   FILTER(?graph = <http://purl.obolibrary.org/obo/merged/GO> ) .
-  FILTER((?predicate = <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym>) OR (?predicate= rdfs:label) ) .
+  FILTER((?predicate = <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym>) OR (?predicate = rdfs:label) OR (?predicate = <http://www.geneontology.org/formats/oboInOwl#hasNarrowSynonym>)) .
 }}limit 20 offset $PARM2$
 
 ## wiki enrichment
@@ -85,14 +85,14 @@ where {
 # CHEBI
 
 CONSTRUCT {
-  ?subject ?predicate ?object .
+  ?subject rdfs:label ?object .
   ?subject <http://bio2rdf.org/m_vocabulary:description> ?subject .
 } WHERE { GRAPH ?graph {
   ?subject ?predicate ?object .
   ?subject <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> ?description .
   FILTER(bif:contains(?object, '"$PARM1$*"')) .
   FILTER(?graph = <http://purl.obolibrary.org/obo/merged/CHEBI> ) .
-  FILTER((?predicate = <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym>) OR (?predicate= rdfs:label) ) .
+  FILTER((?predicate = <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym>) OR (?predicate = rdfs:label) OR (?predicate = <http://www.geneontology.org/formats/oboInOwl#hasNarrowSynonym>)) .
 }}limit 20 offset $PARM2$
 
 ### get wiki img
@@ -117,16 +117,15 @@ where {
 
 # DOID
 CONSTRUCT {
-  ?subject ?predicate ?object .
+  ?subject rdfs:label ?object .
   ?subject <http://bio2rdf.org/m_vocabulary:description> ?subject .
 } WHERE { GRAPH ?graph {
   ?subject ?predicate ?object .
   ?subject <http://www.geneontology.org/formats/oboInOwl#hasOBONamespace> ?description .
   FILTER(bif:contains(?object, '"$PARM1$*"')) .
   FILTER(?graph = <http://purl.obolibrary.org/obo/merged/DOID> ) .
-  FILTER((?predicate = <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym>) OR (?predicate= rdfs:label) ) .
+  FILTER((?predicate = <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym>) OR (?predicate = rdfs:label) OR (?predicate = <http://www.geneontology.org/formats/oboInOwl#hasNarrowSynonym>)) .
 }}limit 20 offset $PARM2$
-
 
 # describe chebi- need to manage subClassOf
 construct

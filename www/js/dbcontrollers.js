@@ -11,6 +11,8 @@ module.controller('OboCtrl', function($scope, $stateParams, Queryer, ProcessGrap
     var idList=ProcessGraph.graph(data);
     var main = idList[$stateParams.uri]
 
+    console.log(main);
+
     $scope.title = main["rdfs:label"]
     $scope.obodef = main["obolibrary:IAO_0000115"]
 
