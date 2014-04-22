@@ -2,9 +2,7 @@ var module = angular.module('starter.dbcontrollers', [])
 
 
 // OBO
-module.controller('OboCtrl', function($scope, $stateParams, Queryer, ProcessGraph, DatasetStore) {
-
-  
+module.controller('OboCtrl', function($scope, $stateParams, Queryer, ProcessGraph, DatasetStore, QuickLinks) {
   
   $scope.uri = $stateParams.uri;
 
@@ -45,6 +43,8 @@ module.controller('OboCtrl', function($scope, $stateParams, Queryer, ProcessGrap
         $scope.xrefs.push(elem)
       });
     }
+
+    QuickLinks.addLink({uri:$scope.uri, label: $scope.title, db: DatasetStore.current[0]});
   });
 
 });

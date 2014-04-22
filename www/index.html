@@ -44,7 +44,7 @@
 	  <h1 class="title">
 	    <img src="{{headerImg}}" style="height:45px;"/>
 	  </h1>
-	  <button class="button icon ion-gear-b" ng-click="toggleRightPanel()"></button>
+	  <button class="button icon ion-arrow-graph-down-left" ng-click="toggleRightPanel()"></button>
 	</div>
 
 	<!-- 
@@ -59,7 +59,6 @@
       <!-- Left menu -->
       <!-- Database Selection -->
       <ion-side-menu side="left" style="background-color: WhiteSmoke" ng-controller="LeftMenuCtrl" drag-content="true">
-
 	<ion-content>
 
 	  <h3 style="display: table; margin: 0 auto; padding: 10px">
@@ -84,11 +83,25 @@
       </ion-side-menu>
 
       <!-- Right menu -->
-      <!-- Settings Selections -->
+      <!-- Settings QuickLinks -->
       <!-- Different View (Skins) Selection -->
-      <ion-side-menu side="right" style="background-color: lightsteelblue;">
-	<h2 style="display: table; margin: 0 auto; margin-top: 10px;"> Settings </h2>
-	<ion-toggle  ng-checked="true" style="margin-top: 20px;">Normal Mode</ion-toggle>
+      <ion-side-menu side="right" style="background-color: WhiteSmoke;" ng-controller="RightMenuCtrl" drag-content="true">
+
+	<ion-content>
+
+	  <hr>
+	  <h4 class="rightMenu"> Quick Links </h4>
+	  <hr>
+
+	  <ion-list style="margin-top: 15px">
+	    <ion-item class="quickLinkItem" ng-repeat="l in links" ng-click="goToDescribe(l)">
+	      <img src="{{getImg(l.db)}}" style="padding: 5px; height: 35px; vertical-align: middle">
+	      {{l.label}}
+	    </ion-item>
+	  </ion-list>
+
+	</ion-content>
+
       </ion-side-menu>
 
     </ion-side-menus>

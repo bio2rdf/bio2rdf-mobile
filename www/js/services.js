@@ -17,15 +17,11 @@ angular.module('starter.services', [])
         )
 
   .value('restURL', "")
-//
 
 // Populated from server at boot.
   .value('DatasetStore' , { all: {"init":{foafDepiction: "img/bio2rdf.png"}},
                             current: ["init"]
                           })
-
-// Change each time we switch into another database for a search/describe
-// .value('currentDB', "")
 
 // TODO: build a queryer to encapsulate resturlbuilder, getjson services ...
   .factory('Queryer', function(queryConfig, restURL, bio2rdfURL, $http) {
@@ -105,7 +101,6 @@ angular.module('starter.services', [])
       return searchResultGraph;
     }
 
-
     // Will return a long (1) or short (0) search mode based on the query string
     var getQueryMode = function (queryTerm) {
       var queryMode = 'search_ns_long';
@@ -121,7 +116,6 @@ angular.module('starter.services', [])
       getSearchResults: getSearchResultGraph,
       queryMode: getQueryMode
     }
-
 
   })
 
@@ -152,7 +146,6 @@ angular.module('starter.services', [])
           traverse(context, o[i]);
         }
         else if (o[i] instanceof Array) {
-          alert("Array");
           if (typeof(o[i][j])=="object") {
             traverse(context, o[i][j]);
           }
@@ -190,6 +183,47 @@ angular.module('starter.services', [])
     }
 
   })
+
+
+
+// Quick Links Data
+  .factory('QuickLinks', function() {
+    
+    // A link should look like this
+    //   { uri:'', label: '', db: '' }
+
+    var quickLinks = [];
+
+    function newLink(link) {
+      var bool = true;
+      
+      var i = _.findIndex(quickLinks, { uri: link.uri });
+
+      if (i == -1){
+        return bool
+      } else {
+        quickLinks.splice(0, 0, quickLinks.splice(i, 1)[0]);
+        return false;
+      }
+    }
+
+    var addLink = function (link) {
+      if(newLink(link)){
+        quickLinks.unshift(link);
+      }
+    }
+
+    var getLinks = function () {
+      return quickLinks;
+    }
+
+    return {
+      addLink: addLink,
+      getLinks: getLinks
+    }
+
+  })
+
 
   .factory('ProcessGraph',function(ReplacePrefixesService){
     var process = function(data){

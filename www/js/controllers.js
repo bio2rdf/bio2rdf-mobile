@@ -48,23 +48,18 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
     })
   };
 
-
   $scope.clearSearch = function () {
     $scope.queryTerm = '';
   };
-
 
   $scope.searchResultGraph = [];
   $scope.moreItemsAvailable = false;
   $scope.offset = 0;
 
-
-
 });
 
 module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, ProcessGraph) {
   console.log($stateParams);
-  console.log();
 });
 
 
@@ -77,7 +72,6 @@ module.controller('MainCtrl', function($scope, $location, DatasetStore) {
     }else {
       $scope.setHeaderImg("img/bookmark.png");
     }
-
   });
 
   $scope.toggleLeftPanel = function() {
@@ -141,16 +135,33 @@ module.controller('LeftMenuCtrl', function($scope, $location, $ionicLoading, Dat
   $scope.changeCurrentDatabase = function(dbId) {
     DatasetStore.current = [dbId];
     $scope.setHeaderImg(DatasetStore.all[DatasetStore.current].foafDepiction);
-    $location.path("#/tab/search");
+    $location.path("/#/tab/search");
     $scope.sideMenuController.toggleLeft();
   };
 
 });
 
 
+
+module.controller('RightMenuCtrl', function($scope, $location, $ionicLoading, DatasetStore, QuickLinks){
+
+  $scope.links = QuickLinks.getLinks();
+
+  $scope.getImg = function (db){
+    return DatasetStore.all[db].foafDepiction;
+  }
+
+  $scope.goToDescribe = function (l) {
+    var url = "/#/tab/describe-" + l.db + "?uri=" + l.uri;
+    // console.log($location.path());
+    $location.path("/#/tab/describe-doid?uri=http://purl.obolibrary.org/obo/DOID_2841");
+    // console.log($location.path());
+  }
+
+});
+
+
 module.controller('FavoriteCtrl', function($scope, $location, DatasetStore, DatasetService, ReplacePrefixesService){
-
-
 
 });
 

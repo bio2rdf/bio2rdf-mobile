@@ -27,3 +27,16 @@
 .dbItem {
     margin-top: 5px;
 }
+
+
+h4.rightMenu {
+    display: table;
+    margin: 0 auto;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 5px;
+    background-color: royalblue;
+    color: white;
+    margin-top: 10px;
+    box-shadow: 5px 5px 5px #888888;
+}
