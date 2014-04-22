@@ -66,13 +66,9 @@ module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, Proces
 // Event controller to toggle side panels with buttons
 module.controller('MainCtrl', function($scope, $location, DatasetStore) {
 
-  $scope.$on('$locationChangeSuccess', function(event) {
-    if($location.url() != '/tab/favorite'){
-      $scope.setHeaderImg(DatasetStore.all[DatasetStore.current].foafDepiction);
-    }else {
-      $scope.setHeaderImg("img/bookmark.png");
-    }
-  });
+  $scope.headerImg = function () {
+    return DatasetStore.all[DatasetStore.current[0]].foafDepiction;
+  }
 
   $scope.toggleLeftPanel = function() {
     $scope.sideMenuController.toggleLeft();
@@ -80,12 +76,6 @@ module.controller('MainCtrl', function($scope, $location, DatasetStore) {
   $scope.toggleRightPanel = function() {
     $scope.sideMenuController.toggleRight();
   };
-
-  $scope.setHeaderImg = function (img) {
-    $scope.headerImg = img;
-  };
-
-  $scope.setHeaderImg(DatasetStore.all[DatasetStore.current].foafDepiction);    
 
 });
 
@@ -134,7 +124,7 @@ module.controller('LeftMenuCtrl', function($scope, $location, $ionicLoading, Dat
 
   $scope.changeCurrentDatabase = function(dbId) {
     DatasetStore.current = [dbId];
-    $scope.setHeaderImg(DatasetStore.all[DatasetStore.current].foafDepiction);
+    // $scope.setHeaderImg(DatasetStore.all[DatasetStore.current].foafDepiction);
     $location.path("/#/tab/search");
     $scope.sideMenuController.toggleLeft();
   };
@@ -143,7 +133,7 @@ module.controller('LeftMenuCtrl', function($scope, $location, $ionicLoading, Dat
 
 
 
-module.controller('RightMenuCtrl', function($scope, $location, $ionicLoading, DatasetStore, QuickLinks){
+module.controller('RightMenuCtrl', function($scope, $location, $ionicLoading, $window, DatasetStore, QuickLinks){
 
   $scope.links = QuickLinks.getLinks();
 
@@ -153,9 +143,8 @@ module.controller('RightMenuCtrl', function($scope, $location, $ionicLoading, Da
 
   $scope.goToDescribe = function (l) {
     var url = "/#/tab/describe-" + l.db + "?uri=" + l.uri;
-    // console.log($location.path());
-    $location.path("/#/tab/describe-doid?uri=http://purl.obolibrary.org/obo/DOID_2841");
-    // console.log($location.path());
+    $window.location.href = url;
+    DatasetStore.current = [l.db];
   }
 
 });

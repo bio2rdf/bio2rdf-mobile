@@ -19,9 +19,13 @@ angular.module('starter.services', [])
   .value('restURL', "")
 
 // Populated from server at boot.
-  .value('DatasetStore' , { all: {"init":{foafDepiction: "img/bio2rdf.png"}},
-                            current: ["init"]
-                          })
+  .value('DatasetStore' , { 
+    all: {
+      "init":{foafDepiction: "img/bio2rdf.png"},
+      "favorite":{foafDepiction: "img/bookmark.png"}      
+    },
+    current: ["init"]
+  })
 
 // TODO: build a queryer to encapsulate resturlbuilder, getjson services ...
   .factory('Queryer', function(queryConfig, restURL, bio2rdfURL, $http) {
