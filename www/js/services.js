@@ -109,7 +109,7 @@ angular.module('starter.services', [])
     var getQueryMode = function (queryTerm) {
       var queryMode = 'search_ns_long';
       var splitQuery = queryTerm.split(/[\s,-_]+/);
-      if(splitQuery[splitQuery.length-1] < 3){
+      if(splitQuery[splitQuery.length-1].length < 4){
         queryMode = 'search_ns_short';
       }
       return queryMode;

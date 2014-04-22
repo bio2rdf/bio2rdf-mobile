@@ -21,6 +21,10 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
       $scope.offset = 0;
     }
 
+    if (this.queryTerm.length == 0){
+      return;
+    }
+
     Queryer.setQuery(DatasetStore.current[0],SearchService.queryMode(this.queryTerm), 'json-ld', {"parm1" : this.queryTerm, "parm2" : $scope.offset});
 
     Queryer.getJson().success(function(data) {
