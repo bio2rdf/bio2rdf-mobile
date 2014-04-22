@@ -43,10 +43,12 @@ WHERE
 
 # Pubmed
 
+
+
 # Ontobee (obo ontologies)
 http://sparql.hegroup.org/sparql
 
-## GO
+# GO
 
 CONSTRUCT {
   ?subject ?predicate ?object .
@@ -59,8 +61,28 @@ CONSTRUCT {
   FILTER((?predicate = <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym>) OR (?predicate= rdfs:label) ) .
 }}limit 20 offset $PARM2$
 
+## wiki enrichment
 
-## CHEBI
+### get wiki img
+construct {
+  ?s foaf:depiction ?o
+}
+where {
+  ?s foaf:depiction ?o .
+  ?s <http://dbpedia.org/property/goCode> "$PARM1$"^^xsd:integer .
+}
+
+### get wiki complete graph
+construct {
+  ?s ?p ?o
+}
+where {
+  ?s ?p ?o .
+  ?s <http://dbpedia.org/property/goCode> "$PARM1$"^^xsd:integer .
+}
+
+
+# CHEBI
 
 CONSTRUCT {
   ?subject ?predicate ?object .
@@ -73,8 +95,27 @@ CONSTRUCT {
   FILTER((?predicate = <http://www.geneontology.org/formats/oboInOwl#hasExactSynonym>) OR (?predicate= rdfs:label) ) .
 }}limit 20 offset $PARM2$
 
+### get wiki img
+construct {
+  ?s foaf:depiction ?o
+}
+where {
+  ?s foaf:depiction ?o .
+  ?s <http://dbpedia.org/property/chebi> "$PARM1$"^^xsd:integer .
+}
 
-## DOID
+### get wiki complete graph
+construct {
+  ?s ?p ?o
+}
+where {
+  ?s ?p ?o .
+  ?s <http://dbpedia.org/property/chebi> "$PARM1$"^^xsd:integer .
+}
+
+
+
+# DOID
 CONSTRUCT {
   ?subject ?predicate ?object .
   ?subject <http://bio2rdf.org/m_vocabulary:description> ?subject .
@@ -120,4 +161,19 @@ WHERE {
  }
 }LIMIT 20 OFFSET $PARM2$
 
+
+
+# DBpedia
+
+http://dbpedia.org/sparql
+
+# go 
+
+select *
+where {
+$s foaf:depiction $o .
+$s <http://dbpedia.org/property/goCode> 4396 .
+}
+
+describe <http://dbpedia.org/resource/Hexokinase>
 
