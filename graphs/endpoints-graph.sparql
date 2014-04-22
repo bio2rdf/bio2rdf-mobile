@@ -82,6 +82,34 @@ where {
 }
 
 
+## Generic Wiki based on Label
+
+# image
+construct {
+<$URI$> foaf:depiction ?image
+}
+where {
+<$URI$> foaf:depiction ?image
+}
+
+construct {
+<http://dbpedia.org/resource/Serotonin> foaf:depiction ?image
+}
+where {
+<http://dbpedia.org/resource/Serotonin> foaf:depiction ?image
+}
+
+# all graph
+construct {
+<$URI$> ?p ?o .
+}
+where {
+<$URI$> ?p ?o .
+}
+
+
+
+
 # CHEBI
 
 CONSTRUCT {

@@ -96,23 +96,28 @@ module.controller('LeftMenuCtrl', function($scope, $location, $ionicLoading, Dat
     for (var i in data["@graph"]){
 
       if(data["@graph"][i]["dc:title"] != "namespace:endpoints_mother"){
-
+        
         var id = data["@graph"][i]["@id"].split(/:/).pop();
 
-        $scope.databases.push({
-          id: id,
-          title: data["@graph"][i]["dc:title"],
-          tripleCount: data["@graph"][i]["bm:bio2rdf_vocabulary:triple_count"],
-          foafDepiction: data["@graph"][i]['http://xmlns.com/foaf/0.1/depiction']['@id']
-        });
+        if (data["@graph"][i]['http://xmlns.com/foaf/0.1/depiction'] != undefined){
 
-        DatasetStore.all[id] = {
-          title: data["@graph"][i]["dc:title"],
-          tripleCount: data["@graph"][i]["bm:bio2rdf_vocabulary:triple_count"],
-          foafDepiction: data["@graph"][i]['http://xmlns.com/foaf/0.1/depiction']['@id'],
-          endpoint: data["@graph"][i]['bm:bio2rdf_vocabulary:endpoint']['@id'],
-          url_identifier: data["@graph"][i]['bm:bio2rdf_vocabulary:url_identifier']
-        };
+          $scope.databases.push({
+            id: id,
+            title: data["@graph"][i]["dc:title"],
+            tripleCount: data["@graph"][i]["bm:bio2rdf_vocabulary:triple_count"],
+            foafDepiction: data["@graph"][i]['http://xmlns.com/foaf/0.1/depiction']['@id']
+          });
+        
+
+          DatasetStore.all[id] = {
+            title: data["@graph"][i]["dc:title"],
+            tripleCount: data["@graph"][i]["bm:bio2rdf_vocabulary:triple_count"],
+            foafDepiction: data["@graph"][i]['http://xmlns.com/foaf/0.1/depiction']['@id'],
+            endpoint: data["@graph"][i]['bm:bio2rdf_vocabulary:endpoint']['@id'],
+            url_identifier: data["@graph"][i]['bm:bio2rdf_vocabulary:url_identifier']
+          };
+
+        }
 
       } else {
         $scope.header = data["@graph"][i];
@@ -154,6 +159,8 @@ module.controller('RightMenuCtrl', function($scope, $location, $ionicLoading, $w
 
 
 module.controller('FavoriteCtrl', function($scope, $location, DatasetStore, DatasetService, ReplacePrefixesService){
+
+  DatasetStore.current = ["favorite"];
 
 });
 

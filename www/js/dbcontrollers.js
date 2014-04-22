@@ -2,18 +2,45 @@ var module = angular.module('starter.dbcontrollers', [])
 
 
 // OBO
-module.controller('OboCtrl', function($scope, $stateParams, Queryer, ProcessGraph, DatasetStore, QuickLinks) {
+module.controller('OboCtrl', function($scope, $stateParams, Queryer, ProcessGraph, DatasetStore, QuickLinks, Utilities) {
   
+  function getWikiImage () {
+
+    // Add wiki image either with X link on the id or generic name
+    var code = $scope.uri.split("_");
+
+    Queryer.setQuery(DatasetStore.current[0],'wiki_image', 'json-ld', {"parm1" : code[code.length-1] });
+
+    Queryer.getJson().success(function(wikiData){ 
+      if (wikiData["http://xmlns.com/foaf/0.1/depiction"] != undefined){
+        $scope.image = wikiData["http://xmlns.com/foaf/0.1/depiction"]["@id"];
+      }
+    });
+
+    // Try a generic query to wiki based on the label
+    // <http://dbpedia.org/resource/{{label}}> foaf:depiction $image
+    if($scope.image === undefined){
+      var uri = "http://dbpedia.org/resource/" + Utilities.capitalize($scope.title);
+      Queryer.setQuery('wiki','image', 'json-ld', {"uri" : uri });
+      Queryer.getJson().success(function(wikiData2){ 
+        if (wikiData2["http://xmlns.com/foaf/0.1/depiction"] != undefined){
+          $scope.image = wikiData2["http://xmlns.com/foaf/0.1/depiction"]["@id"];
+        }
+      });
+
+    }
+
+  }
+
   $scope.uri = $stateParams.uri;
 
+  // Query the graph data from mobile.bio2rdf.org
   Queryer.setQuery(DatasetStore.current[0] ,'describe', 'json-ld', {"uri" : $scope.uri});
   Queryer.getJson().success(function(data){
     var idList=ProcessGraph.graph(data);
     var main = idList[$stateParams.uri]
 
-    console.log(main);
-
-    $scope.title = main["rdfs:label"]
+    $scope.title = Utilities.capitalize(main["rdfs:label"])
     $scope.obodef = main["obolibrary:IAO_0000115"]
 
     $scope.obosuperclasses = []
@@ -47,7 +74,13 @@ module.controller('OboCtrl', function($scope, $stateParams, Queryer, ProcessGrap
     }
 
     QuickLinks.addLink({uri:$scope.uri, label: $scope.title, db: DatasetStore.current[0]});
+
+    getWikiImage();
+
   });
+
+
+
 
 });
 

@@ -6,6 +6,11 @@
    <http://bio2rdf.org/bio2rdf_vocabulary:sparql_listDB> " http://dbdev.bio2rdf.org/sparql?default-graph-uri=http%3A%2F%2Fmother-of-endpoints.nt&query=CONSTRUCT+%7B%24s+%24p+%24o%7D%0D%0AWHERE+%7B%0D%0A%24s+%24p+%24o+.%0D%0Afilter+%28%0D%0A%24p+%3D+%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Felements%2F1.1%2Ftitle%3E+%7C%7C+%0D%0A%24p+%3D+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2Fdepiction%3E+%7C%7C+%0D%0A%24p+%3D+%3Chttp%3A%2F%2Fbio2rdf.org%2Fbio2rdf_vocabulary%3Aurl_identifier%3E+%7C%7C%0D%0A%24p+%3D+%3Chttp%3A%2F%2Fbio2rdf.org%2Fbio2rdf_vocabulary%3Aendpoint%3E+%7C%7C%0D%0A%24p+%3D+%3Chttp%3A%2F%2Fbio2rdf.org%2Fbio2rdf_vocabulary%3Atriple_count%3E%0D%0A%29%0D%0A%7D&format=application%2Frdf%2Bxml&debug=on&timeout=";
    <http://bio2rdf.org/bio2rdf_vocabulary:test> "/endpoint_mother/listDB/json-ld" .
 
+<http://bio2rdf.org/namespace:wiki> a <http://endpoint.bio2rdf.org/resource>;
+   <http://purl.org/dc/elements/1.1/title> "DBpedia (wiki) helper";
+   <http://bio2rdf.org/bio2rdf_vocabulary:sparql_image> " http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query=construct+%7B%0D%0A%3C%24URI%24%3E+foaf%3Adepiction+%3Fimage+.%0D%0A%7D%0D%0Awhere+%7B%0D%0A%3C$URI$%3E+foaf%3Adepiction+%3Fimage%0D%0A%7D&format=application%2Frdf%2Bxml&timeout=30000&debug=on";
+   <http://bio2rdf.org/bio2rdf_vocabulary:sparql_graph> " http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query=construct+%7B%0D%0A%3C%24URI%24%3E+%3Fp+%3Fo+.%0D%0A%7D%0D%0Awhere+%7B%0D%0A%3C$URI$%3E+%3Fp+%3Fo+.%0D%0A%7D&format=application%2Frdf%2Bxml&timeout=30000&debug=on" .
+
 <http://bio2rdf.org/namespace:doid> a <http://endpoint.bio2rdf.org/resource>;
    <http://purl.org/dc/elements/1.1/title> "Disease Ontology";
    <http://www.w3.org/2000/01/rdf-schema#label> "SPARQL endpoint ontobee/doid [namespace:doid]";
