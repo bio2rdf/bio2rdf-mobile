@@ -8,10 +8,10 @@
 
       <div class="item">
 	<!-- <img src="{{image}}"> -->
-	<table>
+	<table style="overflow-x: scroll">
 	  <tr>
 	    <td>
-	      <img src="{{image}}" style="vertical-align: middle; height: 100px;">
+	      <img src="{{image}}" style="vertical-align: middle; height: 80px;">
 	    </td>
 	    <td>
 	      <h1 align="middle"> {{ title }} </h1>
@@ -37,7 +37,7 @@
 	</div>
 	<div class="item item-text-wrap">
 	  <span ng-repeat="i in obosuperclasses track by $index">
-            <a class="button button-small button-royal" href="/#/tab/describe-chebi?uri={{i['@id']}}">{{i['rdfs:label']}}</a>
+            <a class="button button-small button-royal" href="#/tab/describe-chebi?uri={{i['@id']}}">{{i['rdfs:label']}}</a>
 	  </span>
 	</div>
 
@@ -46,7 +46,7 @@
 	</div>
 	<div class="item item-text-wrap">
 	  <span ng-repeat="j in obosubclasses track by $index" style="padding: 2px;">
-            <a class="button button-small button-royal" href="/#/tab/describe-chebi?uri={{j['@id']}}">{{j['rdfs:label']}}</a>
+            <a class="button button-small button-royal" href="#/tab/describe-chebi?uri={{j['@id']}}">{{j['rdfs:label']}}</a>
 	  </span>
 	</div>
 

@@ -133,7 +133,7 @@ module.controller('LeftMenuCtrl', function($scope, $location, $ionicLoading, Dat
 
   $scope.changeCurrentDatabase = function(dbId) {
     DatasetStore.current = [dbId];
-    $location.path("/#/tab/search");
+    $location.path("#/tab/search");
     $scope.sideMenuController.toggleLeft();
   };
 
@@ -150,7 +150,7 @@ module.controller('RightMenuCtrl', function($scope, $location, $ionicLoading, $w
   }
 
   $scope.goToDescribe = function (l) {
-    var url = "/#/tab/describe-" + l.db + "?uri=" + l.uri;
+    var url = "#/tab/describe-" + l.db + "?uri=" + l.uri;
     $window.location.href = url;
     DatasetStore.current = [l.db];
   }
