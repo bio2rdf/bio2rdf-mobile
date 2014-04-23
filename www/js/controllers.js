@@ -182,3 +182,26 @@ module.controller('PetDetailCtrl', function($scope, $stateParams, PetService) {
   // "Pets" is a service returning mock data (services.js)
   $scope.pet = PetService.get($stateParams.petId);
 });
+
+
+module.directive('noDragRight', ['$ionicGesture', function($ionicGesture) {
+  return {
+    restrict: 'A',
+    link: function($scope, $element, $attr) {
+      $ionicGesture.on('dragright', function(e) {
+        e.gesture.srcEvent.preventDefault();
+      }, $element);
+    }
+  }
+}])
+
+module.directive('noDragLeft', ['$ionicGesture', function($ionicGesture) {
+  return {
+    restrict: 'A',
+    link: function($scope, $element, $attr) {
+      $ionicGesture.on('dragleft', function(e) {
+        e.gesture.srcEvent.preventDefault();
+      }, $element);
+    }
+  }
+}])

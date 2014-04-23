@@ -7,18 +7,9 @@
     <div class="list card">
 
       <div class="item">
-	<!-- <img src="{{image}}"> -->
-	<table style="overflow-x: scroll">
-	  <tr>
-	    <td>
-	      <img src="{{image}}" style="vertical-align: middle; height: 80px;">
-	    </td>
-	    <td>
-	      <h1 align="middle"> {{ title }} </h1>
-	      <p align="middle"> {{uri}} </p>
-	    </td>
-	  </tr>
-	</table>
+	<img src="{{image}}" ng-show="!(image == undefined)" style="width: 100px; display: block; margin: 0 auto;">
+	<h1 align="middle"> {{title}} </h1>
+	<p align="middle"> {{uri}} </p>
       </div>
 
       <div ng-show="obodef" class="item item-body">
@@ -29,7 +20,7 @@
 	</div>
 	<div class="item item-text-wrap">
 	  <!-- <p class="appComment">{{ obodef }}</p> -->
-	  {{ obodef }}
+	  {{obodef}}
 	</div>
 	
 	<div class="item item-divider">
