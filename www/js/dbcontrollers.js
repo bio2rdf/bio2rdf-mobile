@@ -3,34 +3,6 @@ var module = angular.module('starter.dbcontrollers', [])
 
 // OBO
 module.controller('OboCtrl', function($scope, $stateParams, Queryer, ProcessGraph, DatasetStore, QuickLinks, Utilities) {
-  
-  function getWikiImage () {
-
-    // Add wiki image either with X link on the id or generic name
-    var code = $scope.uri.split("_");
-
-    Queryer.setQuery(DatasetStore.current[0],'wiki_image', 'json-ld', {"parm1" : code[code.length-1] });
-
-    Queryer.getJson().success(function(wikiData){ 
-      if (wikiData["http://xmlns.com/foaf/0.1/depiction"] != undefined){
-        $scope.image = wikiData["http://xmlns.com/foaf/0.1/depiction"]["@id"];
-      }
-    });
-
-    // Try a generic query to wiki based on the label
-    // <http://dbpedia.org/resource/{{label}}> foaf:depiction $image
-    if($scope.image === undefined){
-      var uri = "http://dbpedia.org/resource/" + Utilities.capitalize($scope.title);
-      Queryer.setQuery('wiki','image', 'json-ld', {"uri" : uri });
-      Queryer.getJson().success(function(wikiData2){ 
-        if (wikiData2["http://xmlns.com/foaf/0.1/depiction"] != undefined){
-          $scope.image = wikiData2["http://xmlns.com/foaf/0.1/depiction"]["@id"];
-        }
-      });
-
-    }
-
-  }
 
   $scope.uri = $stateParams.uri;
 
@@ -73,9 +45,19 @@ module.controller('OboCtrl', function($scope, $stateParams, Queryer, ProcessGrap
       });
     }
 
-    QuickLinks.addLink({uri:$scope.uri, label: $scope.title, db: DatasetStore.current[0]});
 
-    getWikiImage();
+    // Fetch Image from Wiki
+    ProcessGraph.getWikiImageUri($scope.uri).then(function(promise){
+      $scope.image = promise.data["http://xmlns.com/foaf/0.1/depiction"]["@id"];
+    });
+
+    if ($scope.image == undefined){
+      ProcessGraph.getWikiImageLabel($scope.title).then(function(promise){
+        $scope.image = promise.data["http://xmlns.com/foaf/0.1/depiction"]["@id"];
+      });
+    }
+
+    QuickLinks.addLink({uri:$scope.uri, label: $scope.title, db: DatasetStore.current[0]});
 
   });
 

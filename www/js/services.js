@@ -265,7 +265,9 @@ angular.module('starter.services', [])
 
   })
 
-  .factory('ProcessGraph',function(ReplacePrefixesService){
+  .factory('ProcessGraph',function($q, ReplacePrefixesService, Queryer, DatasetStore, Utilities){
+
+
     var process = function(data){
       ReplacePrefixesService.replacePrefix(data);
       uriContainer={}
@@ -274,9 +276,47 @@ angular.module('starter.services', [])
       });
       return uriContainer;
     }
-    return {
-      graph : process
+
+    // Try to fetch image with direct associated link in dbpedia
+    var getWikiImageUri = function (uri) {
+      
+      var querySuccessful = 0;
+      var code = uri.split("_");
+      Queryer.setQuery(DatasetStore.current[0],'wiki_image', 'json-ld', {"parm1" : code[code.length-1] });
+      var image = Queryer.getJson().success(function(wikiData){ 
+        if (wikiData["http://xmlns.com/foaf/0.1/depiction"] != undefined){
+          // return wikiData["http://xmlns.com/foaf/0.1/depiction"]["@id"];
+          return wikiData;
+        }
+      });
+
+      return image;
     }
+
+
+    // Try a generic query to dbpedia based on the label
+    // <http://dbpedia.org/resource/{{label}}> foaf:depiction $image
+    var getWikiImageLabel = function (label) {
+      
+      var querySuccessful = 0;
+      var uri = "http://dbpedia.org/resource/" + Utilities.capitalize(label);
+      Queryer.setQuery('wiki','image', 'json-ld', {"uri" : uri });
+      var image = Queryer.getJson().success(function(wikiData){ 
+        return wikiData;
+      });
+
+      return image;
+    }
+
+
+
+
+    return {
+      graph : process,
+      getWikiImageUri: getWikiImageUri,
+      getWikiImageLabel: getWikiImageLabel
+    }
+
   })
 
 
