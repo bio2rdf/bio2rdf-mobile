@@ -68,17 +68,17 @@ module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, Proces
 
 
 // Event controller to toggle side panels with buttons
-module.controller('MainCtrl', function($scope, $location, DatasetStore) {
+module.controller('MainCtrl', function($scope, $location, $ionicSideMenuDelegate, DatasetStore) {
 
   $scope.headerImg = function () {
     return DatasetStore.all[DatasetStore.current[0]].foafDepiction;
   }
 
   $scope.toggleLeftPanel = function() {
-    $scope.sideMenuController.toggleLeft();
+    $ionicSideMenuDelegate.toggleLeft();
   };
   $scope.toggleRightPanel = function() {
-    $scope.sideMenuController.toggleRight();
+    $ionicSideMenuDelegate.toggleRight();
   };
 
 });
@@ -107,7 +107,6 @@ module.controller('LeftMenuCtrl', function($scope, $location, $ionicLoading, Dat
             tripleCount: data["@graph"][i]["bm:bio2rdf_vocabulary:triple_count"],
             foafDepiction: data["@graph"][i]['http://xmlns.com/foaf/0.1/depiction']['@id']
           });
-        
 
           DatasetStore.all[id] = {
             title: data["@graph"][i]["dc:title"],
@@ -134,11 +133,10 @@ module.controller('LeftMenuCtrl', function($scope, $location, $ionicLoading, Dat
   $scope.changeCurrentDatabase = function(dbId) {
     DatasetStore.current = [dbId];
     $location.path("#/tab/search");
-    $scope.sideMenuController.toggleLeft();
+    $scope.toggleLeftPanel();
   };
 
 });
-
 
 
 module.controller('RightMenuCtrl', function($scope, $location, $ionicLoading, $window, DatasetStore, QuickLinks){

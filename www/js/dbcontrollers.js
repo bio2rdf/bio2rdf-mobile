@@ -1,8 +1,8 @@
 var module = angular.module('starter.dbcontrollers', [])
 
 
-// OBO
-module.controller('OboCtrl', function($scope, $stateParams, Queryer, ProcessGraph, DatasetStore, QuickLinks, Utilities) {
+// OBO controller
+module.controller('OboCtrl', function($scope, $stateParams, $ionicSideMenuDelegate, $timeout, Queryer, ProcessGraph, DatasetStore, QuickLinks, Utilities) {
 
   $scope.uri = $stateParams.uri;
 
@@ -45,7 +45,6 @@ module.controller('OboCtrl', function($scope, $stateParams, Queryer, ProcessGrap
       });
     }
 
-
     // Fetch Image from Wiki
     ProcessGraph.getWikiImageUri($scope.uri).then(function(promise){
       $scope.image = promise.data["http://xmlns.com/foaf/0.1/depiction"]["@id"];
@@ -62,7 +61,14 @@ module.controller('OboCtrl', function($scope, $stateParams, Queryer, ProcessGrap
   });
 
 
+  var reDragSideMenus = function (){
+    $ionicSideMenuDelegate.canDragContent(true);
+  }
 
+  $scope.unSetDragging = function () {
+    $ionicSideMenuDelegate.canDragContent(false);
+    $timeout(reDragSideMenus,3000);
+  }
 
 });
 

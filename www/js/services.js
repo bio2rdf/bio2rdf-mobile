@@ -309,8 +309,6 @@ angular.module('starter.services', [])
     }
 
 
-
-
     return {
       graph : process,
       getWikiImageUri: getWikiImageUri,

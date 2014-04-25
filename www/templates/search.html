@@ -3,9 +3,10 @@
   It was wired up in the app config (app.js) 
   The 'pets' data comes from its $scope within PetIndexCtrl (controller.js)
 -->
+<ion-nav-bar></ion-nav-bar>
 <ion-view title="'Search'">
 
-  <ion-content has-header="true" has-tabs="true" on-infinite-scroll="querySearch(0)" drag-content="true">
+  <ion-content has-tabs="true" on-infinite-scroll="querySearch(0)">
 
     <!-- SEARCH BAR -->
     <div class="list list-inset" ng-show="!initPage()">
