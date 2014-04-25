@@ -97,7 +97,7 @@ PREFIX up:<http://purl.uniprot.org/core/>
 SELECT ?name
 WHERE 
 {
-  { 
+  {
     <http://purl.uniprot.org/uniprot/C7C422> up:recommendedName ?nameSha .
     ?nameSha up:fullName ?name .
   }
@@ -234,9 +234,9 @@ WHERE
 # RecommandedName if Swissprot if Uniprot only SubmittedName..
 PREFIX up:<http://purl.uniprot.org/core/>
 SELECT ?prot ?name
-WHERE 
+WHERE
 {
-  { 
+  {
     ?prot up:recommendedName ?nameSha .
     ?nameSha up:fullName ?name .
   }
@@ -245,5 +245,34 @@ WHERE
     ?prot up:submittedName ?nameSha .
     ?nameSha up:fullName ?name .
   }
+filter (?prot = <http://purl.uniprot.org/uniprot/C7C422>)
+} limit 100
+
+
+# Construct DESCRIBE
+select $s $p $o
+where {
+  $s $p $o .
+  filter ($s = <http://purl.uniprot.org/uniprot/C7C422>)
 }
 
+
+PREFIX up:<http://purl.uniprot.org/core/>
+PREFIX skos:<http://www.w3.org/2004/02/skos/core#> 
+CONSTRUCT {
+?prot <http://bio2rdf.org/m_vocabulary:uniprot_gene> ?geneName .
+?prot <http://bio2rdf.org/m_vocabulary:uniprot_sequence> ?aa .
+}
+WHERE
+{
+  ?prot a up:Protein . 
+  ?prot up:encodedBy ?gene .
+  ?gene skos:prefLabel ?geneName . 
+  ?prot up:sequence ?sequence .
+  ?sequence rdf:value ?aa .
+  filter (?protein = <http://purl.uniprot.org/uniprot/C7C422>)
+}
+
+
+<http://purl.uniprot.org/uniprot/C7C422>
+<http://purl.uniprot.org/uniprot/E9NWK5>
