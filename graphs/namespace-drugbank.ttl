@@ -1,0 +1,2 @@
+<http://bio2rdf.org/namespace:drugbank> a <http://endpoint.bio2rdf.org/resource>;
+        <http://bio2rdf.org/bio2rdf_vocabulary:sparql_describebeta> " http://drugbank.bio2rdf.org/sparql?default-graph-uri=&query=construct+%7B%0D%0A%3C$URI$%3E+%3Fp+%3Fo+.%0D%0A%3C$URI$%3E+%3Fp2+%3Furi+.%0D%0A%3Furi+rdfs%3Alabel+%3Flabel+.%0D%0A%7Dwhere%7B%0D%0A%3C$URI$%3E+%3Fp+%3Fo+.%0D%0A%3C$URI$%3E+%3Fp2+%3Furi+.%0D%0A%3Furi+rdfs%3Alabel+%3Flabel+.%0D%0A%7D&format=application%2Frdf%2Bxml&debug=on&timeout=" .

@@ -1,0 +1,68 @@
+<!--
+    This template loads for the 'tab.describe' state (app.js)
+  -->
+<ion-nav-bar></ion-nav-bar>
+<ion-view title="'Describe Page'">
+
+  <ion-content has-header="true" has-tabs="true" padding="true">
+
+  <div ng-show="main">
+
+      <div class="item">
+	<img src="{{ image }}" ng-show="!(image == undefined)" style="width: 100px; display: block; margin: 0 auto;">
+	<h1 align="middle"> {{ main["rdfs:label"]["@value"] }} </h1>
+	<p align="middle"> {{ uri }} </p>
+      </div>
+
+      <!--<div ng-show="1" class="item item-body">-->
+
+	<div class="item item-divider" ng-click="identificationCheck = !identificationCheck">
+	  <!-- <h3><b>Definition :</b></h3> -->
+	  Identification <span style="text-align:right"></span>
+	</div>
+	<div class="item item-text-wrap" ng-hide="identificationCheck"> 
+	  <!-- <p class="appComment">{{ obodef }}</p> -->
+	  <b>Type:</b><br>{{ main["drugbank_vocabulary:category"].join(", ") }}<br>
+          <hr style="width: 60%">
+	  <b>Description:</b><br>{{ main["dcterms:description"]["@value"] }}<br>
+          <hr style="width: 60%">
+          <b>Synonyms:</b><br>{{ mergeArray(main["drugbank_vocabulary:synonym"]).join(", ")}}<br>
+	</div>
+
+	<div class="item item-divider">
+	  
+	</div>
+	<div class="item item-text-wrap">
+	  <ion-scroll direction="x" on-scroll="unSetDragging()">
+	    <span ng-repeat="i in obosuperclasses track by $index">
+              <a class="button button-small button-royal" href="#/tab/describe-chebi?uri={{i['@id']}}">{{ i['rdfs:label'] }}</a>
+	    </span>
+	  </ion-scroll>
+	</div>
+
+	<div class="item item-divider">
+	  SubClasses
+	</div>
+	<div class="item" drag-content="false">
+	  <ion-scroll direction="x" on-scroll="unSetDragging()">
+	    <span ng-repeat="j in obosubclasses track by $index">
+	      <a class="button button-small button-royal" href="#/tab/describe-chebi?uri={{j['@id']}}">{{ j['rdfs:label'] }}</a>
+	    </span>
+	  </ion-scroll>
+	</div>
+
+	<div class="item item-divider">
+	  Database cross-references
+	</div>
+	<div class="item item-text-wrap">
+	  <ul class="mobileList">
+	    <li class="mobileListItem" ng-repeat="refs in xrefs">{{ refs }}</li>
+	  </ul>
+	</div>
+	
+        <!--</div>-->
+      
+        </div>
+
+  </ion-content>
+</ion-view>
