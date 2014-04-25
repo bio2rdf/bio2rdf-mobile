@@ -33,6 +33,16 @@ angular.module('starter', ['ionic', 'starter.services', 'starter.controllers', '
         }
       })
 
+      .state('tab.describe-drugbank', {
+        url: '/describe-drugbank?uri',
+        views: {
+          'describe-tab': {
+            templateUrl: 'templates/describe_drugbank.html',
+            controller: 'DrugBankCtrl'
+          }
+        }
+      })
+
       .state('tab.describe-doid', {
         url: '/describe-doid?uri',
         views: {
