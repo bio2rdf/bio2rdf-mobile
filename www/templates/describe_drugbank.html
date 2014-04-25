@@ -14,14 +14,10 @@
 	<p align="middle"> {{ uri }} </p>
       </div>
 
-      <!--<div ng-show="1" class="item item-body">-->
-
 	<div class="item item-divider" ng-click="identificationCheck = !identificationCheck">
-	  <!-- <h3><b>Definition :</b></h3> -->
-	  Identification <span style="text-align:right"></span>
+	  Identification
 	</div>
 	<div class="item item-text-wrap" ng-hide="identificationCheck"> 
-	  <!-- <p class="appComment">{{ obodef }}</p> -->
 	  <b>Type:</b><br>{{ main["drugbank_vocabulary:category"].join(", ") }}<br>
           <hr style="width: 60%">
 	  <b>Description:</b><br>{{ main["dcterms:description"]["@value"] }}<br>

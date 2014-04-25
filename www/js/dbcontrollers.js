@@ -14,6 +14,8 @@ module.controller('OboCtrl', function($scope, $stateParams, $ionicSideMenuDelega
     var idList=ProcessGraph.graph(data);
     var main = idList[$stateParams.uri]
 
+    $scope.main = main;
+
     $scope.title = Utilities.capitalize(main["rdfs:label"])
     $scope.obodef = main["obolibrary:IAO_0000115"]
 

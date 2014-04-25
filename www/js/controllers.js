@@ -48,7 +48,6 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
       }
 
       $scope.$broadcast('scroll.infiniteScrollComplete');
-
     })
   };
 

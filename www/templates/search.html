@@ -6,7 +6,7 @@
 <ion-nav-bar></ion-nav-bar>
 <ion-view title="'Search'">
 
-  <ion-content has-tabs="true" on-infinite-scroll="querySearch(0)">
+  <ion-content>
 
     <!-- SEARCH BAR -->
     <div class="list list-inset" ng-show="!initPage()">
@@ -31,7 +31,8 @@
       </ion-item>
     </ion-list>
 
-    <ion-infinite-scroll ng-if="moreItemsAvailable"></ion-infinite-scroll>
+    <ion-infinite-scroll ng-if="moreItemsAvailable" on-infinite="querySearch(0)"></ion-infinite-scroll>
 
   </ion-content>
+
 </ion-view>

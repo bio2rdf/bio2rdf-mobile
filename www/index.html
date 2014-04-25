@@ -75,7 +75,7 @@
 
 	  <ion-list style="margin-top: 15px">
 	    <ion-item class="dbItem" ng-repeat="db in databases | filter:searchText | orderBy:'tripleCount':true" type="item-text-wrap" item="db.title" ng-click="changeCurrentDatabase(db.id);" my-on-hold="onItemHold(item)">
-	      <img src="{{db.foafDepiction}}" style="display: inline; height: 40px; vertical-align:middle"/>
+	      <img src="{{db.foafDepiction}}" style="display: inline; height: 35px; vertical-align:middle"/>
 	      <h2 style="display: inline; margin-left: 10px">{{db.title}}</h2>
 	      <p style="text-align: right; font-style: italic"> {{db.tripleCount | number}} triples </p>
 	    </ion-item>
@@ -92,11 +92,12 @@
 
 	<ion-content>
 
-	  <hr>
-	  <h4 class="rightMenu"> Quick Links </h4>
-	  <hr>
 
-	  <ion-list style="margin-top: 15px">
+	  <div class="item item-divider" ng-click="quickLinksCheck = !quickLinksCheck">
+	    <h4 class="rightMenu"> Quick Links </h4>
+	  </div>
+	  
+	  <ion-list style="margin-top: 15px" ng-hide="quickLinksCheck">
 	    <ion-item class="quickLinkItem" ng-repeat="l in links" ng-click="goToDescribe(l)">
 	      <img src="{{getImg(l.db)}}" style="padding: 5px; height: 35px; vertical-align: middle">
 	      {{l.label}}
