@@ -28,14 +28,23 @@
     margin-top: 5px;
 }
 
-
-h4.rightMenu {
+.rightMenu {
     display: table;
     margin: 0 auto;
     padding: 5px;
     width: 100%;
     text-align: center;
+    margin-top: 10px;
+}
+.rightMenu.active {
     background-color: #8a6de9;
     color: white;
-    margin-top: 10px;
+}
+.rightMenu.inactive {
+    background-color: #cec2f6;
+    color: black;
+}
+
+.item.item-divider.inactive {
+    background-color: #dcdcdc;
 }

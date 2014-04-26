@@ -14,7 +14,7 @@
 	<p align="middle"> {{ uri }} </p>
       </div>
 
-	<div class="item item-divider" ng-click="identificationCheck = !identificationCheck">
+	<div class="item item-divider" ng-class="{'inactive':identificationCheck}"ng-click="identificationCheck = !identificationCheck">
 	  Identification
 	</div>
 	<div class="item item-text-wrap" ng-hide="identificationCheck"> 
