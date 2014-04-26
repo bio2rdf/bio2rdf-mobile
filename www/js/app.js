@@ -33,6 +33,18 @@ angular.module('starter', ['ionic', 'starter.services', 'starter.controllers', '
         }
       })
 
+
+      .state('tab.describe-uniprot', {
+        url: '/describe-uniprot?uri',
+        views: {
+          'describe-tab': {
+            templateUrl: 'templates/describe_uniprot.html',
+            controller: 'UniprotCtrl'
+          }
+        }
+      })
+
+
       .state('tab.describe-drugbank', {
         url: '/describe-drugbank?uri',
         views: {

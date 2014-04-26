@@ -260,16 +260,19 @@ where {
 PREFIX up:<http://purl.uniprot.org/core/>
 PREFIX skos:<http://www.w3.org/2004/02/skos/core#> 
 CONSTRUCT {
-?prot <http://bio2rdf.org/m_vocabulary:uniprot_gene> ?geneName .
+?prot rdfs:label ?protName .
 ?prot <http://bio2rdf.org/m_vocabulary:uniprot_gene> ?geneName .
 ?prot <http://bio2rdf.org/m_vocabulary:uniprot_sequence> ?aa .
 ?prot <http://bio2rdf.org/m_vocabulary:uniprot_organismUri> ?org .
 ?prot <http://bio2rdf.org/m_vocabulary:uniprot_organismName> ?taxon .
 ?prot <http://bio2rdf.org/m_vocabulary:uniprot_isCurated> ?rev .
+?sha <http://bio2rdf.org/m_vocabulary:uniprot_annotation> ?comment .
+?sha <http://bio2rdf.org/m_vocabulary:uniprot_annotationType> ?annotationType .  
 }
 WHERE
 {
-  ?prot a up:Protein . 
+  ?prot a up:Protein .
+  ?prot rdfs:label ?label .
   ?prot up:encodedBy ?gene .
   ?gene skos:prefLabel ?geneName . 
   ?prot up:sequence ?sequence .
@@ -277,6 +280,11 @@ WHERE
   ?prot up:organism ?org .
   ?org up:scientificName ?taxon .
   ?prot up:reviewed ?rev .
+  optional {
+    ?prot up:annotation ?sha .
+    ?sha rdf:type ?annotationType .
+    ?sha rdfs:comment ?comment .
+  }
   filter (?prot = <http://purl.uniprot.org/uniprot/C7C422>)
 }
 
@@ -287,6 +295,7 @@ select *
 WHERE
 {
   ?prot a up:Protein . 
+  ?prot rdfs:label ?proteinName .
   ?prot up:encodedBy ?gene .
   ?gene skos:prefLabel ?geneName . 
   ?prot up:sequence ?sequence .
