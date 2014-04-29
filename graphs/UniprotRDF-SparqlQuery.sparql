@@ -267,7 +267,7 @@ CONSTRUCT {
 ?prot <http://bio2rdf.org/m_vocabulary:uniprot_organismName> ?taxon .
 ?prot <http://bio2rdf.org/m_vocabulary:uniprot_isCurated> ?rev .
 ?sha <http://bio2rdf.org/m_vocabulary:uniprot_annotation> ?comment .
-?sha <http://bio2rdf.org/m_vocabulary:uniprot_annotationType> ?annotationType .  
+?sha <http://bio2rdf.org/m_vocabulary:uniprot_annotationType> ?annotationType .
 }
 WHERE
 {
@@ -297,7 +297,8 @@ WHERE
   ?prot a up:Protein . 
   ?prot rdfs:label ?proteinName .
   ?prot up:encodedBy ?gene .
-  ?gene skos:prefLabel ?geneName . 
+  ?gene skos:prefLabel ?geneName .
+  ?prot up:alternativeName ?altNameSha .
   ?prot up:sequence ?sequence .
   ?sequence rdf:value ?aa .
   ?prot up:organism ?org .

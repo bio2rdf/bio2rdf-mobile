@@ -318,6 +318,45 @@ angular.module('starter.services', [])
   })
 
 
+  .factory('FavoriteService', function(){  
+    
+    // Transaction error callback
+    function errorCB(err) {
+      console.log("Error processing SQL: "+ err.code);
+    }
+
+    // Add a row to the database
+    var populateDatabase = function (rowData) {
+      function populateDBcall(tx) {
+        console.log(rowData);
+        tx.executeSql('CREATE TABLE IF NOT EXISTS FAVORITES (id unique, db, uri, timestamp)');
+        tx.executeSql('INSERT INTO FAVORITES (id, uri, db, timestamp) VALUES (?,?,?,?)', 
+                      [rowData.id, rowData.db, rowData.uri, rowData.time] );
+      }
+      db.transaction(populateDBcall, errorCB);
+    }
+
+    var queryDatabase = function(SQLquery, querySuccess) {
+      // Query the database
+      function queryDBcall(tx) {
+        return tx.executeSql(SQLquery, [], querySuccess, errorCB);
+      }
+
+      db.transaction(queryDBcall, errorCB);
+    }
+
+    var db = window.openDatabase("Favorites", "1.0", "Favorites", 200000);
+
+    return {
+      populateDatabase: populateDatabase,
+      queryDatabase: queryDatabase
+    }
+
+  })
+
+
+
+
   .factory('Utilities', function(){
 
     var capitalize = function (string){
@@ -328,4 +367,6 @@ angular.module('starter.services', [])
       capitalize: capitalize      
     }
 
+
   });
+

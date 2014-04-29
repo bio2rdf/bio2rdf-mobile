@@ -13,4 +13,5 @@
     <preference name="webviewbounce" value="true" />
     <preference name="UIWebViewBounce" value="true" />
     <preference name="DisallowOverscroll" value="true" />
+    <plugin name="Storage" value="org.apache.cordova.Storage" />
 </widget>

@@ -10,19 +10,20 @@
 
       <div class="item">
 	<img src="{{ image }}" ng-show="!(image == undefined)" style="width: 100px; display: block; margin: 0 auto;">
-	<h1 align="middle"> {{ main["bm:m_vocabulary:uniprot_gene"] }} </h1>
+	<h1 align="middle"> {{ main["rdfs:label"] }} </h1>
 	<p align="middle"> {{ uri }} </p>
       </div>
 
 	<div class="item item-divider" ng-class="{'inactive':identificationCheck}"ng-click="identificationCheck = !identificationCheck">
-	  Identification
+	  Names and origin
 	</div>
-	<div class="item item-text-wrap" ng-hide="identificationCheck"> 
-	  <b>Type:</b><br>{{ main["drugbank_vocabulary:category"].join(", ") }}<br>
+	<div class="item item-text-wrap" ng-hide="identificationCheck">
+	  <b>Recommanded Name:</b><br>{{ main["drugbank_vocabulary:category"].join(", ") }}<br>
+	  <b>Short Name:</b><br>{{ main["drugbank_vocabulary:category"].join(", ") }}<br>
+	  <b>Alternative Name:</b><br>{{ main["drugbank_vocabulary:category"].join(", ") }}<br>
           <hr style="width: 60%">
-	  <b>Description:</b><br>{{ main["dcterms:description"]["@value"] }}<br>
-          <hr style="width: 60%">
-          <b>Synonyms:</b><br>{{ mergeArray(main["drugbank_vocabulary:synonym"]).join(", ")}}<br>
+	  <b>Organism:</b><br>{{ main["drugbank_vocabulary:category"].join(", ") }}<br>
+	  <b>Encoded On:</b><br>{{ main["drugbank_vocabulary:category"].join(", ") }}<br>	  
 	</div>
 
 	<div class="item item-divider">

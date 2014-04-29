@@ -80,6 +80,7 @@ module.controller('MainCtrl', function($scope, $location, $ionicSideMenuDelegate
     $ionicSideMenuDelegate.toggleRight();
   };
 
+
 });
 
 
@@ -155,9 +156,29 @@ module.controller('RightMenuCtrl', function($scope, $location, $ionicLoading, $w
 });
 
 
-module.controller('FavoriteCtrl', function($scope, $location, DatasetStore, DatasetService, ReplacePrefixesService){
+module.controller('FavoriteCtrl', function($scope, $location, DatasetStore, DatasetService, FavoriteService){
 
   DatasetStore.current = ["favorite"];
+
+  function querySuccess(tx, results) {
+    $scope.result = [];
+    var len = results.rows.length;
+    var res = [];
+    console.log("DEMO table: " + len + " rows found.");
+    for (var i=0; i<len; i++){
+      console.log("Row = " + i + " ID = " + results.rows.item(i).db + " Data =  " + results.rows.item(i).uri + " ZZ = " + results.rows.item(i).time);
+      $scope.result.push(results.rows.item(i).id);
+    }
+    $scope.$apply();
+  }
+
+  FavoriteService.queryDatabase('SELECT * FROM FAVORITES', querySuccess);
+  
+  $scope.populateDatabase = function (i){
+    var now = Date.now();
+    FavoriteService.populateDatabase({id: "chebi_currentURI"+i, db: "chebi", uri: "currentURI"+i, time: now});
+  }
+
 
 });
 
