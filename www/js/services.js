@@ -206,15 +206,15 @@ angular.module('starter.services', [])
   })
 
 
-  .factory('DatasetService', function(Queryer){
+  .factory('DatasetService', function(Queryer, DatasetStore){
 
     var listDatabases = function () {
       Queryer.setQuery('endpoint_mother','listDB','json-ld',{});
       return Queryer;
     }
 
-    var setUpDatasetOjb = function() {
-      return "yoyo";
+    var setUpDatasetOjb = function(db) {
+      DatasetStore.current = [db];
     }
 
 
@@ -325,30 +325,53 @@ angular.module('starter.services', [])
       console.log("Error processing SQL: "+ err.code);
     }
 
+    var createTable = function () {
+      function createFavoritesTable(tx) {
+        tx.executeSql('CREATE TABLE IF NOT EXISTS FAVORITES (id unique, db, uri, label, timestamp)');
+      }
+      db.transaction(createFavoritesTable, errorCB);
+    }
+
+    var dropTable = function () {
+      function dropFavoritesTable (tx) {
+        tx.executeSql('DROP TABLE IF EXISTS FAVORITES');
+      }
+      db.transaction(dropFavoritesTable, errorCB);      
+    }
+
     // Add a row to the database
-    var populateDatabase = function (rowData) {
+    var insertIntoDB = function (rowData) {
       function populateDBcall(tx) {
-        console.log(rowData);
-        tx.executeSql('CREATE TABLE IF NOT EXISTS FAVORITES (id unique, db, uri, timestamp)');
-        tx.executeSql('INSERT INTO FAVORITES (id, uri, db, timestamp) VALUES (?,?,?,?)', 
-                      [rowData.id, rowData.db, rowData.uri, rowData.time] );
+        tx.executeSql('CREATE TABLE IF NOT EXISTS FAVORITES (id unique, db, uri, label, timestamp)');
+        tx.executeSql('INSERT INTO FAVORITES (id, uri, db, label, timestamp) VALUES (?,?,?,?,?)', 
+                      [rowData.id, rowData.uri, rowData.db, rowData.label, rowData.time]);
       }
       db.transaction(populateDBcall, errorCB);
     }
 
-    var queryDatabase = function(SQLquery, querySuccess) {
+    // Delete a row from the database
+    var deleteFromDB = function (rowID) {
+      function populateDBcall(tx) {
+        tx.executeSql('DELETE FROM FAVORITES WHERE id = (?)', 
+                      [rowID]);
+      }
+      db.transaction(populateDBcall, errorCB);
+    }
+
+    var queryDatabase = function(SQLquery, queryArguments, querySuccess) {
       // Query the database
       function queryDBcall(tx) {
-        return tx.executeSql(SQLquery, [], querySuccess, errorCB);
+        return tx.executeSql(SQLquery, queryArguments, querySuccess, errorCB);
       }
-
       db.transaction(queryDBcall, errorCB);
     }
 
     var db = window.openDatabase("Favorites", "1.0", "Favorites", 200000);
+    createTable();
 
     return {
-      populateDatabase: populateDatabase,
+      insertIntoDB: insertIntoDB,
+      deleteFromDB: deleteFromDB,
       queryDatabase: queryDatabase
     }
 
@@ -356,15 +379,45 @@ angular.module('starter.services', [])
 
 
 
-
-  .factory('Utilities', function(){
+  .factory('Utilities', function(DatasetStore){
 
     var capitalize = function (string){
       return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
+    var checkForLanguage = function (object) {
+      if (typeof object == 'object'){
+        if (object instanceof Array ) {
+          for(var i in object){
+            if (object[i]["@language"] == "en") {
+              return object[i]["@value"];
+            }
+          }
+        } else {
+          return object["@value"];
+        }
+      } else {
+        return object;
+      }
+      // if valide and nothing returns then no english,
+      // return first language then.
+      return object[0]["@value"];
+    }
+
+
+    var grepDBfromURI = function (uri) {
+      for (var k in DatasetStore.all) {
+        if (uri.indexOf(DatasetStore.all[k]["url_identifier"]) > -1 ){
+          DatasetStore.current = [k];
+        }
+      }
+    }
+
+
     return {
-      capitalize: capitalize      
+      capitalize: capitalize,
+      checkForLanguage: checkForLanguage,
+      grepDBfromURI: grepDBfromURI
     }
 
 

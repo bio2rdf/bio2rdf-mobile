@@ -8,8 +8,12 @@
 
 <http://bio2rdf.org/namespace:wiki> a <http://endpoint.bio2rdf.org/resource>;
    <http://purl.org/dc/elements/1.1/title> "DBpedia (wiki) helper";
-   <http://bio2rdf.org/bio2rdf_vocabulary:sparql_image> " http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query=construct+%7B%0D%0A%3C%24URI%24%3E+foaf%3Adepiction+%3Fimage+.%0D%0A%7D%0D%0Awhere+%7B%0D%0A%3C$URI$%3E+foaf%3Adepiction+%3Fimage%0D%0A%7D&format=application%2Frdf%2Bxml&timeout=30000&debug=on";
-   <http://bio2rdf.org/bio2rdf_vocabulary:sparql_graph> " http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query=construct+%7B%0D%0A%3C%24URI%24%3E+%3Fp+%3Fo+.%0D%0A%7D%0D%0Awhere+%7B%0D%0A%3C$URI$%3E+%3Fp+%3Fo+.%0D%0A%7D&format=application%2Frdf%2Bxml&timeout=30000&debug=on" .
+   <http://bio2rdf.org/bio2rdf_vocabulary:sparql_image> " http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query=construct+%7B%0D%0A%3C%24URI%24%3E+foaf%3Adepiction+%3Fimage%0D%0A%7D%0D%0Awhere+%7B%0D%0A%3C%24URI%24%3E+foaf%3Adepiction+%3Fimage%0D%0A%7D&format=application%2Frdf%2Bxml&timeout=30000&debug=on";
+   <http://bio2rdf.org/bio2rdf_vocabulary:sparql_graph> " http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query=construct+%7B%0D%0A%3C%24URI%24%3E+%3Fp+%3Fo+.%0D%0A%7D%0D%0Awhere+%7B%0D%0A%3C$URI$%3E+%3Fp+%3Fo+.%0D%0A%7D&format=application%2Frdf%2Bxml&timeout=30000&debug=on";
+   <http://bio2rdf.org/bio2rdf_vocabulary:sparql_test> " http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query=describe+%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FAsthma%3E&format=application%2Frdf%2Bxml&timeout=30000&debug=on";
+   <http://bio2rdf.org/bio2rdf_vocabulary:test> "/wiki/test/json-ld?parm1=asthm&parm2=0";
+   <http://bio2rdf.org/bio2rdf_vocabulary:test> "/wiki/graph/json-ld?uri=http://dbpedia.org/resource/Quetiapine";
+   <http://bio2rdf.org/bio2rdf_vocabulary:test> "/wiki/image/json-ld?uri=http://dbpedia.org/resource/Asthma" .   
 
 <http://bio2rdf.org/namespace:doid> a <http://endpoint.bio2rdf.org/resource>;
    <http://purl.org/dc/elements/1.1/title> "Disease Ontology";
@@ -47,7 +51,7 @@
    <http://bio2rdf.org/bio2rdf_vocabulary:sparql_wiki_graph> " http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query=construct+%7B%0D%0A++%3Fs+%3Fp+%3Fo%0D%0A%7D%0D%0Awhere+%7B%0D%0A++%3Fs+%3Fp+%3Fo+.%0D%0A++%3Fs+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FgoCode%3E+%22$PARM1$%22%5E%5Exsd%3Ainteger+.%0D%0A%7D&format=application%2Frdf%2Bxml&timeout=30000&debug=on";
 <http://bio2rdf.org/bio2rdf_vocabulary:sparql_wiki_image> " http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query=construct+%7B%0D%0A++%3Fs+foaf%3Adepiction+%3Fo%0D%0A%7D%0D%0Awhere+%7B%0D%0A++%3Fs+foaf%3Adepiction+%3Fo+.%0D%0A++%3Fs+%3Chttp%3A%2F%2Fdbpedia.org%2Fproperty%2FgoCode%3E+%22$PARM1$%22%5E%5Exsd%3Ainteger+.%0D%0A%7D%0D%0A&format=application%2Frdf%2Bxml&timeout=30000&debug=on";
    <http://bio2rdf.org/bio2rdf_vocabulary:test> "/go/search_ns/json-ld?parm1=infectio&parm2=0";
-   <http://bio2rdf.org/bio2rdf_vocabulary:test> "/go/wiki_graph/json-ld?parm1=4396" .
+   <http://bio2rdf.org/bio2rdf_vocabulary:test> "/go/wiki_image/json-ld?parm1=4396" .
 
 
 <http://bio2rdf.org/namespace:chebi> a <http://endpoint.bio2rdf.org/resource>;

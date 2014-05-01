@@ -5,6 +5,9 @@ var module = angular.module('starter.controllers', [])
 module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService, DatasetStore, SearchService) {
 
   $scope.initPage = function () {
+    if (DatasetStore.current[0] == "favorite") {
+      DatasetStore.current[0] = "init";
+    }
     return DatasetStore.current[0] == "init";
   }
 
@@ -76,10 +79,19 @@ module.controller('MainCtrl', function($scope, $location, $ionicSideMenuDelegate
   $scope.toggleLeftPanel = function() {
     $ionicSideMenuDelegate.toggleLeft();
   };
+
   $scope.toggleRightPanel = function() {
     $ionicSideMenuDelegate.toggleRight();
   };
 
+
+  $scope.iconStyle = function () {
+    if($ionicSideMenuDelegate.isOpenRight()) {
+      return 'ion-arrow-graph-down-right';
+    } else {
+      return 'ion-arrow-graph-down-left';
+    }
+  }
 
 });
 
@@ -105,7 +117,8 @@ module.controller('LeftMenuCtrl', function($scope, $location, $ionicLoading, Dat
             id: id,
             title: data["@graph"][i]["dc:title"],
             tripleCount: data["@graph"][i]["bm:bio2rdf_vocabulary:triple_count"],
-            foafDepiction: data["@graph"][i]['http://xmlns.com/foaf/0.1/depiction']['@id']
+            foafDepiction: data["@graph"][i]['http://xmlns.com/foaf/0.1/depiction']['@id'],
+            endpoint: data["@graph"][i]['bm:bio2rdf_vocabulary:endpoint']['@id']
           });
 
           DatasetStore.all[id] = {
@@ -153,32 +166,58 @@ module.controller('RightMenuCtrl', function($scope, $location, $ionicLoading, $w
     DatasetStore.current = [l.db];
   }
 
+  
+
 });
 
 
 module.controller('FavoriteCtrl', function($scope, $location, DatasetStore, DatasetService, FavoriteService){
 
+  $scope.convertTime = function (timestamp) {
+    var date = new Date(timestamp);
+    return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+  }
+
   DatasetStore.current = ["favorite"];
 
+  $scope.datasets = DatasetStore.all;
+
   function querySuccess(tx, results) {
-    $scope.result = [];
+    $scope.result = {};
     var len = results.rows.length;
     var res = [];
-    console.log("DEMO table: " + len + " rows found.");
+
     for (var i=0; i<len; i++){
-      console.log("Row = " + i + " ID = " + results.rows.item(i).db + " Data =  " + results.rows.item(i).uri + " ZZ = " + results.rows.item(i).time);
-      $scope.result.push(results.rows.item(i).id);
+      // $scope.result.push(results.rows.item(i).label);
+      if ($scope.result[results.rows.item(i).db] == undefined){
+        $scope.result[results.rows.item(i).db] = [
+          {
+            id: results.rows.item(i).id,
+            uri: results.rows.item(i).uri,
+            // db: results.rows.item(i).db,
+            label: results.rows.item(i).label,
+            timestamp: results.rows.item(i).timestamp
+          }
+        ];
+
+      } else {
+        $scope.result[results.rows.item(i).db].push({
+          id: results.rows.item(i).id,
+          uri: results.rows.item(i).uri,
+          // db: results.rows.item(i).db,
+          label: results.rows.item(i).label,
+          timestamp: results.rows.item(i).timestamp
+        });
+      }
     }
     $scope.$apply();
   }
 
-  FavoriteService.queryDatabase('SELECT * FROM FAVORITES', querySuccess);
-  
-  $scope.populateDatabase = function (i){
-    var now = Date.now();
-    FavoriteService.populateDatabase({id: "chebi_currentURI"+i, db: "chebi", uri: "currentURI"+i, time: now});
-  }
+  FavoriteService.queryDatabase('SELECT * FROM FAVORITES ORDER BY timestamp DESC', [], querySuccess);
 
+  $scope.deleteBookmark = function (id){
+    FavoriteService.deleteFromDB(id);
+  }
 
 });
 

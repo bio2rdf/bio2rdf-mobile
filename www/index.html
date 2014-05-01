@@ -3,8 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <script src="js/lib/pace.min.js"></script>
-    <link href="css/loading.css" rel="stylesheet">
+
+    <!-- <script src="js/lib/pace.min.js"></script> -->
+    <!-- <link href="css/loading.css" rel="stylesheet"> -->
+
     <title>Bio2RDF-Mobile</title>
     
     <!-- ionic css -->
@@ -28,16 +30,6 @@
     <script src="js/lib/lodash.min.js"</script>
     <script src="cordova.js"></script>
 
-    <script type="text/javascript"> 
-      paceOptions = {
-        ajax: false, // disabled
-        document: false, // disabled
-        eventLag: false, // disabled
-      };
-
-    </script>
-
-
   </head>
   
 
@@ -58,7 +50,7 @@
 	  <h1 class="title">
 	    <img src="{{headerImg()}}" style="height:45px;"/>
 	  </h1>
-	  <button class="button icon ion-arrow-graph-down-left" ng-click="toggleRightPanel()"></button>
+	  <button class="button icon {{iconStyle()}}" ng-click="toggleRightPanel()"></button>
 	</div>
 
 	<!-- 
@@ -75,20 +67,28 @@
       <ion-side-menu side="left" style="background-color: WhiteSmoke" ng-controller="LeftMenuCtrl" drag-content="true">
 	<ion-content>
 
-	  <h3 style="display: table; margin: 0 auto; padding: 10px">
+	  <h3 style="display:table; margin:0 auto; padding:10px">
 	    <img src="{{header['http://xmlns.com/foaf/0.1/depiction']['@id']}}" style="height:45px; vertical-align:middle"/>
 	  </h3>
 
-	  <div style="text-align: center">
+	  <div style="text-align:center">
 	    <input ng-model="searchText" placeholder="Search for a Database" style="display: inline; width: 200px; margin: 0 auto">
 	    <button type="button" ng-click="searchText=''" style="display: inline">x</button>
 	  </div>
 
 	  <ion-list style="margin-top: 15px">
 	    <ion-item class="dbItem" ng-repeat="db in databases | filter:searchText | orderBy:'tripleCount':true" type="item-text-wrap" item="db.title" ng-click="changeCurrentDatabase(db.id);" my-on-hold="onItemHold(item)">
-	      <img src="{{db.foafDepiction}}" style="display: inline; height: 35px; vertical-align:middle"/>
-	      <h2 style="display: inline; margin-left: 10px">{{db.title}}</h2>
-	      <p style="text-align: right; font-style: italic"> {{db.tripleCount | number}} triples </p>
+	      <img src="{{db.foafDepiction}}" style="display: inline; height: 30px; vertical-align: middle"/>
+	      <h2 style="display: inline; margin-left: 10px; color: black;">{{db.title}}</h2>
+	      <p>
+		<span style="float:right; font-style:italic">
+		  {{db.tripleCount | number}} triples
+		</span>
+		<br>
+		<span style="font-style: italic; color: #404073; font-size: small">
+		  {{db.endpoint}} 
+		</span>
+	      </p>
 	    </ion-item>
 	  </ion-list>
 

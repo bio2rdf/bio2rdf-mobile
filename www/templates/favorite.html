@@ -5,13 +5,37 @@
 <ion-view title="'Favorites'">
   <ion-content has-header="true" has-tabs="true" padding="true">
 
-    <ion-list>
-      <ion-item ng-repeat="elem in result track by $index">
-        <h2>{{elem}}</h2>
+
+
+    
+    <!-- <ion-list> -->
+    <!--   <ion-item ng-repeat="elem in result track by $index" ng-click="deleteBookmark(elem)" href="#/tab/describe-{{elem.db}}?uri={{elem.uri}}"> -->
+    <!--     <h2>{{elem.label}}</h2> -->
+    <!--   </ion-item> -->
+    <!-- </ion-list> -->
+
+
+    <ion-list ng-repeat="(db, bookmarks) in result | orderBy : db">
+
+      <div class="item item-divider" ng-click="dbCheck = !dbCheck" ng-class="{'inactive':dbCheck}">
+	<div style="text-align:center">
+	  <img src="{{datasets[db].foafDepiction}}" style="height: 30px; display: inline; vertical-align: middle">
+	  <h2 style="display: inline;">{{db}}</h2>
+	</div>	
+      </div>
+
+      <ion-item ng-repeat="bookmark in bookmarks | orderBy : bookmark.timestamp : reverse" style="text-align:center" ng-hide="dbCheck" href="#/tab/describe-{{db}}?uri={{bookmark.uri}}">
+	<div style="display: inline">
+	  <span style="float: left">{{convertTime(bookmark.timestamp)}} </span>
+	  {{bookmark.label}}
+	  <span style="font-size: small; font-style: italic"> ({{bookmark.uri}}) </span>
+	</div>
       </ion-item>
+
     </ion-list>
 
-    <button class="button" ng-click="populateDatabase(count); count = count+1" ng-init="count=1"> Populate </button>
+
+    <!-- <button class="button" ng-click="populateDatabase(count); count = count+1" ng-init="count=1"> Populate </button> -->
 
   </ion-content>
 
