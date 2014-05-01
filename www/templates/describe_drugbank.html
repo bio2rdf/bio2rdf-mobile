@@ -17,33 +17,69 @@
 	  Structure
 	</div>
 	<div class="item item-text-wrap" ng-hide="imageCheck"> 
-          <img src="{{ image }}" style="width: 40%; display: block; margin: 0 auto;">
+        <!--<div class='row'>-->
+        <!--<div class='col col-67'>-->
+              <img src="{{ image }}" style="width: 60%; display: block; margin: 0 auto;">
+              <!--</div>-->
+              <!--<div class='col'>-->
+              <!--<span ng-show=""><b></b></span>-->
+              <!--</div>-->
+              <!--</div>-->
+              <!--<span ng-show=""><br>-->
 	</div>
 
 	<div class="item item-divider" ng-class="{'inactive':identificationCheck}"ng-click="identificationCheck = !identificationCheck">
 	  Identification
 	</div>
 	<div class="item item-text-wrap" ng-hide="identificationCheck"> 
-	  <b>Type:</b><br>{{ main["drugbank_vocabulary:category"].join(", ") }}<br>
-          <hr style="width: 60%">
-	  <b>Description:</b><br>{{ main["dcterms:description"]["@value"] }}<br>
-          <hr style="width: 60%">
-          <b>Synonyms:</b><br>{{ mergeArray(main["drugbank_vocabulary:synonym"]).join(", ")}}<br>
+	  <span ng-show="main['drugbank_vocabulary:category']"><b>Type:</b><br>{{ main['drugbank_vocabulary:category'].join(", ") }}<br>
+          <hr style="width: 60%"></span>
+	  <span ng-show="main['dcterms:description']['@value']"><b>Description:</b><br>{{ main['dcterms:description']['@value'] }}<br>
+          <hr style="width: 60%"></span>
+          <span ng-show="main['drugbank_vocabulary:synonym']"><b>Synonyms:</b><br>{{ mergeArray(main['drugbank_vocabulary:synonym']).join(", ")}}<br>
+          <hr style="width: 60%"></span>
 	</div>
-	<div class="item item-divider" ng-class="{'inactive':pharmacoCheck}"ng-click="pharmacoCheck = !pharmacoCheck">
+	<div class="item item-divider" ng-class="{'inactive':pharmacoCheck}" ng-click="pharmacoCheck = !pharmacoCheck">
 	  Pharmacology
 	</div>
 	<div class="item item-text-wrap" ng-hide="pharmacoCheck"> 
-	  <b>Indication:</b><br>{{ main["drugbank_vocabulary:indication"] }}<br>
+	  <span ng-show="main['drugbank_vocabulary:indication']"> <b>Indication:</b><br>{{ main['drugbank_vocabulary:indication'] }}<br>
+          <hr style="width: 60%"></span>
+	  <span ng-show="main['drugbank_vocabulary:pharmacology']"><b>Pharmacodynamics:</b><br>{{ main['drugbank_vocabulary:pharmacology'] }}<br></span>
           <hr style="width: 60%">
-	  <b>Pharmacodynamics:</b><br>{{ main["drugbank_vocabulary:pharmacology"] }}<br>
-          <hr style="width: 60%">
-          <b>Mechanism of action:</b><br>{{ main["drugbank_vocabulary:mechanism-of-action"]}}<br>
-          <hr style="width: 60%">
-	  <b>Absorption:</b><br>{{ main["drugbank_vocabulary:absorption"] }}<br>
-          <hr style="width: 60%">
-	  <b>Metabolism:</b><br>{{ main["drugbank_vocabulary:biotransformation"] }}<br>
-          <hr style="width: 60%">
+          <span ng-show="main['drugbank_vocabulary:mechanism-of-action']"><b>Mechanism of action:</b><br>{{ main['drugbank_vocabulary:mechanism-of-action']}}<br>
+          <hr style="width: 60%"></span>
+	  <span ng-show="main['drugbank_vocabulary:absorption']"><b>Absorption:</b><br>{{ main['drugbank_vocabulary:absorption'] }}<br>
+          <hr style="width: 60%"></span>
+	  <span ng-show="main['drugbank_vocabulary:biotransformation']"><b>Metabolism:</b><br>{{ main['drugbank_vocabulary:biotransformation'] }}<br>
+          <hr style="width: 60%"></span>
+	  <span ng-show="main['drugbank_vocabulary:protein-binding']"><b>Protein binding:</b><br>{{ main['drugbank_vocabulary:protein-binding'] }}<br>
+          <hr style="width: 60%"></span>
+	  <span ng-show="main['drugbank_vocabulary:half-life']"><b>Half life:</b><br>{{ main['drugbank_vocabulary:half-life'] }}<br>
+          <hr style="width: 60%"></span>
+	  <span ng-show="main['drugbank_vocabulary:toxicity']"><b>Toxicity:</b><br>{{ main['drugbank_vocabulary:toxicity'] }}<br>
+          <hr style="width: 60%"></span>
+	</div>
+	<div class="item item-divider" ng-class="{'inactive':calcpropCheck}" ng-click="calcpropCheck = !calcpropCheck">
+	  Calculated properties
+	</div>
+	<div class="item item-text-wrap" ng-hide="calcpropCheck"> 
+	  <ul ng-repeat="i in main['drugbank_vocabulary:calculated-property']">
+            <li>
+              <div class='row'>
+                <div class="col col-20"><b>{{idList[i['@id']]['rdfs:label'].split(":")[0]}}:</b></div>
+                <div class="col">{{idList[i['@id']]['rdfs:label'].split(":")[1].split("[")[0]}}</div>
+              </div>
+            </li>
+          </ul>
+	</div>
+	<div class="item item-divider" ng-class="{'inactive':seealsoCheck}" ng-click="seealsoCheck = !seealsoCheck">
+	  See also
+	</div>
+	<div class="item item-text-wrap" ng-hide="seealsoCheck"> 
+	  <ul ng-repeat="i in main['rdfs:seeAlso']">
+            <li><a href="{{i['@id']}}">{{i['@id']}}</a></li>
+          </ul>
 	</div>
 
         <!--<div class="item item-divider">-->

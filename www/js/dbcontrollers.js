@@ -1,6 +1,5 @@
 var module = angular.module('starter.dbcontrollers', [])
 
-
 // OBO controller
 module.controller('OboCtrl', function($scope, $stateParams, $ionicSideMenuDelegate, $timeout, $ionicLoading, Queryer, ProcessGraph, DatasetStore, QuickLinks, Utilities, FavoriteService) {
 
@@ -147,6 +146,7 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
     /*$scope.title = Utilities.capitalize(main["rdfs:label"])*/
     /*$scope.dbdescription = main["dcterms:description"]["@value"];*/
     $scope.main=main;
+    $scope.idList=idList;
 
     $scope.title = Utilities.capitalize(main["rdfs:label"]["@value"]);
 
