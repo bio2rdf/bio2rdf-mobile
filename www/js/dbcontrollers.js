@@ -13,6 +13,7 @@ module.controller('OboCtrl', function($scope, $stateParams, $ionicSideMenuDelega
     var main = idList[$stateParams.uri]
 
     $scope.main = main;
+    $scope.image = 
 
     $scope.title = Utilities.capitalize(main["rdfs:label"])
     $scope.obodef = main["obolibrary:IAO_0000115"]
@@ -97,6 +98,8 @@ module.controller('PubmedCtrl', function($scope, $stateParams, Queryer, ProcessG
 module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuDelegate, $timeout, Queryer, ProcessGraph, DatasetStore, QuickLinks, Utilities) {
 
   $scope.uri = $stateParams.uri;
+
+  $scope.image="http://structures.wishartlab.com/molecules/"+$stateParams.uri.split(":")[2]+"/image.png";
 
   // Query the graph data from mobile.bio2rdf.org
   Queryer.setQuery('drugbank' ,'describebeta', 'json-ld', {"uri" : $scope.uri});

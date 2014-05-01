@@ -9,10 +9,16 @@
   <div ng-show="main">
 
       <div class="item">
-	<img src="{{ image }}" ng-show="!(image == undefined)" style="width: 100px; display: block; margin: 0 auto;">
 	<h1 align="middle"> {{ main["rdfs:label"]["@value"] }} </h1>
+
 	<p align="middle"> {{ uri }} </p>
       </div>
+	<div class="item item-divider" ng-class="{'inactive':imageCheck}"ng-click="imageCheck = !imageCheck">
+	  Structure
+	</div>
+	<div class="item item-text-wrap" ng-hide="imageCheck"> 
+          <img src="{{ image }}" style="width: 40%; display: block; margin: 0 auto;">
+	</div>
 
 	<div class="item item-divider" ng-class="{'inactive':identificationCheck}"ng-click="identificationCheck = !identificationCheck">
 	  Identification
@@ -24,40 +30,55 @@
           <hr style="width: 60%">
           <b>Synonyms:</b><br>{{ mergeArray(main["drugbank_vocabulary:synonym"]).join(", ")}}<br>
 	</div>
-
-	<div class="item item-divider">
+	<div class="item item-divider" ng-class="{'inactive':pharmacoCheck}"ng-click="pharmacoCheck = !pharmacoCheck">
+	  Pharmacology
 	</div>
-	<div class="item item-text-wrap">
-	  <ion-scroll direction="x" on-scroll="unSetDragging()">
-	    <span ng-repeat="i in obosuperclasses track by $index">
-              <a class="button button-small button-royal" href="#/tab/describe-chebi?uri={{i['@id']}}">{{ i['rdfs:label'] }}</a>
-	    </span>
-	  </ion-scroll>
-	</div>
-
-	<div class="item item-divider">
-	  SubClasses
-	</div>
-	<div class="item" drag-content="false">
-	  <ion-scroll direction="x" on-scroll="unSetDragging()">
-	    <span ng-repeat="j in obosubclasses track by $index">
-	      <a class="button button-small button-royal" href="#/tab/describe-chebi?uri={{j['@id']}}">{{ j['rdfs:label'] }}</a>
-	    </span>
-	  </ion-scroll>
+	<div class="item item-text-wrap" ng-hide="pharmacoCheck"> 
+	  <b>Indication:</b><br>{{ main["drugbank_vocabulary:indication"] }}<br>
+          <hr style="width: 60%">
+	  <b>Pharmacodynamics:</b><br>{{ main["drugbank_vocabulary:pharmacology"] }}<br>
+          <hr style="width: 60%">
+          <b>Mechanism of action:</b><br>{{ main["drugbank_vocabulary:mechanism-of-action"]}}<br>
+          <hr style="width: 60%">
+	  <b>Absorption:</b><br>{{ main["drugbank_vocabulary:absorption"] }}<br>
+          <hr style="width: 60%">
+	  <b>Metabolism:</b><br>{{ main["drugbank_vocabulary:biotransformation"] }}<br>
+          <hr style="width: 60%">
 	</div>
 
-	<div class="item item-divider">
-	  Database cross-references
-	</div>
-	<div class="item item-text-wrap">
-	  <ul class="mobileList">
-	    <li class="mobileListItem" ng-repeat="refs in xrefs">{{ refs }}</li>
-	  </ul>
-	</div>
-	
+        <!--<div class="item item-divider">-->
         <!--</div>-->
-      
-        </div>
+        <!--<div class="item item-text-wrap">-->
+        <!--<ion-scroll direction="x" on-scroll="unSetDragging()">-->
+        <!--<span ng-repeat="i in obosuperclasses track by $index">-->
+        <!--<a class="button button-small button-royal" href="#/tab/describe-chebi?uri={{i['@id']}}">{{ i['rdfs:label'] }}</a>-->
+        <!--</span>-->
+        <!--</ion-scroll>-->
+        <!--</div>-->
+        <!---->
+        <!--<div class="item item-divider">-->
+        <!--SubClasses-->
+        <!--</div>-->
+        <!--<div class="item" drag-content="false">-->
+        <!--<ion-scroll direction="x" on-scroll="unSetDragging()">-->
+        <!--<span ng-repeat="j in obosubclasses track by $index">-->
+        <!--<a class="button button-small button-royal" href="#/tab/describe-chebi?uri={{j['@id']}}">{{ j['rdfs:label'] }}</a>-->
+        <!--</span>-->
+        <!--</ion-scroll>-->
+        <!--</div>-->
+        <!---->
+        <!--<div class="item item-divider">-->
+        <!--Database cross-references-->
+        <!--</div>-->
+        <!--<div class="item item-text-wrap">-->
+        <!--<ul class="mobileList">-->
+        <!--<li class="mobileListItem" ng-repeat="refs in xrefs">{{ refs }}</li>-->
+        <!--</ul>-->
+        <!--</div>-->
+        <!--	-->
+        <!--</div>-->
+        <!-- -->
+        <!--</div>-->
 
   </ion-content>
 </ion-view>
