@@ -1,6 +1,5 @@
-ionic-angular-cordova-seed
+ionic2rdf - bio2rdf-mobile
 ==========================
 
-The perfect starting point for an Ionic project.
+Bio2RDF mobile aims to consume REST services from mobile.bio2rdf.org
 
-- [Ionic Tutorials](http://ionicframework.com/tutorials/)
