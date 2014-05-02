@@ -112,14 +112,21 @@ where {
 http://beta.pubmed.bio2rdf.org/sparql
 
 # search_ns
+
+# search_ns
 construct {
-  ?s ?p ?o
+  ?s rdfs:label ?title .
+  ?s <http://bio2rdf.org/m_vocabulary:description> ?journalLabel .
 }
 where {
   ?s ?p ?o .
-  ?o bif:contains '("BETA-LACTAMASE")' option ( score ?sc ) .
-} order by desc ( ?sc ) limit 20 offset 0
-
+  ?o bif:contains '("asthma")' .
+  filter (?p = dcterms:title ||
+         ?p = dcterms:description) .
+  ?s dcterms:title ?title .
+  ?s <http://bio2rdf.org/pubmed_vocabulary:journal> ?journal .
+  ?journal <http://bio2rdf.org/pubmed_vocabulary:journal_title> ?journalLabel .
+} limit 20 offset 0
 
 
 select ?s1 as ?c1, ( bif:search_excerpt ( bif:vector ( 'BETA-LACTAMASE', 'EXTENDED-SPECTRUM' ) , ?o1 ) ) as ?c2, ?sc, ?rank, ?g

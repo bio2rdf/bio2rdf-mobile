@@ -21,8 +21,8 @@ angular.module('starter.services', [])
 // Populated from server at boot.
   .value('DatasetStore' , { 
     all: {
-      "init":{foafDepiction: "img/bio2rdf.png"},
-      "favorite":{foafDepiction: "img/bookmark.png"}      
+      "init":{foafDepiction: "img/bio2rdf.png", search_type: "typeahead"},
+      "favorite":{foafDepiction: "img/bookmark.png", search_type: "typeahead"}
     },
     current: ["init"]
   })
