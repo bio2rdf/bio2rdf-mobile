@@ -413,7 +413,6 @@ angular.module('starter.services', [])
       }
     }
 
-
     return {
       capitalize: capitalize,
       checkForLanguage: checkForLanguage,
