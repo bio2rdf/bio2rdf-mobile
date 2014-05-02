@@ -3,62 +3,153 @@
   -->
 <ion-nav-bar></ion-nav-bar>
 <ion-view title="'Describe Uniprot'">
-
+  
   <ion-content has-header="true" has-tabs="true" padding="true">
-
-  <div ng-show="main">
+    
+    <div ng-show="main">
 
       <div class="item">
+	<img src="{{bookmarkStateImg}}" style="width: 30px; display: block;" align="right" ng-click="toggleBookmarkState()"> <br>
 	<img src="{{ image }}" ng-show="!(image == undefined)" style="width: 100px; display: block; margin: 0 auto;">
 	<h1 align="middle"> {{ main["rdfs:label"] }} </h1>
-	<p align="middle"> {{ uri }} </p>
+	<p align="middle"> {{ main["@id"] }} </p>
       </div>
 
-	<div class="item item-divider" ng-class="{'inactive':identificationCheck}"ng-click="identificationCheck = !identificationCheck">
-	  Names and origin
-	</div>
-	<div class="item item-text-wrap" ng-hide="identificationCheck">
-	  <b>Recommanded Name:</b><br>{{ main["drugbank_vocabulary:category"].join(", ") }}<br>
-	  <b>Short Name:</b><br>{{ main["drugbank_vocabulary:category"].join(", ") }}<br>
-	  <b>Alternative Name:</b><br>{{ main["drugbank_vocabulary:category"].join(", ") }}<br>
-          <hr style="width: 60%">
-	  <b>Organism:</b><br>{{ main["drugbank_vocabulary:category"].join(", ") }}<br>
-	  <b>Encoded On:</b><br>{{ main["drugbank_vocabulary:category"].join(", ") }}<br>	  
-	</div>
+      <div class="item item-divider" ng-class="{'inactive':namesCheck}"ng-click="namesCheck = !namesCheck">
+	Names and origin
+      </div>
+      <div class="item item-text-wrap" ng-hide="namesCheck">
+	<span ng-show="main['bm:m_vocabulary:uniprot_mnemonic']"> 
+	  <div class="row">
+	    <div class="col col-20">
+	      <b> Entry Name: </b> 
+	    </div>
+	    <div class="col">
+	      {{main['bm:m_vocabulary:uniprot_mnemonic']}}
+	    </div>
+	  </div>
+	</span>	
+	<span ng-show="main['rdfs:label']"> 
+	  <div class="row">
+	    <div class="col col-20">
+	      <b> Preferred Label: </b> 
+	    </div>
+	    <div class="col">
+	      {{main['rdfs:label']}} 
+	    </div>
+	  </div>
+	</span>
+	<span ng-show="main['bm:m_vocabulary:uniprot_gene']">
+	  <div class="row">
+	    <div class="col col-20">
+	      <b> Gene Name: </b>
+	    </div>
+	    <div class="col">
+	      {{main['bm:m_vocabulary:uniprot_gene']}} 
+	    </div>
+	  </div>
+	</span>
+	<span ng-show="main['bm:m_vocabulary:uniprot_organismName']"> 
+	  <div class="row">
+	    <div class="col col-20">
+	      <b> Organism Name: </b> 
+	    </div>
+	    <div class="col">
+	      {{main['bm:m_vocabulary:uniprot_organismName']}}  ({{main['bm:m_vocabulary:uniprot_organismUri']["@id"]}}) 
+	    </div>
+	  </div>
+	</span>
+	<span ng-show="main['bm:m_vocabulary:uniprot_organismName']"> 
+	  <div class="row">
+	    <div class="col col-20">
+	      <b>Reviewed :</b>
+	    </div>
+	    <div class="col">
+	      {{ main["bm:m_vocabulary:uniprot_isCurated"] }} <img src="img/bookmark.png" style="height:15px; vertical-align: middle;" ng-show="main['bm:m_vocabulary:uniprot_isCurated']">
+	    </div>
+	  </div>
+	</span>
+      </div>
 
-	<div class="item item-divider">
-	</div>
-	<div class="item item-text-wrap">
-	  <ion-scroll direction="x" on-scroll="unSetDragging()">
-	    <span ng-repeat="i in obosuperclasses track by $index">
-              <a class="button button-small button-royal" href="#/tab/describe-chebi?uri={{i['@id']}}">{{ i['rdfs:label'] }}</a>
-	    </span>
-	  </ion-scroll>
-	</div>
 
-	<div class="item item-divider">
-	  SubClasses
-	</div>
-	<div class="item" drag-content="false">
-	  <ion-scroll direction="x" on-scroll="unSetDragging()">
-	    <span ng-repeat="j in obosubclasses track by $index">
-	      <a class="button button-small button-royal" href="#/tab/describe-chebi?uri={{j['@id']}}">{{ j['rdfs:label'] }}</a>
-	    </span>
-	  </ion-scroll>
-	</div>
+      <div class="item item-divider" ng-class="{'inactive':annotationsCheck}"ng-click="annotationsCheck = !annotationsCheck">
+	General annotations
+      </div>
+      <div class="item item-text-wrap" ng-hide="annotationsCheck" ng-repeat="(annotation, items) in annotations | orderBy : 'annotation'">
+	  <div class="row">
+	    <div class="col col-20">
+	      <b> {{annotation}} </b>
+	    </div>
+	    <div class="col">
+	      <div ng-repeat="term in items">
+		{{term.val}}
+		<br>
+	      </div>
+	    </div>
+	  </div>
+      </div>
 
-	<div class="item item-divider">
-	  Database cross-references
-	</div>
-	<div class="item item-text-wrap">
-	  <ul class="mobileList">
-	    <li class="mobileListItem" ng-repeat="refs in xrefs">{{ refs }}</li>
-	  </ul>
-	</div>
 
-        <!--</div>-->
+      <div class="item item-divider" ng-class="{'inactive':classificationCheck}"ng-click="classificationCheck = !classificationCheck">
+	Classification
+      </div>
+      <div class="item item-text-wrap" ng-hide="classificationCheck" >
+	<div ng-repeat="(class, items) in classifications | orderBy : 'class'">
+	  <div class="row">
+	    <div class="col col-20">
+	      <b> {{class}} </b>
+	    </div>
+	    <div class="col">
+	      <div ng-repeat="term in items">
+		{{term.val}}
+		<br>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<div>
+	  <div class="row">
+	    <div class="col col-20">
+	      <b>Gene Ontology</b>
+	    </div>
+	    <div class="col">
+	      <div ng-repeat="goClass in GOclasses">
+		<a class="button button-small button-stable" href="#/tab/describe-go?uri={{goClass.uri}}">
+		  <img src="{{datasets['go'].foafDepiction}}" style="height: 20px; vertical-align: middle">
+		  {{goClass.label}}
+		</a>
+		<br>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+      </div>
+
+      <div class="item item-divider" ng-class="{'inactive':sequenceCheck}"ng-click="sequenceCheck = !sequenceCheck">
+	Sequence
+      </div>
+      <div class="item item-text-wrap" ng-hide="sequenceCheck">
+	{{main['bm:m_vocabulary:uniprot_sequence']}}
+      </div>
+
+      <div class="item item-divider" ng-class="{'inactive':referenceCheck}"ng-click="referenceCheck = !referenceCheck">
+	References
+      </div>
+      <div class="item item-text-wrap" ng-hide="referenceCheck" ng-repeat="item in references | orderBy:'date'">
+	<b> {{item.title}} </b>
+	<br>
+	{{item.journal}} {{item.date}}
+	<br>
+	<a class="button button-small button-stable" href="#/tab/describe-pubmed?uri={{item.uri}}">
+	  <img src="{{datasets['pubmed'].foafDepiction}}" style="height: 20px; vertical-align: middle">
+	</a>
+      </div>
+
       
-        </div>
-
+      
+      <!--</div>-->
+      
+    </div>
+    
   </ion-content>
 </ion-view>
