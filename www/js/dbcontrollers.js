@@ -116,6 +116,7 @@ module.controller('PubmedCtrl', function($scope, $stateParams, Queryer, ProcessG
 
   $scope.uri = $stateParams.uri;
   var endpoint = $stateParams.endpoint;
+  Utilities.grepDBfromURI($scope.uri);
 
   Queryer.setQuery('pubmed','describe','json-ld', {"uri" : $scope.uri});
   Queryer.getJson().success(function(data){
@@ -130,7 +131,7 @@ module.controller('PubmedCtrl', function($scope, $stateParams, Queryer, ProcessG
 
 
 //DRUGBANK
-module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuDelegate, $timeout, Queryer, ProcessGraph, DatasetStore, QuickLinks, Utilities) {
+module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuDelegate, $timeout, Queryer, ProcessGraph, DatasetStore, QuickLinks, Utilities, FavoriteService) {
 
   $scope.uri = $stateParams.uri;
 
@@ -189,6 +190,41 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
     /*$scope.image = promise.data["http://xmlns.com/foaf/0.1/depiction"]["@id"];*/
     /*});*/
     /*}*/
+
+    // Bookmark status and saving -----
+    function bookmarkLookUpCall (tx, results) {
+      var len = results.rows.length;
+      if (len > 0){
+        $scope.bookmarkStateImg = 'img/savedBookmark.png';
+        $scope.bookmarkState = '1';
+      }else {
+        $scope.bookmarkStateImg = 'img/notsavedBookmark.png';
+        $scope.bookmarkState = '0';
+      }
+    }
+
+    $scope.lookupBookmarkState = function () {
+      var id = DatasetStore.current[0]+"_"+$scope.uri;
+      FavoriteService.queryDatabase('SELECT * FROM FAVORITES WHERE id = (?)', [id], bookmarkLookUpCall);
+    } 
+
+    $scope.toggleBookmarkState = function () {
+      var id = DatasetStore.current[0]+"_"+$scope.uri;
+      if ($scope.bookmarkState == '0'){
+        FavoriteService.insertIntoDB({id:id, db:DatasetStore.current[0], uri:$scope.uri, label:$scope.title, time:Date.now()});
+        $scope.bookmarkStateImg = 'img/savedBookmark.png';
+        $scope.bookmarkState = '1';
+      } else {
+        FavoriteService.deleteFromDB(id);
+        $scope.bookmarkStateImg = 'img/notsavedBookmark.png';
+        $scope.bookmarkState = '0';
+      }
+    }
+
+    $scope.lookupBookmarkState();
+    // -----------------------
+
+
 
     QuickLinks.addLink({uri:$scope.uri, label: $scope.title, db: DatasetStore.current[0]});
 
