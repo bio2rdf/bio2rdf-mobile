@@ -134,6 +134,7 @@ module.controller('PubmedCtrl', function($scope, $stateParams, Queryer, ProcessG
 module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuDelegate, $timeout, Queryer, ProcessGraph, DatasetStore, QuickLinks, Utilities, FavoriteService) {
 
   $scope.uri = $stateParams.uri;
+  Utilities.grepDBfromURI($scope.uri);
 
   $scope.image="http://structures.wishartlab.com/molecules/"+$stateParams.uri.split(":")[2]+"/image.png";
 
