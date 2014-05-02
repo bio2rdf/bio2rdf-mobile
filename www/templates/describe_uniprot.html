@@ -21,7 +21,7 @@
       <div class="item item-text-wrap" ng-hide="namesCheck">
 	<span ng-show="main['bm:m_vocabulary:uniprot_mnemonic']"> 
 	  <div class="row">
-	    <div class="col col-20">
+	    <div class="col col-25">
 	      <b> Entry Name: </b> 
 	    </div>
 	    <div class="col">
@@ -31,7 +31,7 @@
 	</span>	
 	<span ng-show="main['rdfs:label']"> 
 	  <div class="row">
-	    <div class="col col-20">
+	    <div class="col col-25">
 	      <b> Preferred Label: </b> 
 	    </div>
 	    <div class="col">
@@ -41,7 +41,7 @@
 	</span>
 	<span ng-show="main['bm:m_vocabulary:uniprot_gene']">
 	  <div class="row">
-	    <div class="col col-20">
+	    <div class="col col-25">
 	      <b> Gene Name: </b>
 	    </div>
 	    <div class="col">
@@ -51,7 +51,7 @@
 	</span>
 	<span ng-show="main['bm:m_vocabulary:uniprot_organismName']"> 
 	  <div class="row">
-	    <div class="col col-20">
+	    <div class="col col-25">
 	      <b> Organism Name: </b> 
 	    </div>
 	    <div class="col">
@@ -61,8 +61,8 @@
 	</span>
 	<span ng-show="main['bm:m_vocabulary:uniprot_organismName']"> 
 	  <div class="row">
-	    <div class="col col-20">
-	      <b>Reviewed :</b>
+	    <div class="col col-25">
+	      <b>Reviewed:</b>
 	    </div>
 	    <div class="col">
 	      {{ main["bm:m_vocabulary:uniprot_isCurated"] }} <img src="img/bookmark.png" style="height:15px; vertical-align: middle;" ng-show="main['bm:m_vocabulary:uniprot_isCurated']">
@@ -77,7 +77,7 @@
       </div>
       <div class="item item-text-wrap" ng-hide="annotationsCheck" ng-repeat="(annotation, items) in annotations | orderBy : 'annotation'">
 	  <div class="row">
-	    <div class="col col-20">
+	    <div class="col col-25">
 	      <b> {{annotation}} </b>
 	    </div>
 	    <div class="col">
@@ -96,7 +96,7 @@
       <div class="item item-text-wrap" ng-hide="classificationCheck" >
 	<div ng-repeat="(class, items) in classifications | orderBy : 'class'">
 	  <div class="row">
-	    <div class="col col-20">
+	    <div class="col col-25">
 	      <b> {{class}} </b>
 	    </div>
 	    <div class="col">
@@ -109,7 +109,7 @@
 	</div>
 	<div>
 	  <div class="row">
-	    <div class="col col-20">
+	    <div class="col col-25">
 	      <b>Gene Ontology</b>
 	    </div>
 	    <div class="col">

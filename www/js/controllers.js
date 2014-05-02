@@ -11,6 +11,10 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
     return DatasetStore.current[0] == "init";
   }
 
+  $scope.searchType = function () {
+    return DatasetStore.all[DatasetStore.current[0]].search_type != 'typeahead';
+  }
+
   $scope.$on('$locationChangeSuccess', function(event) {
     $scope.searchResultGraph = [];
     $scope.moreItemsAvailable = false;
@@ -22,6 +26,8 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
 
     if(isNew == 1){
       $scope.offset = 0;
+    } else {
+      console.log("infinite scroll");
     }
 
     if (this.queryTerm.length == 0){
@@ -40,6 +46,7 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
         $scope.searchResultGraph = SearchService.getGraphQuery(data);
       }
 
+      console.log(data["@graph"]);
       // Look if there are more items available
       if(data["@graph"] == undefined){
         $scope.moreItemsAvailable = false;
@@ -126,7 +133,8 @@ module.controller('LeftMenuCtrl', function($scope, $location, $ionicLoading, Dat
             tripleCount: data["@graph"][i]["bm:bio2rdf_vocabulary:triple_count"],
             foafDepiction: data["@graph"][i]['http://xmlns.com/foaf/0.1/depiction']['@id'],
             endpoint: data["@graph"][i]['bm:bio2rdf_vocabulary:endpoint']['@id'],
-            url_identifier: data["@graph"][i]['bm:bio2rdf_vocabulary:url_identifier']
+            url_identifier: data["@graph"][i]['bm:bio2rdf_vocabulary:url_identifier'],
+            search_type: data["@graph"][i]['bm:bio2rdf_vocabulary:search_type']
           };
 
         }

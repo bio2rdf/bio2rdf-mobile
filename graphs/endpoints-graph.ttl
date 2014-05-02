@@ -3,7 +3,7 @@
    <http://www.w3.org/2000/01/rdf-schema#label> "Bio2RDF Mother of Endpoints (to list them all)";
    <http://bio2rdf.org/bio2rdf_vocabulary:endpoint> <http://dbdev.bio2rdf.org/sparql>;
    <http://xmlns.com/foaf/0.1/depiction> <http://dbdev.bio2rdf.org/DAV/mobile-logos/bio2rdf-leftMenu.png>;
-   <http://bio2rdf.org/bio2rdf_vocabulary:sparql_listDB> " http://dbdev.bio2rdf.org/sparql?default-graph-uri=http%3A%2F%2Fmother-of-endpoints.nt&query=CONSTRUCT+%7B%24s+%24p+%24o%7D%0D%0AWHERE+%7B%0D%0A%24s+%24p+%24o+.%0D%0Afilter+%28%0D%0A%24p+%3D+%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Felements%2F1.1%2Ftitle%3E+%7C%7C+%0D%0A%24p+%3D+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2Fdepiction%3E+%7C%7C+%0D%0A%24p+%3D+%3Chttp%3A%2F%2Fbio2rdf.org%2Fbio2rdf_vocabulary%3Aurl_identifier%3E+%7C%7C%0D%0A%24p+%3D+%3Chttp%3A%2F%2Fbio2rdf.org%2Fbio2rdf_vocabulary%3Aendpoint%3E+%7C%7C%0D%0A%24p+%3D+%3Chttp%3A%2F%2Fbio2rdf.org%2Fbio2rdf_vocabulary%3Atriple_count%3E%0D%0A%29%0D%0A%7D&format=application%2Frdf%2Bxml&debug=on&timeout=";
+   <http://bio2rdf.org/bio2rdf_vocabulary:sparql_listDB> " http://dbdev.bio2rdf.org/sparql?default-graph-uri=http%3A%2F%2Fmother-of-endpoints.nt&query=CONSTRUCT+%7B%24s+%24p+%24o%7D%0D%0AWHERE+%7B%0D%0A%24s+%24p+%24o+.%0D%0Afilter+%28%0D%0A%24p+%3D+%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Felements%2F1.1%2Ftitle%3E+%7C%7C+%0D%0A%24p+%3D+%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2Fdepiction%3E+%7C%7C+%0D%0A%24p+%3D+%3Chttp%3A%2F%2Fbio2rdf.org%2Fbio2rdf_vocabulary%3Aurl_identifier%3E+%7C%7C%0D%0A%24p+%3D+%3Chttp%3A%2F%2Fbio2rdf.org%2Fbio2rdf_vocabulary%3Aendpoint%3E+%7C%7C%0D%0A%24p+%3D+%3Chttp%3A%2F%2Fbio2rdf.org%2Fbio2rdf_vocabulary%3Atriple_count%3E+%7C%7C%0D%0A%24p+%3D+%3Chttp%3A%2F%2Fbio2rdf.org%2Fbio2rdf_vocabulary%3Asearch_type%3E%0D%0A%29%7D&format=application%2Frdf%2Bxml&timeout=0&debug=on";
    <http://bio2rdf.org/bio2rdf_vocabulary:test> "/endpoint_mother/listDB/json-ld" .
 
 <http://bio2rdf.org/namespace:wiki> a <http://endpoint.bio2rdf.org/resource>;
@@ -13,13 +13,14 @@
    <http://bio2rdf.org/bio2rdf_vocabulary:sparql_test> " http://dbpedia.org/sparql?default-graph-uri=http%3A%2F%2Fdbpedia.org&query=describe+%3Chttp%3A%2F%2Fdbpedia.org%2Fresource%2FAsthma%3E&format=application%2Frdf%2Bxml&timeout=30000&debug=on";
    <http://bio2rdf.org/bio2rdf_vocabulary:test> "/wiki/test/json-ld?parm1=asthm&parm2=0";
    <http://bio2rdf.org/bio2rdf_vocabulary:test> "/wiki/graph/json-ld?uri=http://dbpedia.org/resource/Quetiapine";
-   <http://bio2rdf.org/bio2rdf_vocabulary:test> "/wiki/image/json-ld?uri=http://dbpedia.org/resource/Asthma" .   
+   <http://bio2rdf.org/bio2rdf_vocabulary:test> "/wiki/image/json-ld?uri=http://dbpedia.org/resource/Asthma" .
 
 <http://bio2rdf.org/namespace:doid> a <http://endpoint.bio2rdf.org/resource>;
    <http://purl.org/dc/elements/1.1/title> "Disease Ontology";
    <http://www.w3.org/2000/01/rdf-schema#label> "SPARQL endpoint ontobee/doid [namespace:doid]";
    <http://bio2rdf.org/bio2rdf_vocabulary:endpoint> <http://sparql.hegroup.org/sparql>;
    <http://bio2rdf.org/bio2rdf_vocabulary:url_identifier> "http://purl.obolibrary.org/obo/DOID_";
+   <http://bio2rdf.org/bio2rdf_vocabulary:search_type> "typeahead";
    <http://xmlns.com/foaf/0.1/depiction> <http://dbdev.bio2rdf.org/DAV/mobile-logos/doid.png>;
    <http://bio2rdf.org/bio2rdf_vocabulary:triple_count> "8726"^^xsd:double;
    <http://bio2rdf.org/bio2rdf_vocabulary:sparql_describe> " http://sparql.hegroup.org/sparql?default-graph-uri=&query=construct%0D%0A%7B+%3C$URI$%3E+%3Fp+%3Fo+.%0D%0A+%3C$URI$%3E+%3Fp1+%3Fo1+.%0D%0A+%3Fo+rdfs%3Alabel+%3Fo2l+.%0D%0A+%3Fo3+%3Fp3+%3C$URI$%3E+.%0D%0A+%3Fo3+rdfs%3Alabel+%3Fo3l%0D%0A%7D+where+%7B%0D%0A+%3C$URI$%3E+%3Fp+%3Fo+.%0D%0A+%3C$URI$%3E+%3Fp1+%3Fo1+.%0D%0A+%3Fo+rdfs%3Alabel+%3Fo2l+.%0D%0Aoptional+%7B%0D%0A+%3Fo3+%3Fp3+%3C$URI$%3E+.%0D%0A+%3Fo3+rdfs%3Alabel+%3Fo3l%0D%0A%7D%7D&format=application%2Frdf%2Bxml&debug=on&timeout=";
@@ -38,6 +39,7 @@
    <http://www.w3.org/2000/01/rdf-schema#label> "SPARQL endpoint ontobee/go [namespace:go]";
    <http://bio2rdf.org/bio2rdf_vocabulary:endpoint> <http://sparql.hegroup.org/sparql>;
    <http://bio2rdf.org/bio2rdf_vocabulary:url_identifier> "http://purl.obolibrary.org/obo/GO_";
+   <http://bio2rdf.org/bio2rdf_vocabulary:search_type> "typeahead";
    <http://xmlns.com/foaf/0.1/depiction> <http://dbdev.bio2rdf.org/DAV/mobile-logos/go.png>;
    <http://bio2rdf.org/bio2rdf_vocabulary:triple_count> "40725"^^xsd:double;
    <http://bio2rdf.org/bio2rdf_vocabulary:sparql_describe> " http://sparql.hegroup.org/sparql?default-graph-uri=&query=construct%0D%0A%7B+%3C$URI$%3E+%3Fp+%3Fo+.%0D%0A+%3C$URI$%3E+%3Fp1+%3Fo1+.%0D%0A+%3Fo+rdfs%3Alabel+%3Fo2l+.%0D%0A+%3Fo3+%3Fp3+%3C$URI$%3E+.%0D%0A+%3Fo3+rdfs%3Alabel+%3Fo3l%0D%0A%7D+where+%7B%0D%0A+%3C$URI$%3E+%3Fp+%3Fo+.%0D%0A+%3C$URI$%3E+%3Fp1+%3Fo1+.%0D%0A+%3Fo+rdfs%3Alabel+%3Fo2l+.%0D%0Aoptional+%7B%0D%0A+%3Fo3+%3Fp3+%3C$URI$%3E+.%0D%0A+%3Fo3+rdfs%3Alabel+%3Fo3l%0D%0A%7D%7D&format=application%2Frdf%2Bxml&debug=on&timeout=";
@@ -59,6 +61,7 @@
    <http://www.w3.org/2000/01/rdf-schema#label> "SPARQL endpoint ontobee/chebi [namespace:chebi]";
    <http://bio2rdf.org/bio2rdf_vocabulary:endpoint> <http://sparql.hegroup.org/sparql>;
    <http://bio2rdf.org/bio2rdf_vocabulary:url_identifier> "http://purl.obolibrary.org/obo/CHEBI_";
+   <http://bio2rdf.org/bio2rdf_vocabulary:search_type> "typeahead";
    <http://xmlns.com/foaf/0.1/depiction> <http://dbdev.bio2rdf.org/DAV/mobile-logos/chebi.png>;
    <http://bio2rdf.org/bio2rdf_vocabulary:triple_count> "42640"^^xsd:double;
    <http://bio2rdf.org/bio2rdf_vocabulary:sparql_describe> " http://sparql.hegroup.org/sparql?default-graph-uri=&query=construct%0D%0A%7B+%3C$URI$%3E+%3Fp+%3Fo+.%0D%0A+%3C$URI$%3E+%3Fp1+%3Fo1+.%0D%0A+%3Fo+rdfs%3Alabel+%3Fo2l+.%0D%0A+%3Fo3+%3Fp3+%3C$URI$%3E+.%0D%0A+%3Fo3+rdfs%3Alabel+%3Fo3l%0D%0A%7D+where+%7B%0D%0A+%3C$URI$%3E+%3Fp+%3Fo+.%0D%0A+%3C$URI$%3E+%3Fp1+%3Fo1+.%0D%0A+%3Fo+rdfs%3Alabel+%3Fo2l+.%0D%0Aoptional+%7B%0D%0A+%3Fo3+%3Fp3+%3C$URI$%3E+.%0D%0A+%3Fo3+rdfs%3Alabel+%3Fo3l%0D%0A%7D%7D&format=application%2Frdf%2Bxml&debug=on&timeout=";
@@ -76,6 +79,7 @@
 <http://bio2rdf.org/namespace:uniprot> a <http://endpoint.bio2rdf.org/resource>;
    <http://bio2rdf.org/bio2rdf_vocabulary:endpoint> <http://beta.sparql.uniprot.org/sparql>;
    <http://bio2rdf.org/bio2rdf_vocabulary:url_identifier>  "http://purl.uniprot.org/uniprot/";
+   <http://bio2rdf.org/bio2rdf_vocabulary:search_type> "typeahead";
    <http://purl.org/dc/elements/1.1/title> "Uniprot";
    <http://xmlns.com/foaf/0.1/depiction> <http://dbdev.bio2rdf.org/DAV/mobile-logos/uniprot.png>;
    <http://bio2rdf.org/bio2rdf_vocabulary:triple_count> "9764369714"^^xsd:double;
@@ -88,6 +92,7 @@
 <http://bio2rdf.org/namespace:drugbank> a <http://endpoint.bio2rdf.org/resource>;
    <http://bio2rdf.org/bio2rdf_vocabulary:endpoint> <http://drugbank.bio2rdf.org/sparql>;
    <http://bio2rdf.org/bio2rdf_vocabulary:url_identifier>  "http://bio2rdf.org/drugbank:";
+   <http://bio2rdf.org/bio2rdf_vocabulary:search_type> "typeahead";
    <http://purl.org/dc/elements/1.1/title> "Drugbank";
    <http://xmlns.com/foaf/0.1/depiction> <http://dbdev.bio2rdf.org/DAV/mobile-logos/drugbank.png>;
    <http://bio2rdf.org/bio2rdf_vocabulary:triple_count> "1121468"^^xsd:double;
@@ -101,8 +106,11 @@
    <http://bio2rdf.org/bio2rdf_vocabulary:endpoint> <http://cu.pubmed.bio2rdf.org/sparql>;
    <http://bio2rdf.org/bio2rdf_vocabulary:url_identifier>  "http://bio2rdf.org/pubmed:";
    <http://purl.org/dc/elements/1.1/title> "PubMed";
+   <http://bio2rdf.org/bio2rdf_vocabulary:search_type> "full";
    <http://xmlns.com/foaf/0.1/depiction> <http://dbdev.bio2rdf.org/DAV/mobile-logos/pubmed.png>;
    <http://bio2rdf.org/bio2rdf_vocabulary:triple_count> "370812866"^^xsd:double;   
    <http://bio2rdf.org/bio2rdf_vocabulary:test> "/pubmed/describe/json-ld?uri=http://bio2rdf.org/pubmed:122906";
    <http://bio2rdf.org/bio2rdf_vocabulary:sparql_describe> " http://cu.pubmed.bio2rdf.org/sparql?default-graph-uri=&query=construct%0D%0A%7B+%0D%0A+%3Fo+%3Fp2+%3Fo2+.%0D%0A+%3C$URI$%3E+%3Fp3+%3Fo3+.%0D%0A%7D+where+%7B%0D%0A+%3C$URI$%3E+%3Fp+%3Fo+.%0D%0A+%3Fo+%3Fp2+%3Fo2+.%0D%0A+%3C$URI$%3E+%3Fp3+%3Fo3+.%0D%0A%7D+&format=application%2Frdf%2Bxml&debug=on&timeout=";
-   <http://bio2rdf.org/bio2rdf_vocabulary:test> "/pubmed/describe/json-ld?uri=http://bio2rdf.org/pubmed:122906" .
+   <http://bio2rdf.org/bio2rdf_vocabulary:test> "/pubmed/describe/json-ld?uri=http://bio2rdf.org/pubmed:122906" ;
+   <http://bio2rdf.org/bio2rdf_vocabulary:sparql_search_ns_short> " http://beta.pubmed.bio2rdf.org/sparql?default-graph-uri=&query=construct+%7B%0D%0A++%3Fs+rdfs%3Alabel+%3Ftitle+.%0D%0A++%3Fs+%3Chttp%3A%2F%2Fbio2rdf.org%2Fm_vocabulary%3Adescription%3E+%3FjournalLabel+.%0D%0A%7D%0D%0Awhere+%7B%0D%0A++%3Fs+%3Fp+%3Fo+.%0D%0A++%3Fo+bif%3Acontains+%27%28%22$PARM1$%22%29%27+.%0D%0A++filter+%28%3Fp+%3D+dcterms%3Atitle+%7C%7C%0D%0A+++++++++%3Fp+%3D+dcterms%3Adescription%29+.%0D%0A++%3Fs+dcterms%3Atitle+%3Ftitle+.%0D%0A++%3Fs+%3Chttp%3A%2F%2Fbio2rdf.org%2Fpubmed_vocabulary%3Ajournal%3E+%3Fjournal+.%0D%0A++%3Fjournal+%3Chttp%3A%2F%2Fbio2rdf.org%2Fpubmed_vocabulary%3Ajournal_title%3E+%3FjournalLabel+.%0D%0A%7D+limit+20+offset+$PARM2$%0D%0A&format=application%2Frdf%2Bxml&timeout=0";
+   <http://bio2rdf.org/bio2rdf_vocabulary:sparql_search_ns_long> " http://beta.pubmed.bio2rdf.org/sparql?default-graph-uri=&query=construct+%7B%0D%0A++%3Fs+rdfs%3Alabel+%3Ftitle+.%0D%0A++%3Fs+%3Chttp%3A%2F%2Fbio2rdf.org%2Fm_vocabulary%3Adescription%3E+%3FjournalLabel+.%0D%0A%7D%0D%0Awhere+%7B%0D%0A++%3Fs+%3Fp+%3Fo+.%0D%0A++%3Fo+bif%3Acontains+%27%28%22$PARM1$%22%29%27+.%0D%0A++filter+%28%3Fp+%3D+dcterms%3Atitle+%7C%7C%0D%0A+++++++++%3Fp+%3D+dcterms%3Adescription%29+.%0D%0A++%3Fs+dcterms%3Atitle+%3Ftitle+.%0D%0A++%3Fs+%3Chttp%3A%2F%2Fbio2rdf.org%2Fpubmed_vocabulary%3Ajournal%3E+%3Fjournal+.%0D%0A++%3Fjournal+%3Chttp%3A%2F%2Fbio2rdf.org%2Fpubmed_vocabulary%3Ajournal_title%3E+%3FjournalLabel+.%0D%0A%7D+limit+20+offset+$PARM2$%0D%0A&format=application%2Frdf%2Bxml&timeout=0".
