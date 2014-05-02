@@ -44,6 +44,16 @@ angular.module('starter', ['ionic', 'starter.services', 'starter.controllers', '
         }
       })
 
+      .state('tab.describe-pubmed', {
+        url: '/describe-pubmed?uri',
+        views: {
+          'describe-tab': {
+            templateUrl: 'templates/describe_pubmed.html',
+            controller: 'PubmedCtrl'
+          }
+        }
+      })
+
 
       .state('tab.describe-drugbank', {
         url: '/describe-drugbank?uri',
