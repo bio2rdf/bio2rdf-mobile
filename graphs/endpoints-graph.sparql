@@ -28,16 +28,6 @@ CONSTRUCT {
 }} LIMIT 20 OFFSET 0
 
 
-PREFIX up:<http://purl.uniprot.org/core/> 
-PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#> 
-SELECT ?protein ?org
-WHERE
-{
-	?protein a up:Protein .
-  	?protein up:organism ?org .
-	# ?org up:Taxon ?taxon .
-	# ?taxon up:scientificName ?name .
-} limit 10
 
 # describe 
 http://beta.sparql.uniprot.org/sparql
@@ -129,34 +119,40 @@ where {
 } limit 20 offset 0
 
 
-select ?s1 as ?c1, ( bif:search_excerpt ( bif:vector ( 'BETA-LACTAMASE', 'EXTENDED-SPECTRUM' ) , ?o1 ) ) as ?c2, ?sc, ?rank, ?g
-where
-{ 
-  { 
-    { 
-      select ?s1, ( ?sc * 3e-1 ) as ?sc, ?o1, ( sql:rnk_scale ( <LONG::IRI_RANK> ( ?s1 ) ) ) as ?rank, ?g where 
-      { 
-        quad map virtrdf:DefaultQuadMap 
-        { 
-          graph ?g 
-          { 
-            ?s1 ?s1textp ?o1 .
-            ?o1 bif:contains ' ( "BETA-LACTAMASE" AND "EXTENDED-SPECTRUM" ) ' option ( score ?sc ) .            
-          }
-        }
-      }
-      order by desc ( ?sc * 3e-1 + sql:rnk_scale ( <LONG::IRI_RANK> ( ?s1 ) ) ) limit 20 offset 20
+# describe
+construct {
+  ?uri rdfs:label ?o .
+  ?uri <http://bio2rdf.org/m_vocabulary:pubmed_author> ?author .
+  ?author rdfs:label ?authorName .
+  ?uri <http://bio2rdf.org/m_vocabulary:pubmed_meshterm> ?meshLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:pubmed_abstract> ?abstractText .
+  ?uri <http://bio2rdf.org/m_vocabulary:pubmed_journalTitle> ?journalLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:pubmed_publicationDate> ?journalDate .
+  ?uri <http://bio2rdf.org/m_vocabulary:pubmed_journalVolume> ?journalVolume .
+  ?uri <http://bio2rdf.org/m_vocabulary:pubmed_journalIssue> ?journalIssue .
+} where {
+  ?uri rdfs:label ?o .
+  optional {
+    ?uri dcterms:contributor ?author .
+    ?author rdfs:label ?authorName .
+  }
+  optional {
+    ?uri <http://bio2rdf.org/pubmed_vocabulary:mesh_heading> ?mesh .
+    ?mesh rdfs:label ?meshLabel .
+    ?uri dcterms:abstract ?abstract .
+    ?abstract dcterms:description ?abstractText .
+    ?uri <http://bio2rdf.org/pubmed_vocabulary:journal> ?journal .
+    ?journal rdfs:label ?journalLabel .
+    optional {
+      ?journal <http://bio2rdf.org/pubmed_vocabulary:publication_date> ?journalDate .
+    }
+    optional {
+      ?journal <http://bio2rdf.org/pubmed_vocabulary:journal_volume> ?journalVolume .
+      ?journal <http://bio2rdf.org/pubmed_vocabulary:issue> ?journalIssue .
     }
   }
+  filter (?uri = <http://bio2rdf.org/pubmed:19770275>)
 }
-  
-
-
-
-# describe
-
-
-
 
 
 # Ontobee (obo ontologies)

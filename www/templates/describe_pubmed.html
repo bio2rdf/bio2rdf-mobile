@@ -13,23 +13,40 @@
 	<h1 align="middle">{{ title }} </h1>
 	<p align="middle"> {{ uri }} </p>
       </div>
+
+      <div class="item item-divider" ng-class="{'inactive':authorCheck}"ng-click="authorCheck = !authorCheck">
+        Authors
+      </div>
+      <div class="item item-text-wrap" ng-hide="authorCheck" ng-repeat="author in authors">
+	{{$index+1}}. {{author}}
+      </div>
+
+      <div class="item item-divider" ng-class="{'inactive':journalCheck}"ng-click="journalCheck = !journalCheck">
+        Journal
+      </div>
+      <div class="item item-text-wrap" ng-hide="journalCheck" ng-repeat="info in journalInfo"> 
+	<div class="row">
+	  <div class="col col-25">
+	    {{info.info}}
+	  </div>
+	  <div class="col">
+	    {{info.val}}
+	  </div>
+	</div>
+      </div>
+
       <div class="item item-divider" ng-class="{'inactive':abstractCheck}"ng-click="abstractCheck = !abstractCheck">
         Abstract
       </div>
       <div class="item item-text-wrap" ng-hide="abstractCheck"> 
-            <p>{{data["bm:m_vocabulary:pubmed_abstract"]}}</p>
-      </div>
-      <div class="item item-divider" ng-class="{'inactive':journalCheck}"ng-click="journalCheck = !journalCheck">
-        Journal
-      </div>
-      <div class="item item-text-wrap" ng-hide="journalCheck"> 
+        <p>{{data["bm:m_vocabulary:pubmed_abstract"]}}</p>
       </div>
 
       <div class="item item-divider" ng-class="{'inactive':meshCheck}"ng-click="meshCheck = !meshCheck">
         Mesh terms
       </div>
       <div class="item item-text-wrap" ng-hide="meshCheck"> 
-            <ul ng-repeat="i in data['bm:m_vocabulary:pubmed_meshterm'] | orderBy : i" >
+            <ul ng-repeat="i in data['bm:m_vocabulary:pubmed_meshterm'] | orderBy : i">
               <li>{{ i }}</li>
             </ul>
       </div>

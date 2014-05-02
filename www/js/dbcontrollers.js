@@ -54,7 +54,8 @@ module.controller('OboCtrl', function($scope, $stateParams, $ionicSideMenuDelega
 
     if ($scope.image == undefined){
       ProcessGraph.getWikiImageLabel($scope.title.replace(" ","_")).then(function(promise){
-        $scope.image = promise.data["http://xmlns.com/foaf/0.1/depiction"];
+        $scope.image = promise.data["http://xmlns.com/foaf/0.1/depiction"]["@id"];
+        console.log(promise);
       });
     }
     // -----------------------
@@ -116,53 +117,83 @@ module.controller('PubmedCtrl', function($scope, $stateParams, $ionicSideMenuDel
     $scope.uri = $stateParams.uri;
     Utilities.grepDBfromURI($scope.uri);
 
+
+
+
     // Query the graph data from mobile.bio2rdf.org
-    Queryer.setQuery('pubmed' ,'describebeta', 'json-ld', {"uri" : $scope.uri});
+    Queryer.setQuery('pubmed' ,'describe', 'json-ld', {"uri" : $scope.uri});
     Queryer.getJson().success(function(data){
-      /*$scope.title = Utilities.capitalize(main["rdfs:label"])*/
-      /*$scope.dbdescription = main["dcterms:description"]["@value"];*/
-      $scope.data=data;
-      console.log(data);
-      $scope.title = Utilities.capitalize(data["rdfs:label"]);
-      
 
+      var idList = ProcessGraph.graph(data);
+      var main = idList[$stateParams.uri]
 
-    // Bookmark status and saving -----
-    function bookmarkLookUpCall (tx, results) {
-      var len = results.rows.length;
-      if (len > 0){
-        $scope.bookmarkStateImg = 'img/savedBookmark.png';
-        $scope.bookmarkState = '1';
-      }else {
-        $scope.bookmarkStateImg = 'img/notsavedBookmark.png';
-        $scope.bookmarkState = '0';
+      $scope.data=main;
+      $scope.title = Utilities.capitalize(main["rdfs:label"]);
+
+      $scope.authors = [];
+      _.each(idList, function(elem) {
+        if (elem["@id"].indexOf("_AUTHOR_") > -1) {
+          var t = elem["@id"].split("_");
+          var index = parseInt(t[t.length-1]);
+          $scope.authors[index-1] = elem["rdfs:label"];
+        }
+      });
+
+      var prefix = "bm:m_vocabulary:pubmed_";
+      var infoOrder = [{label: "Title: ", predicate: "journalTitle"},
+                       {label: "Volume: ", predicate:  "journalVolume"},
+                       {label: "Issue: ", predicate: "journalIssue"},
+                       {label: "Publication Date: ", predicate: "publicationDate"}];
+      var citation = "";
+
+      $scope.journalInfo = [];
+      for (var i in infoOrder) {
+        if (main[prefix+infoOrder[i].predicate] != undefined){
+          var value = main[prefix+infoOrder[i].predicate];
+          if (main[prefix+infoOrder[i].predicate] instanceof Array) {
+            value = main[prefix+infoOrder[i].predicate][0];
+          }
+          $scope.journalInfo.push({info: infoOrder[i].label, val: value});
+        }
       }
-    }
 
-    $scope.lookupBookmarkState = function () {
-      var id = DatasetStore.current[0]+"_"+$scope.uri;
-      FavoriteService.queryDatabase('SELECT * FROM FAVORITES WHERE id = (?)', [id], bookmarkLookUpCall);
-    } 
 
-    $scope.toggleBookmarkState = function () {
-      var id = DatasetStore.current[0]+"_"+$scope.uri;
-      if ($scope.bookmarkState == '0'){
-        FavoriteService.insertIntoDB({id:id, db:DatasetStore.current[0], uri:$scope.uri, label:$scope.title, time:Date.now()});
-        $scope.bookmarkStateImg = 'img/savedBookmark.png';
-        $scope.bookmarkState = '1';
-      } else {
-        FavoriteService.deleteFromDB(id);
-        $scope.bookmarkStateImg = 'img/notsavedBookmark.png';
-        $scope.bookmarkState = '0';
+      // Bookmark status and saving -----
+      function bookmarkLookUpCall (tx, results) {
+        var len = results.rows.length;
+        if (len > 0){
+          $scope.bookmarkStateImg = 'img/savedBookmark.png';
+          $scope.bookmarkState = '1';
+        }else {
+          $scope.bookmarkStateImg = 'img/notsavedBookmark.png';
+          $scope.bookmarkState = '0';
+        }
       }
-    }
 
-    $scope.lookupBookmarkState();
-    // -----------------------
+      $scope.lookupBookmarkState = function () {
+        var id = DatasetStore.current[0]+"_"+$scope.uri;
+        FavoriteService.queryDatabase('SELECT * FROM FAVORITES WHERE id = (?)', [id], bookmarkLookUpCall);
+      } 
+
+      $scope.toggleBookmarkState = function () {
+        var id = DatasetStore.current[0]+"_"+$scope.uri;
+        if ($scope.bookmarkState == '0'){
+          FavoriteService.insertIntoDB({id:id, db:DatasetStore.current[0], uri:$scope.uri, label:$scope.title, time:Date.now()});
+          $scope.bookmarkStateImg = 'img/savedBookmark.png';
+          $scope.bookmarkState = '1';
+        } else {
+          FavoriteService.deleteFromDB(id);
+          $scope.bookmarkStateImg = 'img/notsavedBookmark.png';
+          $scope.bookmarkState = '0';
+        }
+      }
+
+      $scope.lookupBookmarkState();
+      // -----------------------
 
 
 
-    QuickLinks.addLink({uri:$scope.uri, label: $scope.title, db: DatasetStore.current[0]});
+      QuickLinks.addLink({uri:$scope.uri, label: $scope.title, db: DatasetStore.current[0]});
 
     });
 

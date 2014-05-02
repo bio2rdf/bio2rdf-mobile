@@ -26,8 +26,6 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
 
     if(isNew == 1){
       $scope.offset = 0;
-    } else {
-      console.log("infinite scroll");
     }
 
     if (this.queryTerm.length == 0){
@@ -46,7 +44,6 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
         $scope.searchResultGraph = SearchService.getGraphQuery(data);
       }
 
-      console.log(data["@graph"]);
       // Look if there are more items available
       if(data["@graph"] == undefined){
         $scope.moreItemsAvailable = false;
