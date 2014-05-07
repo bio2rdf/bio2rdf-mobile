@@ -103,7 +103,7 @@
    <http://bio2rdf.org/bio2rdf_vocabulary:test> "/drugbank/describe/json-ld?uri=http://bio2rdf.org/drugbank:DB00241" .
 
 <http://bio2rdf.org/namespace:pubmed> a <http://endpoint.bio2rdf.org/resource>;
-   <http://bio2rdf.org/bio2rdf_vocabulary:endpoint> <http://cu.pubmed.bio2rdf.org/sparql>;
+   <http://bio2rdf.org/bio2rdf_vocabulary:endpoint> <http://beta.pubmed.bio2rdf.org/sparql>;
    <http://bio2rdf.org/bio2rdf_vocabulary:url_identifier>  "http://bio2rdf.org/pubmed:";
    <http://purl.org/dc/elements/1.1/title> "PubMed";
    <http://bio2rdf.org/bio2rdf_vocabulary:search_type> "full";
