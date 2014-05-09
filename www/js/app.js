@@ -95,6 +95,18 @@ angular.module('starter', ['ionic', 'starter.services', 'starter.controllers', '
         }
       })
 
+
+      .state('tab.describe-cochrane', {
+        url: '/describe-cochrane?uri',
+        views: {
+          'describe-tab': {
+            templateUrl: 'templates/describe_cochrane.html',
+            controller: 'CochraneCtrl'
+          }
+        }
+      })
+
+
       .state('tab.favorite', {
         url: '/favorite',
         views: {
