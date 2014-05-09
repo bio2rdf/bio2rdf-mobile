@@ -32,7 +32,7 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
       return;
     }
 
-    Queryer.setQuery(DatasetStore.current[0],SearchService.queryMode(this.queryTerm), 'json-ld', {"parm1" : this.queryTerm, "parm2" : $scope.offset});
+    Queryer.setQuery(DatasetStore.current[0],SearchService.queryMode(this.queryTerm), 'json-ld', {"parm1" : this.queryTerm.replace(/\s+/g,'\"+and+\"'), "parm2" : $scope.offset});
 
     Queryer.getJson().success(function(data) {
 

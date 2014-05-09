@@ -46,7 +46,7 @@ angular.module('starter.services', [])
                                   params
                                  );
 
-      restURL = encodeURI(url) + "&callback=JSON_CALLBACK";
+      restURL = encodeURI(url).replace(/\+/g,"%2B") + "&callback=JSON_CALLBACK";
 
     }
 
@@ -73,7 +73,6 @@ angular.module('starter.services', [])
 
 // Not done yet- managed in the Controller
   .factory('SearchService', function(){
-
 
     // Return an Array like this [ {uri: '', label: '', description ''}, {} .. ]
     var searchResultsFun = function(graph) {
@@ -142,7 +141,7 @@ angular.module('starter.services', [])
     var getQueryMode = function (queryTerm) {
       var queryMode = 'search_ns_long';
       var splitQuery = queryTerm.split(/[\s,-_]+/);
-      if(splitQuery[splitQuery.length-1].length < 4){
+      if(queryTerm.indexOf(' ') >=0 || splitQuery[splitQuery.length-1].length < 4){
         queryMode = 'search_ns_short';
       }
       return queryMode;
