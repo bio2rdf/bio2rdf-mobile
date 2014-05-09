@@ -26,7 +26,9 @@
 	  SuperClasses
 	</div>
 	<div class="item" ng-hide="superclassesCheck">
-	  <ion-scroll direction="x" on-scroll="unSetDragging()">
+	  <!-- <ion-scroll direction="x" on-scroll="unSetDragging()"> -->
+	  <!-- <ion-scroll direction="x" style="z-index: 99999999 !important;"> -->
+	  <ion-scroll direction="x" style="display: inline-block; margin: 10px;">
 	    <span ng-repeat="i in obosuperclasses track by $index">
               <a class="button button-small button-royal" href="#/tab/describe-chebi?uri={{i['@id']}}">{{ i['rdfs:label'] }}</a>
 	    </span>

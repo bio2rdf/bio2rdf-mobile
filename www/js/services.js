@@ -170,7 +170,12 @@ angular.module('starter.services', [])
             idSplit = o[i].split(":");
             if(context[idSplit[0]] != undefined){
               o[i] = context[idSplit[0]] + idSplit.slice(1).join(":");
+
             }
+          }else {
+
+            // console.log(decodeURIComponent(escape(o[i])));
+
           }
           // For predicate-
           // else if (i.indexOf(":") != -1 ){

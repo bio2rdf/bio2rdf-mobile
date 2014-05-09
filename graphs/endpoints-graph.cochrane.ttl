@@ -55,7 +55,6 @@
    <http://bio2rdf.org/bio2rdf_vocabulary:test> "/go/search_ns/json-ld?parm1=infectio&parm2=0";
    <http://bio2rdf.org/bio2rdf_vocabulary:test> "/go/wiki_image/json-ld?parm1=4396" .
 
-
 <http://bio2rdf.org/namespace:chebi> a <http://endpoint.bio2rdf.org/resource>;
    <http://purl.org/dc/elements/1.1/title> "ChEBI";
    <http://www.w3.org/2000/01/rdf-schema#label> "SPARQL endpoint ontobee/chebi [namespace:chebi]";
@@ -114,3 +113,12 @@
    <http://bio2rdf.org/bio2rdf_vocabulary:test> "/pubmed/describe/json-ld?uri=http://bio2rdf.org/pubmed:122906" ;
    <http://bio2rdf.org/bio2rdf_vocabulary:sparql_search_ns_short> " http://beta.pubmed.bio2rdf.org/sparql?default-graph-uri=&query=construct+%7B%0D%0A++%3Fs+rdfs%3Alabel+%3Ftitle+.%0D%0A++%3Fs+%3Chttp%3A%2F%2Fbio2rdf.org%2Fm_vocabulary%3Adescription%3E+%3FjournalLabel+.%0D%0A%7D%0D%0Awhere+%7B%0D%0A++%3Fs+%3Fp+%3Fo+.%0D%0A++%3Fo+bif%3Acontains+%27%28%22$PARM1$%22%29%27+.%0D%0A++filter+%28%3Fp+%3D+dcterms%3Atitle+%7C%7C%0D%0A+++++++++%3Fp+%3D+dcterms%3Adescription%29+.%0D%0A++%3Fs+dcterms%3Atitle+%3Ftitle+.%0D%0A++%3Fs+%3Chttp%3A%2F%2Fbio2rdf.org%2Fpubmed_vocabulary%3Ajournal%3E+%3Fjournal+.%0D%0A++%3Fjournal+%3Chttp%3A%2F%2Fbio2rdf.org%2Fpubmed_vocabulary%3Ajournal_title%3E+%3FjournalLabel+.%0D%0A%7D+limit+20+offset+$PARM2$%0D%0A&format=application%2Frdf%2Bxml&timeout=0";
    <http://bio2rdf.org/bio2rdf_vocabulary:sparql_search_ns_long> " http://beta.pubmed.bio2rdf.org/sparql?default-graph-uri=&query=construct+%7B%0D%0A++%3Fs+rdfs%3Alabel+%3Ftitle+.%0D%0A++%3Fs+%3Chttp%3A%2F%2Fbio2rdf.org%2Fm_vocabulary%3Adescription%3E+%3FjournalLabel+.%0D%0A%7D%0D%0Awhere+%7B%0D%0A++%3Fs+%3Fp+%3Fo+.%0D%0A++%3Fo+bif%3Acontains+%27%28%22$PARM1$%22%29%27+.%0D%0A++filter+%28%3Fp+%3D+dcterms%3Atitle+%7C%7C%0D%0A+++++++++%3Fp+%3D+dcterms%3Adescription%29+.%0D%0A++%3Fs+dcterms%3Atitle+%3Ftitle+.%0D%0A++%3Fs+%3Chttp%3A%2F%2Fbio2rdf.org%2Fpubmed_vocabulary%3Ajournal%3E+%3Fjournal+.%0D%0A++%3Fjournal+%3Chttp%3A%2F%2Fbio2rdf.org%2Fpubmed_vocabulary%3Ajournal_title%3E+%3FjournalLabel+.%0D%0A%7D+limit+20+offset+$PARM2$%0D%0A&format=application%2Frdf%2Bxml&timeout=0".
+
+<http://bio2rdf.org/namespace:cochrane> a <http://endpoint.bio2rdf.org/resource>;
+   <http://bio2rdf.org/bio2rdf_vocabulary:endpoint> <http://cochrane.bio2rdf.org/sparql>;
+   <http://bio2rdf.org/bio2rdf_vocabulary:url_identifier>  "http://bio2rdf.org/cochrane:";
+   <http://bio2rdf.org/bio2rdf_vocabulary:search_type> "typeahead";
+   <http://purl.org/dc/elements/1.1/title> "The Cochrane Collaboration";
+   <http://xmlns.com/foaf/0.1/depiction> <http://dbdev.bio2rdf.org/DAV/mobile-logos/cochrane.png>;
+   <http://bio2rdf.org/bio2rdf_vocabulary:triple_count> "840529"^^xsd:double .
+

@@ -1,4 +1,4 @@
-var module = angular.module('starter.controllers', [])
+var module = angular.module('starter.controllers', ['ionic'])
 
 // A simple controller that fetches a list of data from a service
 // TODO : Group together Queryer services
@@ -69,12 +69,16 @@ module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService
 });
 
 module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, ProcessGraph) {
-  console.log($stateParams);
+  // console.log($stateParams);
 });
 
 
 // Event controller to toggle side panels with buttons
 module.controller('MainCtrl', function($scope, $location, $ionicSideMenuDelegate, DatasetStore) {
+
+  ionic.Platform.ready(function() {
+    StatusBar.hide();
+  });
 
   $scope.headerImg = function () {
     return DatasetStore.all[DatasetStore.current[0]].foafDepiction;

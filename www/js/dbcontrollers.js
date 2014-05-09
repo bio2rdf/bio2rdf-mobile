@@ -98,7 +98,7 @@ module.controller('OboCtrl', function($scope, $stateParams, $ionicSideMenuDelega
 
   });
 
-
+  
   var reDragSideMenus = function (){
     $ionicSideMenuDelegate.canDragContent(true);
   }
@@ -116,9 +116,6 @@ module.controller('PubmedCtrl', function($scope, $stateParams, $ionicSideMenuDel
 
     $scope.uri = $stateParams.uri;
     Utilities.grepDBfromURI($scope.uri);
-
-
-
 
     // Query the graph data from mobile.bio2rdf.org
     Queryer.setQuery('pubmed' ,'describe', 'json-ld', {"uri" : $scope.uri});
@@ -192,7 +189,6 @@ module.controller('PubmedCtrl', function($scope, $stateParams, $ionicSideMenuDel
       // -----------------------
 
 
-
       QuickLinks.addLink({uri:$scope.uri, label: $scope.title, db: DatasetStore.current[0]});
 
     });
@@ -229,7 +225,7 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
   Queryer.setQuery('drugbank' ,'describebeta', 'json-ld', {"uri" : $scope.uri});
   Queryer.getJson().success(function(data){
     var idList=ProcessGraph.graph(data);
-    var main = idList[$stateParams.uri]
+    var main = idList[$stateParams.uri];
 
     /*$scope.title = Utilities.capitalize(main["rdfs:label"])*/
     /*$scope.dbdescription = main["dcterms:description"]["@value"];*/
@@ -312,8 +308,6 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
     $scope.lookupBookmarkState();
     // -----------------------
 
-
-
     QuickLinks.addLink({uri:$scope.uri, label: $scope.title, db: DatasetStore.current[0]});
 
   });
@@ -359,7 +353,7 @@ module.controller('UniprotCtrl', function($scope, $stateParams, $ionicSideMenuDe
 
     $scope.main=main;
     $scope.title = main["rdfs:label"];
-    
+
     var annotations = [];
     _.each(main["bm:m_vocabulary:uniprot_hasAnnotation"], function(elem) {
       var elemid = elem;

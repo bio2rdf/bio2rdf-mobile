@@ -139,8 +139,12 @@ construct {
   optional {
     ?uri <http://bio2rdf.org/pubmed_vocabulary:mesh_heading> ?mesh .
     ?mesh rdfs:label ?meshLabel .
+  }
+  optional {
     ?uri dcterms:abstract ?abstract .
     ?abstract dcterms:description ?abstractText .
+  }
+  optional {
     ?uri <http://bio2rdf.org/pubmed_vocabulary:journal> ?journal .
     ?journal rdfs:label ?journalLabel .
     optional {

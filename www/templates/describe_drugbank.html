@@ -3,118 +3,118 @@
   -->
 <ion-nav-bar></ion-nav-bar>
 <ion-view title="'Describe Page'">
-
+  
   <ion-content has-header="true" has-tabs="true" padding="true">
-
-  <div ng-show="main">
-
+    
+    <div ng-show="main">
+      
       <div class="item">
 	<img src="{{bookmarkStateImg}}" style="width: 30px; display: block;" align="right" ng-click="toggleBookmarkState()"> <br>
 	<h1 align="middle"> {{ main["rdfs:label"]["@value"] }} </h1>
 	<p align="middle"> {{ uri }} </p>
       </div>
-	<div class="item item-divider" ng-class="{'inactive':imageCheck}"ng-click="imageCheck = !imageCheck">
-	  Structure
-	</div>
-	<div class="item item-text-wrap" ng-hide="imageCheck"> 
+      <div class="item item-divider" ng-class="{'inactive':imageCheck}"ng-click="imageCheck = !imageCheck">
+	Structure
+      </div>
+      <div class="item item-text-wrap" ng-hide="imageCheck"> 
         <!--<div class='row'>-->
         <!--<div class='col col-67'>-->
-              <img src="{{ image }}" style="width: 60%; display: block; margin: 0 auto;">
-              <!--</div>-->
-              <!--<div class='col'>-->
-              <!--<span ng-show=""><b></b></span>-->
-              <!--</div>-->
-              <!--</div>-->
-              <!--<span ng-show=""><br>-->
-	</div>
-
-	<div class="item item-divider" ng-class="{'inactive':identificationCheck}"ng-click="identificationCheck = !identificationCheck">
-	  Identification
-	</div>
-	<div class="item item-text-wrap" ng-hide="identificationCheck"> 
-	  <span ng-show="main['drugbank_vocabulary:category']"><b>Type:</b><br>{{ main['drugbank_vocabulary:category'].join(", ") }}<br>
-          <hr style="width: 60%"></span>
-	  <span ng-show="main['dcterms:description']['@value']"><b>Description:</b><br>{{ main['dcterms:description']['@value'] }}<br>
-          <hr style="width: 60%"></span>
-          <span ng-show="main['drugbank_vocabulary:synonym']"><b>Synonyms:</b><br>{{ mergeArray(main['drugbank_vocabulary:synonym']).join(", ")}}<br>
-          <hr style="width: 60%"></span>
-	</div>
-	<div class="item item-divider" ng-class="{'inactive':pharmacoCheck}" ng-click="pharmacoCheck = !pharmacoCheck">
-	  Pharmacology
-	</div>
-	<div class="item item-text-wrap" ng-hide="pharmacoCheck"> 
-	  <span ng-show="main['drugbank_vocabulary:indication']"> <b>Indication:</b><br>{{ main['drugbank_vocabulary:indication'] }}<br>
-          <hr style="width: 60%"></span>
-	  <span ng-show="main['drugbank_vocabulary:pharmacology']"><b>Pharmacodynamics:</b><br>{{ main['drugbank_vocabulary:pharmacology'] }}<br></span>
-          <hr style="width: 60%">
-          <span ng-show="main['drugbank_vocabulary:mechanism-of-action']"><b>Mechanism of action:</b><br>{{ main['drugbank_vocabulary:mechanism-of-action']}}<br>
-          <hr style="width: 60%"></span>
-	  <span ng-show="main['drugbank_vocabulary:absorption']"><b>Absorption:</b><br>{{ main['drugbank_vocabulary:absorption'] }}<br>
-          <hr style="width: 60%"></span>
-	  <span ng-show="main['drugbank_vocabulary:biotransformation']"><b>Metabolism:</b><br>{{ main['drugbank_vocabulary:biotransformation'] }}<br>
-          <hr style="width: 60%"></span>
-	  <span ng-show="main['drugbank_vocabulary:protein-binding']"><b>Protein binding:</b><br>{{ main['drugbank_vocabulary:protein-binding'] }}<br>
-          <hr style="width: 60%"></span>
-	  <span ng-show="main['drugbank_vocabulary:half-life']"><b>Half life:</b><br>{{ main['drugbank_vocabulary:half-life'] }}<br>
-          <hr style="width: 60%"></span>
-	  <span ng-show="main['drugbank_vocabulary:toxicity']"><b>Toxicity:</b><br>{{ main['drugbank_vocabulary:toxicity'] }}<br>
-          <hr style="width: 60%"></span>
-	</div>
-	<div class="item item-divider" ng-class="{'inactive':calcpropCheck}" ng-click="calcpropCheck = !calcpropCheck">
-	  Calculated properties
-	</div>
-	<div class="item item-text-wrap" ng-hide="calcpropCheck"> 
-	  <ul ng-repeat="i in main['drugbank_vocabulary:calculated-property']">
-            <li>
-              <div class='row'>
-                <div class="col col-20"><b>{{idList[i['@id']]['rdfs:label'].split(":")[0]}}:</b></div>
-                <div class="col">{{idList[i['@id']]['rdfs:label'].split(":")[1].split("[")[0]}}</div>
-              </div>
-            </li>
-          </ul>
-	</div>
-	<div class="item item-divider" ng-class="{'inactive':seealsoCheck}" ng-click="seealsoCheck = !seealsoCheck">
-	  See also
-	</div>
-	<div class="item item-text-wrap" ng-hide="seealsoCheck"> 
-	  <ul ng-repeat="i in main['rdfs:seeAlso']">
-            <li><a href="{{i['@id']}}">{{i['@id']}}</a></li>
-          </ul>
-	</div>
-
-        <!--<div class="item item-divider">-->
+        <img src="{{ image }}" style="width: 60%; display: block; margin: 0 auto;">
         <!--</div>-->
-        <!--<div class="item item-text-wrap">-->
-        <!--<ion-scroll direction="x" on-scroll="unSetDragging()">-->
-        <!--<span ng-repeat="i in obosuperclasses track by $index">-->
-        <!--<a class="button button-small button-royal" href="#/tab/describe-chebi?uri={{i['@id']}}">{{ i['rdfs:label'] }}</a>-->
-        <!--</span>-->
-        <!--</ion-scroll>-->
+        <!--<div class='col'>-->
+        <!--<span ng-show=""><b></b></span>-->
         <!--</div>-->
-        <!---->
-        <!--<div class="item item-divider">-->
-        <!--SubClasses-->
         <!--</div>-->
-        <!--<div class="item" drag-content="false">-->
-        <!--<ion-scroll direction="x" on-scroll="unSetDragging()">-->
-        <!--<span ng-repeat="j in obosubclasses track by $index">-->
-        <!--<a class="button button-small button-royal" href="#/tab/describe-chebi?uri={{j['@id']}}">{{ j['rdfs:label'] }}</a>-->
-        <!--</span>-->
-        <!--</ion-scroll>-->
-        <!--</div>-->
-        <!---->
-        <!--<div class="item item-divider">-->
-        <!--Database cross-references-->
-        <!--</div>-->
-        <!--<div class="item item-text-wrap">-->
-        <!--<ul class="mobileList">-->
-        <!--<li class="mobileListItem" ng-repeat="refs in xrefs">{{ refs }}</li>-->
-        <!--</ul>-->
-        <!--</div>-->
-        <!--	-->
-        <!--</div>-->
-        <!-- -->
-        <!--</div>-->
-
+        <!--<span ng-show=""><br>-->
+      </div>
+      
+      <div class="item item-divider" ng-class="{'inactive':identificationCheck}"ng-click="identificationCheck = !identificationCheck">
+	Identification
+      </div>
+      <div class="item item-text-wrap" ng-hide="identificationCheck"> 
+	<span ng-show="main['drugbank_vocabulary:category']"><b>Type:</b><br>{{ main['drugbank_vocabulary:category'].join(", ") }}<br>
+          <hr style="width: 60%"></span>
+	<span ng-show="main['dcterms:description']['@value']"><b>Description:</b><br>{{ main['dcterms:description']['@value'] }}<br>
+          <hr style="width: 60%"></span>
+        <span ng-show="main['drugbank_vocabulary:synonym']"><b>Synonyms:</b><br>{{ mergeArray(main['drugbank_vocabulary:synonym']).join(", ")}}<br>
+          <hr style="width: 60%"></span>
+      </div>
+      <div class="item item-divider" ng-class="{'inactive':pharmacoCheck}" ng-click="pharmacoCheck = !pharmacoCheck">
+	Pharmacology
+      </div>
+      <div class="item item-text-wrap" ng-hide="pharmacoCheck"> 
+	<span ng-show="main['drugbank_vocabulary:indication']"> <b>Indication:</b><br>{{ main['drugbank_vocabulary:indication'] }}<br>
+          <hr style="width: 60%"></span>
+	<span ng-show="main['drugbank_vocabulary:pharmacology']"><b>Pharmacodynamics:</b><br>{{ main['drugbank_vocabulary:pharmacology'] }}<br></span>
+        <hr style="width: 60%">
+        <span ng-show="main['drugbank_vocabulary:mechanism-of-action']"><b>Mechanism of action:</b><br>{{ main['drugbank_vocabulary:mechanism-of-action']}}<br>
+          <hr style="width: 60%"></span>
+	<span ng-show="main['drugbank_vocabulary:absorption']"><b>Absorption:</b><br>{{ main['drugbank_vocabulary:absorption'] }}<br>
+          <hr style="width: 60%"></span>
+	<span ng-show="main['drugbank_vocabulary:biotransformation']"><b>Metabolism:</b><br>{{ main['drugbank_vocabulary:biotransformation'] }}<br>
+          <hr style="width: 60%"></span>
+	<span ng-show="main['drugbank_vocabulary:protein-binding']"><b>Protein binding:</b><br>{{ main['drugbank_vocabulary:protein-binding'] }}<br>
+          <hr style="width: 60%"></span>
+	<span ng-show="main['drugbank_vocabulary:half-life']"><b>Half life:</b><br>{{ main['drugbank_vocabulary:half-life'] }}<br>
+          <hr style="width: 60%"></span>
+	<span ng-show="main['drugbank_vocabulary:toxicity']"><b>Toxicity:</b><br>{{ main['drugbank_vocabulary:toxicity'] }}<br>
+          <hr style="width: 60%"></span>
+      </div>
+      <div class="item item-divider" ng-class="{'inactive':calcpropCheck}" ng-click="calcpropCheck = !calcpropCheck">
+	Calculated properties
+      </div>
+      <div class="item item-text-wrap" ng-hide="calcpropCheck"> 
+	<ul ng-repeat="i in main['drugbank_vocabulary:calculated-property']">
+          <li>
+            <div class='row'>
+              <div class="col col-20"><b>{{idList[i['@id']]['rdfs:label'].split(":")[0]}}:</b></div>
+              <div class="col">{{idList[i['@id']]['rdfs:label'].split(":")[1].split("[")[0]}}</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="item item-divider" ng-class="{'inactive':seealsoCheck}" ng-click="seealsoCheck = !seealsoCheck">
+	See also
+      </div>
+      <div class="item item-text-wrap" ng-hide="seealsoCheck"> 
+	<ul ng-repeat="i in main['rdfs:seeAlso']">
+          <li><a href="{{i['@id']}}">{{i['@id']}}</a></li>
+        </ul>
+      </div>
+      
+      <!--<div class="item item-divider">-->
+      <!--</div>-->
+      <!--<div class="item item-text-wrap">-->
+      <!--<ion-scroll direction="x" on-scroll="unSetDragging()">-->
+      <!--<span ng-repeat="i in obosuperclasses track by $index">-->
+      <!--<a class="button button-small button-royal" href="#/tab/describe-chebi?uri={{i['@id']}}">{{ i['rdfs:label'] }}</a>-->
+      <!--</span>-->
+      <!--</ion-scroll>-->
+      <!--</div>-->
+      <!---->
+      <!--<div class="item item-divider">-->
+      <!--SubClasses-->
+      <!--</div>-->
+      <!--<div class="item" drag-content="false">-->
+      <!--<ion-scroll direction="x" on-scroll="unSetDragging()">-->
+      <!--<span ng-repeat="j in obosubclasses track by $index">-->
+      <!--<a class="button button-small button-royal" href="#/tab/describe-chebi?uri={{j['@id']}}">{{ j['rdfs:label'] }}</a>-->
+      <!--</span>-->
+      <!--</ion-scroll>-->
+      <!--</div>-->
+      <!---->
+      <!--<div class="item item-divider">-->
+      <!--Database cross-references-->
+      <!--</div>-->
+      <!--<div class="item item-text-wrap">-->
+      <!--<ul class="mobileList">-->
+      <!--<li class="mobileListItem" ng-repeat="refs in xrefs">{{ refs }}</li>-->
+      <!--</ul>-->
+      <!--</div>-->
+      <!--	-->
+      <!--</div>-->
+      <!-- -->
+      <!--</div>-->
+      
   </ion-content>
 </ion-view>

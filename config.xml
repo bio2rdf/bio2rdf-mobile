@@ -13,5 +13,7 @@
     <preference name="webviewbounce" value="true" />
     <preference name="UIWebViewBounce" value="true" />
     <preference name="DisallowOverscroll" value="true" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="SplashScreenDelay" value="10000" />
     <plugin name="Storage" value="org.apache.cordova.Storage" />
 </widget>
