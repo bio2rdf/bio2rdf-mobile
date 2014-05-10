@@ -4,7 +4,6 @@ var module = angular.module('starter.dbcontrollers', [])
 module.controller('OboCtrl', function($scope, $stateParams, $ionicSideMenuDelegate, $timeout, $ionicLoading, Queryer, ProcessGraph, DatasetStore, QuickLinks, Utilities, FavoriteService) {
 
   $scope.uri = $stateParams.uri;
-  Utilities.grepDBfromURI($scope.uri);
 
   // Query the graph data from mobile.bio2rdf.org
   Queryer.setQuery(DatasetStore.current[0] ,'describe', 'json-ld', {"uri" : $scope.uri});
@@ -115,7 +114,6 @@ module.controller('OboCtrl', function($scope, $stateParams, $ionicSideMenuDelega
 module.controller('PubmedCtrl', function($scope, $stateParams, $ionicSideMenuDelegate, $timeout, Queryer, ProcessGraph, DatasetStore, QuickLinks, Utilities, FavoriteService) {
 
   $scope.uri = $stateParams.uri;
-  Utilities.grepDBfromURI($scope.uri);
 
   // Query the graph data from mobile.bio2rdf.org
   Queryer.setQuery('pubmed' ,'describe', 'json-ld', {"uri" : $scope.uri});
@@ -217,7 +215,6 @@ module.controller('PubmedCtrl', function($scope, $stateParams, $ionicSideMenuDel
 module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuDelegate, $timeout, Queryer, ProcessGraph, DatasetStore, QuickLinks, Utilities, FavoriteService) {
 
   $scope.uri = $stateParams.uri;
-  Utilities.grepDBfromURI($scope.uri);
 
   $scope.image="http://structures.wishartlab.com/molecules/"+$stateParams.uri.split(":")[2]+"/image.png";
 
@@ -336,7 +333,6 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
 module.controller('UniprotCtrl', function($scope, $stateParams, $ionicSideMenuDelegate, $timeout, Queryer, ProcessGraph, DatasetStore, QuickLinks, Utilities, FavoriteService) {
 
   $scope.uri = $stateParams.uri;
-  Utilities.grepDBfromURI($scope.uri); 
   $scope.datasets = DatasetStore.all;
 
   // Query the graph data from mobile.bio2rdf.org
@@ -471,7 +467,6 @@ module.controller('UniprotCtrl', function($scope, $stateParams, $ionicSideMenuDe
 module.controller('CochraneCtrl', function($scope, $stateParams, $ionicSideMenuDelegate, $timeout, Queryer, ProcessGraph, DatasetStore, QuickLinks, Utilities, FavoriteService) {
 
   $scope.uri = $stateParams.uri;
-  Utilities.grepDBfromURI($scope.uri);
 
   if($scope.uri.indexOf("cochrane:CD") > -1){
     Queryer.setQuery('cochrane' ,'describe', 'json-ld', {"uri" : $scope.uri});

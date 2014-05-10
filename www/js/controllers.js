@@ -74,14 +74,18 @@ module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, Proces
 
 
 // Event controller to toggle side panels with buttons
-module.controller('MainCtrl', function($scope, $location, $ionicSideMenuDelegate, DatasetStore) {
+module.controller('MainCtrl', function($scope, $location, $ionicSideMenuDelegate, $stateParams, DatasetStore) {
 
   ionic.Platform.ready(function() {
     StatusBar.hide();
   });
 
   $scope.headerImg = function () {
-    return DatasetStore.all[DatasetStore.current[0]].foafDepiction;
+    if(DatasetStore.all[DatasetStore.current[0]] != undefined) {
+      return DatasetStore.all[DatasetStore.current[0]].foafDepiction;
+    } else {
+      return "img/bio2rdf.png";
+    }
   }
 
   $scope.toggleLeftPanel = function() {
@@ -100,6 +104,12 @@ module.controller('MainCtrl', function($scope, $location, $ionicSideMenuDelegate
       return 'ion-arrow-graph-down-left';
     }
   }
+
+  $scope.$on('$locationChangeSuccess', function(event) {
+    if($location.path().indexOf("describe-") > -1){
+      DatasetStore.current = [$location.path().split("-")[1]];
+    }
+  });
 
 });
 
