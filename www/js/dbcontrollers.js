@@ -118,6 +118,10 @@ module.controller('OboCtrl', function($scope, $stateParams, $ionicSideMenuDelega
     $timeout(reDragSideMenus,3000);
   }
 
+  $scope.contentClick = function (){
+    reDragSideMenus();
+  }
+
 });
 
 

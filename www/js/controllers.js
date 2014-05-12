@@ -1,5 +1,6 @@
 var module = angular.module('starter.controllers', ['ionic'])
 
+
 // A simple controller that fetches a list of data from a service
 // TODO : Group together Queryer services
 module.controller('SearchCtrl', function($scope, Queryer, ReplacePrefixesService, DatasetStore, SearchService) {
@@ -74,7 +75,7 @@ module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, Proces
 
 
 // Event controller to toggle side panels with buttons
-module.controller('MainCtrl', function($scope, $location, $ionicSideMenuDelegate, $stateParams, DatasetStore) {
+module.controller('MainCtrl', function($scope, $location, $ionicSideMenuDelegate, $stateParams, $ionicGesture, DatasetStore) {
 
   ionic.Platform.ready(function() {
     StatusBar.hide();
@@ -159,7 +160,7 @@ module.controller('LeftMenuCtrl', function($scope, $location, $ionicLoading, Dat
 
   // Put it somewhere else ?
   $scope.onItemHold = function(item) {
-    alert("HOLD ON");
+    // alert("HOLD ON");
   };
 
   $scope.changeCurrentDatabase = function(dbId) {
@@ -240,6 +241,7 @@ module.controller('FavoriteCtrl', function($scope, $location, DatasetStore, Data
 
 });
 
+
 module.directive('myOnHold', function($ionicGesture) {
   return {
     restrict: 'A',
@@ -253,31 +255,14 @@ module.directive('myOnHold', function($ionicGesture) {
 
 
 
-// A simple controller that shows a tapped item's data
-module.controller('PetDetailCtrl', function($scope, $stateParams, PetService) {
-  // "Pets" is a service returning mock data (services.js)
-  $scope.pet = PetService.get($stateParams.petId);
+module.directive('myOnHold', function($ionicGesture) {
+  return {
+    restrict: 'A',
+    link: function($scope, $element, $attr) {
+      $ionicGesture.on('hold', function(e) {
+        $scope.$eval($attr.myOnHold);
+      }, $element);
+    }
+  }
 });
 
-
-module.directive('noDragRight', ['$ionicGesture', function($ionicGesture) {
-  return {
-    restrict: 'A',
-    link: function($scope, $element, $attr) {
-      $ionicGesture.on('dragright', function(e) {
-        e.gesture.srcEvent.preventDefault();
-      }, $element);
-    }
-  }
-}])
-
-module.directive('noDragLeft', ['$ionicGesture', function($ionicGesture) {
-  return {
-    restrict: 'A',
-    link: function($scope, $element, $attr) {
-      $ionicGesture.on('dragleft', function(e) {
-        e.gesture.srcEvent.preventDefault();
-      }, $element);
-    }
-  }
-}])
