@@ -3,24 +3,28 @@
   -->
 <ion-nav-bar></ion-nav-bar>
 <ion-view title="'Describe Page'">
-
+  
   <ion-content has-header="true" has-tabs="true" padding="true">
+    
+    <div ng-show="loading" style="text-align: center">
+      <div class="icon ion-loading-a" style="font-size: 50px;"></div>
+    </div>
 
-  <div ng-show="data">
-
+    <div ng-show="showData" style="text-align: left">
+      
       <div class="item item-text-wrap">
 	<img src="{{bookmarkStateImg}}" style="width: 30px; display: block;" align="right" ng-click="toggleBookmarkState()"> <br>
 	<h1 align="middle">{{ title }} </h1>
 	<p align="middle"> {{ uri }} </p>
       </div>
-
+      
       <div class="item item-divider" ng-class="{'inactive':authorCheck}"ng-click="authorCheck = !authorCheck">
         Authors
       </div>
       <div class="item item-text-wrap" ng-hide="authorCheck" ng-repeat="author in authors">
 	{{$index+1}}. {{author}}
       </div>
-
+      
       <div class="item item-divider" ng-class="{'inactive':journalCheck}"ng-click="journalCheck = !journalCheck">
         Journal
       </div>
@@ -34,22 +38,24 @@
 	  </div>
 	</div>
       </div>
-
+      
       <div class="item item-divider" ng-class="{'inactive':abstractCheck}"ng-click="abstractCheck = !abstractCheck">
         Abstract
       </div>
       <div class="item item-text-wrap" ng-hide="abstractCheck"> 
         <p>{{data["bm:m_vocabulary:pubmed_abstract"]}}</p>
       </div>
-
+      
       <div class="item item-divider" ng-class="{'inactive':meshCheck}"ng-click="meshCheck = !meshCheck">
         Mesh terms
       </div>
       <div class="item item-text-wrap" ng-hide="meshCheck"> 
-            <ul ng-repeat="i in data['bm:m_vocabulary:pubmed_meshterm'] | orderBy : i">
-              <li>{{ i }}</li>
-            </ul>
+        <ul ng-repeat="i in data['bm:m_vocabulary:pubmed_meshterm'] | orderBy : i">
+          <li>{{ i }}</li>
+        </ul>
       </div>
 
+    </div>
+      
   </ion-content>
 </ion-view>

@@ -112,10 +112,28 @@ where {
   ?s ?p ?o .
   ?o bif:contains '("asthma")' .
   filter (?p = dcterms:title ||
-         ?p = dcterms:description) .
+          ?p = dcterms:description) .
   ?s dcterms:title ?title .
   ?s <http://bio2rdf.org/pubmed_vocabulary:journal> ?journal .
   ?journal <http://bio2rdf.org/pubmed_vocabulary:journal_title> ?journalLabel .
+} limit 20 offset 0
+
+# search_ns
+construct {
+  ?s rdfs:label ?title .
+  ?s <http://bio2rdf.org/m_vocabulary:description> ?journalLabel .
+}
+where {
+  ?s ?p ?o .
+  ?s dcterms:title ?title .
+  ?s <http://bio2rdf.org/pubmed_vocabulary:journal> ?journal .
+  ?journal <http://bio2rdf.org/pubmed_vocabulary:journal_title> ?journalLabel .
+  ?s dcterms:contributor ?author .
+  ?author rdfs:label ?authorName .
+  filter (?p = dcterms:title || ?p = dcterms:description) .
+  filter (bif:contains(?o, '("asthma")') || 
+	  bif:contains(?journal, '("asthma")') ||
+	  bif:contains(?authorName, '("asthma")'))
 } limit 20 offset 0
 
 
@@ -223,7 +241,6 @@ where {
 
 
 
-
 # CHEBI
 
 CONSTRUCT {
@@ -256,7 +273,6 @@ where {
 }
 
 
-
 # DOID
 CONSTRUCT {
   ?subject rdfs:label ?object .
@@ -279,9 +295,8 @@ construct
   <http://purl.obolibrary.org/obo/CHEBI_28790> ?p ?o .
   optional{
     <http://purl.obolibrary.org/obo/CHEBI_28790> ?p2 ?o2 .
-    filter ()
   }
-} 
+}
 
 # DrugBank
 http://drugbank.bio2rdf.org/sparql

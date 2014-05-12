@@ -5,8 +5,14 @@ module.controller('OboCtrl', function($scope, $stateParams, $ionicSideMenuDelega
 
   $scope.uri = $stateParams.uri;
 
+  // Set ng-show
+  $scope.showData = 0;
+  $scope.loading = 1;
+
+
   // Query the graph data from mobile.bio2rdf.org
   Queryer.setQuery(DatasetStore.current[0] ,'describe', 'json-ld', {"uri" : $scope.uri});
+  $scope.loading = 1;
   Queryer.getJson().success(function(data){
     var idList = ProcessGraph.graph(data);
     var main = idList[$stateParams.uri]
@@ -92,8 +98,13 @@ module.controller('OboCtrl', function($scope, $stateParams, $ionicSideMenuDelega
     $scope.lookupBookmarkState(); // set the state on init
     // -----------------------
 
-
     QuickLinks.addLink({uri:$scope.uri, label: $scope.title, db: DatasetStore.current[0]});
+
+    // Set ng-show
+    $scope.showData = 1;
+    $scope.loading = 0;
+
+
 
   });
 
@@ -114,6 +125,10 @@ module.controller('OboCtrl', function($scope, $stateParams, $ionicSideMenuDelega
 module.controller('PubmedCtrl', function($scope, $stateParams, $ionicSideMenuDelegate, $timeout, Queryer, ProcessGraph, DatasetStore, QuickLinks, Utilities, FavoriteService) {
 
   $scope.uri = $stateParams.uri;
+
+  // Set ng-show
+  $scope.showData = 0;
+  $scope.loading = 1;
 
   // Query the graph data from mobile.bio2rdf.org
   Queryer.setQuery('pubmed' ,'describe', 'json-ld', {"uri" : $scope.uri});
@@ -186,8 +201,12 @@ module.controller('PubmedCtrl', function($scope, $stateParams, $ionicSideMenuDel
     $scope.lookupBookmarkState();
     // -----------------------
 
-
     QuickLinks.addLink({uri:$scope.uri, label: $scope.title, db: DatasetStore.current[0]});
+    
+    // Set ng-show
+    $scope.showData = 1;
+    $scope.loading = 0;
+
 
   });
 
@@ -218,9 +237,16 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
 
   $scope.image="http://structures.wishartlab.com/molecules/"+$stateParams.uri.split(":")[2]+"/image.png";
 
+  // Set ng-show
+  $scope.showData = 0;
+  $scope.loading = 1;
+
+
   // Query the graph data from mobile.bio2rdf.org
   Queryer.setQuery('drugbank' ,'describebeta', 'json-ld', {"uri" : $scope.uri});
   Queryer.getJson().success(function(data){
+
+
     var idList=ProcessGraph.graph(data);
     var main = idList[$stateParams.uri];
 
@@ -261,17 +287,6 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
       });
     }
 
-    // Fetch Image from Wiki
-    /*ProcessGraph.getWikiImageUri($scope.uri).then(function(promise){*/
-    /*$scope.image = promise.data["http://xmlns.com/foaf/0.1/depiction"]["@id"];*/
-    /*});*/
-
-    /*if ($scope.image == undefined){*/
-    /*ProcessGraph.getWikiImageLabel($scope.title).then(function(promise){*/
-    /*$scope.image = promise.data["http://xmlns.com/foaf/0.1/depiction"]["@id"];*/
-    /*});*/
-    /*}*/
-
     // Bookmark status and saving -----
     function bookmarkLookUpCall (tx, results) {
       var len = results.rows.length;
@@ -307,6 +322,11 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
 
     QuickLinks.addLink({uri:$scope.uri, label: $scope.title, db: DatasetStore.current[0]});
 
+    // Set ng-show
+    $scope.showData = 1;
+    $scope.loading = 0;
+
+
   });
 
 
@@ -334,6 +354,11 @@ module.controller('UniprotCtrl', function($scope, $stateParams, $ionicSideMenuDe
 
   $scope.uri = $stateParams.uri;
   $scope.datasets = DatasetStore.all;
+
+  // Set ng-show
+  $scope.showData = 0;
+  $scope.loading = 1;
+
 
   // Query the graph data from mobile.bio2rdf.org
   Queryer.setQuery('uniprot' ,'describe', 'json-ld', {"uri" : $scope.uri});
@@ -440,6 +465,10 @@ module.controller('UniprotCtrl', function($scope, $stateParams, $ionicSideMenuDe
 
     QuickLinks.addLink({uri:$scope.uri, label: $scope.title, db: DatasetStore.current[0]});
 
+    // Set ng-show
+    $scope.showData = 1;
+    $scope.loading = 0;
+
   });
 
 
@@ -463,7 +492,7 @@ module.controller('UniprotCtrl', function($scope, $stateParams, $ionicSideMenuDe
 });
 
 
-//PUBMED
+//Cochrane
 module.controller('CochraneCtrl', function($scope, $stateParams, $ionicSideMenuDelegate, $timeout, Queryer, ProcessGraph, DatasetStore, QuickLinks, Utilities, FavoriteService) {
 
   $scope.uri = $stateParams.uri;
@@ -475,6 +504,12 @@ module.controller('CochraneCtrl', function($scope, $stateParams, $ionicSideMenuD
   } else {
     Queryer.setQuery('cochrane' ,'describe_author', 'json-ld', {"uri" : $scope.uri});
   }
+
+
+  // Set ng-show
+  $scope.showData = 0;
+  $scope.loading = 1;
+
 
   // Query the graph data from mobile.bio2rdf.org
   // Queryer.setQuery('cochrane' ,'describe', 'json-ld', {"uri" : $scope.uri});
@@ -551,6 +586,10 @@ module.controller('CochraneCtrl', function($scope, $stateParams, $ionicSideMenuD
 
 
     QuickLinks.addLink({uri:$scope.uri, label: $scope.title, db: DatasetStore.current[0]});
+
+    // Set ng-show
+    $scope.showData = 1;
+    $scope.loading = 0;
 
   });
 

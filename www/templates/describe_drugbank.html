@@ -5,9 +5,13 @@
 <ion-view title="'Describe Page'">
   
   <ion-content has-header="true" has-tabs="true" padding="true">
-    
-    <div ng-show="main">
-      
+
+    <div ng-show="loading" style="text-align: center">
+      <div class="icon ion-loading-a" style="font-size: 50px;"></div>
+    </div>
+
+    <div ng-show="showData" style="text-align: left">
+
       <div class="item">
 	<img src="{{bookmarkStateImg}}" style="width: 30px; display: block;" align="right" ng-click="toggleBookmarkState()"> <br>
 	<h1 align="middle"> {{ main["rdfs:label"]["@value"] }} </h1>

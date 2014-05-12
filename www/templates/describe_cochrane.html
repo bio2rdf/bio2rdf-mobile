@@ -6,52 +6,57 @@
 
   <ion-content has-header="true" has-tabs="true" padding="true">
 
-  <div ng-show="data">
 
-    <span ng-show="review">
+    <div ng-show="loading" style="text-align: center">
+      <div class="icon ion-loading-a" style="font-size: 50px;"></div>
+    </div>
+    
+    <div ng-show="showData" style="text-align: left">
 
-      <div class="item item-text-wrap">
-	<img src="{{bookmarkStateImg}}" style="width: 30px; display: block;" align="right" ng-click="toggleBookmarkState()"> <br>
-	<h1 align="middle">{{ title }} </h1>
-	<p align="middle"> {{ uri }} </p>
-	<p align="middle"> <b> Review Date : </b> {{ data["http://schema.org/dtreviewed"] }} </p>	
-      </div>
-
-      <div class="item item-divider" ng-class="{'inactive':authorCheck}" ng-click="authorCheck = !authorCheck">
-        Authors
-      </div>
-      <div class="item item-text-wrap" ng-hide="authorCheck" ng-repeat="author in authors">
-	{{author["rdfs:label"]}}
-      </div>
-
-      <div class="item item-divider" ng-class="{'inactive':descriptionCheck}" ng-click="descriptionCheck = !descriptionCheck">
-	Description
-      </div>
-      <div class="item item-text-wrap" ng-hide="descriptionCheck">
-	{{data["http://schema.org/description"]}}
-      </div>
-
-    </span>
-
-
-    <span ng-show="conceptShow">
-
-      <div class="item item-text-wrap">
-	<img src="{{bookmarkStateImg}}" style="width: 30px; display: block;" align="right" ng-click="toggleBookmarkState()"> <br>
-	<h1 align="middle">{{ title }} </h1>
-      </div>
-
-      <div class="item item-divider" ng-class="{'inactive':conceptCheck}" ng-click="conceptCheck = !conceptCheck">
-        Reviews :
-      </div>
-      <ion-list>
-	<ion-item ng-repeat="concept in concepts" item="elem" type="item-text-wrap" href="#/tab/describe-cochrane?uri={{concept['@id']}}">
-	  {{concept["rdfs:label"]}}
-	</ion-item>
-      </ion-list>
-
-    </span>
-
-
+      <span ng-show="review">
+	
+	<div class="item item-text-wrap">
+	  <img src="{{bookmarkStateImg}}" style="width: 30px; display: block;" align="right" ng-click="toggleBookmarkState()"> <br>
+	  <h1 align="middle">{{ title }} </h1>
+	  <p align="middle"> {{ uri }} </p>
+	  <p align="middle"> <b> Review Date : </b> {{ data["http://schema.org/dtreviewed"] }} </p>	
+	</div>
+	
+	<div class="item item-divider" ng-class="{'inactive':authorCheck}" ng-click="authorCheck = !authorCheck">
+          Authors
+	</div>
+	<div class="item item-text-wrap" ng-hide="authorCheck" ng-repeat="author in authors">
+	  {{author["rdfs:label"]}}
+	</div>
+	
+	<div class="item item-divider" ng-class="{'inactive':descriptionCheck}" ng-click="descriptionCheck = !descriptionCheck">
+	  Description
+	</div>
+	<div class="item item-text-wrap" ng-hide="descriptionCheck">
+	  {{data["http://schema.org/description"]}}
+	</div>
+	
+      </span>
+      
+      
+      <span ng-show="conceptShow">
+	
+	<div class="item item-text-wrap">
+	  <img src="{{bookmarkStateImg}}" style="width: 30px; display: block;" align="right" ng-click="toggleBookmarkState()"> <br>
+	  <h1 align="middle">{{ title }} </h1>
+	</div>
+	
+	<div class="item item-divider" ng-class="{'inactive':conceptCheck}" ng-click="conceptCheck = !conceptCheck">
+          Reviews :
+	</div>
+	<ion-list>
+	  <ion-item ng-repeat="concept in concepts" item="elem" type="item-text-wrap" href="#/tab/describe-cochrane?uri={{concept['@id']}}">
+	    {{concept["rdfs:label"]}}
+	  </ion-item>
+	</ion-list>
+	
+      </span>
+      
+      
   </ion-content>
 </ion-view>
