@@ -5,16 +5,6 @@
 <ion-view title="'Favorites'">
   <ion-content has-header="true" has-tabs="true" padding="true">
 
-
-
-    
-    <!-- <ion-list> -->
-    <!--   <ion-item ng-repeat="elem in result track by $index" ng-click="deleteBookmark(elem)" href="#/tab/describe-{{elem.db}}?uri={{elem.uri}}"> -->
-    <!--     <h2>{{elem.label}}</h2> -->
-    <!--   </ion-item> -->
-    <!-- </ion-list> -->
-
-
     <ion-list ng-repeat="(db, bookmarks) in result | orderBy : db">
 
       <div class="item item-divider" ng-click="dbCheck = !dbCheck" ng-class="{'inactive':dbCheck}">
@@ -24,12 +14,28 @@
 	</div>	
       </div>
 
-      <ion-item ng-repeat="bookmark in bookmarks | orderBy : bookmark.timestamp : reverse" style="text-align:center" ng-hide="dbCheck" href="#/tab/describe-{{db}}?uri={{bookmark.uri}}">
-	<div style="display: inline">
-	  <span style="float: left">{{convertTime(bookmark.timestamp)}} </span>
-	  {{bookmark.label}}
-	  <span style="font-size: small; font-style: italic"> ({{bookmark.uri}}) </span>
+      <ion-item class="item-text-wrap" ng-repeat="bookmark in bookmarks | orderBy : bookmark.timestamp : reverse" style="text-align:center" ng-hide="dbCheck" href="#/tab/describe-{{db}}?uri={{bookmark.uri}}">
+
+	<div class="row">
+
+	  <div class="col-25">
+	    {{convertTime(bookmark.timestamp)}}
+	  </div>
+
+	  <div class="col" style="text-align: left">
+	    {{bookmark.label}} <br>
+	    <span style="font-size: small; font-style: italic"> ({{bookmark.uri}}) </span>
+	  </div>
+
 	</div>
+
+	<!-- <div style="display: inline"> -->
+	  
+	<!--   <span style="float: left">{{convertTime(bookmark.timestamp)}} </span> -->
+	<!--   {{bookmark.label}} -->
+	<!--   <span style="font-size: small; font-style: italic"> ({{bookmark.uri}}) </span> -->
+	<!-- </div> -->
+
       </ion-item>
 
     </ion-list>

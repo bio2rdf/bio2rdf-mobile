@@ -142,35 +142,40 @@ module.controller('PubmedCtrl', function($scope, $stateParams, $ionicSideMenuDel
     var main = idList[$stateParams.uri]
 
     $scope.data=main;
-    $scope.title = Utilities.capitalize(main["rdfs:label"]);
 
-    $scope.authors = [];
-    _.each(idList, function(elem) {
-      if (elem["@id"].indexOf("_AUTHOR_") > -1) {
-        var t = elem["@id"].split("_");
-        var index = parseInt(t[t.length-1]);
-        $scope.authors[index-1] = elem["rdfs:label"];
-      }
-    });
+    if(! main) {
+      $scope.title = "Article Not Found"
+    } else {
 
-    var prefix = "bm:m_vocabulary:pubmed_";
-    var infoOrder = [{label: "Title: ", predicate: "journalTitle"},
-                     {label: "Volume: ", predicate:  "journalVolume"},
-                     {label: "Issue: ", predicate: "journalIssue"},
-                     {label: "Publication Date: ", predicate: "publicationDate"}];
-    var citation = "";
-
-    $scope.journalInfo = [];
-    for (var i in infoOrder) {
-      if (main[prefix+infoOrder[i].predicate] != undefined){
-        var value = main[prefix+infoOrder[i].predicate];
-        if (main[prefix+infoOrder[i].predicate] instanceof Array) {
-          value = main[prefix+infoOrder[i].predicate][0];
+      $scope.authors = [];
+      _.each(idList, function(elem) {
+        if (elem["@id"].indexOf("_AUTHOR_") > -1) {
+          var t = elem["@id"].split("_");
+          var index = parseInt(t[t.length-1]);
+          $scope.authors[index-1] = elem["rdfs:label"];
         }
-        $scope.journalInfo.push({info: infoOrder[i].label, val: value});
-      }
-    }
+      });
 
+      var prefix = "bm:m_vocabulary:pubmed_";
+      var infoOrder = [{label: "Title: ", predicate: "journalTitle"},
+                       {label: "Volume: ", predicate:  "journalVolume"},
+                       {label: "Issue: ", predicate: "journalIssue"},
+                       {label: "Publication Date: ", predicate: "publicationDate"}];
+      var citation = "";
+
+      $scope.journalInfo = [];
+      for (var i in infoOrder) {
+        if (main[prefix+infoOrder[i].predicate] != undefined){
+          var value = main[prefix+infoOrder[i].predicate];
+          if (main[prefix+infoOrder[i].predicate] instanceof Array) {
+            value = main[prefix+infoOrder[i].predicate][0];
+          }
+          $scope.journalInfo.push({info: infoOrder[i].label, val: value});
+        }
+      }
+
+      $scope.title = Utilities.capitalize(main["rdfs:label"]);
+    }
 
     // Bookmark status and saving -----
     function bookmarkLookUpCall (tx, results) {
