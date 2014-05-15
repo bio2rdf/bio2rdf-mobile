@@ -79,8 +79,8 @@ module.controller('MainCtrl', function($scope, $location, $ionicSideMenuDelegate
 
   ionic.Platform.ready(function() {
     
-    // StatusBar.hide();
-    ionic.Platform.fullScreen();
+    StatusBar.hide();
+    // ionic.Platform.fullScreen();
 
   });
 
