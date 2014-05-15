@@ -78,7 +78,10 @@ module.controller('DescribeCtrl', function($scope, $stateParams, Queryer, Proces
 module.controller('MainCtrl', function($scope, $location, $ionicSideMenuDelegate, $stateParams, $ionicGesture, DatasetStore) {
 
   ionic.Platform.ready(function() {
-    StatusBar.hide();
+    
+    // StatusBar.hide();
+    ionic.Platform.fullScreen();
+
   });
 
   $scope.headerImg = function () {
