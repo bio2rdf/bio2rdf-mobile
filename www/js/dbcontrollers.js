@@ -22,6 +22,8 @@ module.controller('OboCtrl', function($scope, $stateParams, $ionicSideMenuDelega
     $scope.title = Utilities.capitalize(main["rdfs:label"])
     $scope.obodef = main["obolibrary:IAO_0000115"]
 
+    $scope.currentDB = DatasetStore.current[0];
+
     $scope.obosuperclasses = []
     _.each(main["rdfs:subClassOf"], function(elem) {
       if (typeof elem == "string") {
@@ -51,6 +53,7 @@ module.controller('OboCtrl', function($scope, $stateParams, $ionicSideMenuDelega
         $scope.xrefs.push(elem)
       });
     }
+
 
     // Fetch Image from Wiki -----
     ProcessGraph.getWikiImageUri($scope.uri).then(function(promise){
@@ -242,59 +245,70 @@ module.controller('PubmedCtrl', function($scope, $stateParams, $ionicSideMenuDel
 //DRUGBANK
 module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuDelegate, $timeout, Queryer, ProcessGraph, DatasetStore, QuickLinks, Utilities, FavoriteService) {
 
-  $scope.uri = $stateParams.uri;
+  $scope.cleanCalcProp = function (label) {
+    var outHTML = label.replace(/\[drugbank_resource:calculated_property_.*/g, "");
+    var out = outHTML.split(":"); 
+    return "<b> " + out[0] + ": </b> " + out.splice(1,out.length-1);
+  }
 
+  $scope.uri = $stateParams.uri;
   $scope.image="http://structures.wishartlab.com/molecules/"+$stateParams.uri.split(":")[2]+"/image.png";
 
   // Set ng-show
   $scope.showData = 0;
   $scope.loading = 1;
 
-
   // Query the graph data from mobile.bio2rdf.org
-  Queryer.setQuery('drugbank' ,'describebeta', 'json-ld', {"uri" : $scope.uri});
+  Queryer.setQuery('drugbank' ,'describe', 'json-ld', {"uri" : $scope.uri});
   Queryer.getJson().success(function(data){
 
+    // var idList=ProcessGraph.graph(data);
+    // var main = idList[$stateParams.uri];
 
-    var idList=ProcessGraph.graph(data);
-    var main = idList[$stateParams.uri];
+    $scope.main=data;
+    // $scope.idList=idList;
 
-    /*$scope.title = Utilities.capitalize(main["rdfs:label"])*/
-    /*$scope.dbdescription = main["dcterms:description"]["@value"];*/
-    $scope.main=main;
-    $scope.idList=idList;
 
-    $scope.title = Utilities.capitalize(main["rdfs:label"]["@value"]);
-
-    $scope.obosuperclasses = []
-    _.each(main["rdfs:subClassOf"], function(elem) {
-      if (typeof elem == "string") {
-        /*if (idList[elem].substring(0,1) != "_") {*/
-        $scope.obosuperclasses.push(idList[elem])
-        /*}*/
+    // Section 1. Identification
+    $scope.title = Utilities.capitalize(data["rdfs:label"]["@value"]);
+    $scope.molType = data["bm:m_vocabulary:drugbank_molType"]["@value"];
+    $scope.description = data["bm:m_vocabulary:drugbank_description"]["@value"];
+    // No arrays yet for synonym.. mistake in the endpoint
+    if (data["bm:m_vocabulary:drugbank_synonyms"]){
+      if(data["bm:m_vocabulary:drugbank_synonyms"] instanceof Array){
+        $scope.synonyms = _.values(data["bm:m_vocabulary:drugbank_synonym"]);
       } else {
-        /*if {idList[elem["@id"]]}*/
-        if (idList[elem["@id"]] != undefined) {
-          $scope.obosuperclasses.push(idList[elem["@id"]]);
-        }
+        $scope.synonyms = data["bm:m_vocabulary:drugbank_synonyms"]["@value"];
       }
-    });
-
-    $scope.obosubclasses = []
-    _.each(idList, function(elem) {
-      if (elem["rdfs:subClassOf"] != undefined) {
-        if (elem["rdfs:subClassOf"]["@id"] == $stateParams.uri ) {
-          $scope.obosubclasses.push(idList[elem["@id"]])
-        }
-      }
-    });
-
-    $scope.xrefs = []
-    if (main["oboInOwl:hasDbXref"] != undefined) {
-      _.each(main["oboInOwl:hasDbXref"], function(elem) {
-        $scope.xrefs.push(elem)
-      });
     }
+
+    // Section 2. Pharmacology
+    $scope.indication = data["bm:m_vocabulary:drugbank_indication"]["@value"];
+    $scope.pharmacology = data["bm:m_vocabulary:drugbank_pharmacology"]["@value"];
+    $scope.mechanism = data["bm:m_vocabulary:drugbank_mechanism"]["@value"];
+    $scope.absorption = data["bm:m_vocabulary:drugbank_absorption"]["@value"];
+    $scope.volumeDistribution = data["bm:m_vocabulary:drugbank_volumeDistribution"]["@value"];
+    $scope.proteinBinding = data["bm:m_vocabulary:drugbank_proteinBinding"]["@value"];
+    $scope.bioTransformation = data["bm:m_vocabulary:drugbank_bioTransformation"]["@value"];
+    $scope.elimination = data["bm:m_vocabulary:drugbank_elimination"]["@value"];
+    $scope.halfLife = data["bm:m_vocabulary:drugbank_halfLife"]["@value"];
+    // clearance
+    $scope.toxicity = data["bm:m_vocabulary:drugbank_toxicity"]["@value"];
+    $scope.affectedOrganism = data["bm:m_vocabulary:drugbank_affectedOrganism"]["@value"];
+    // some others..
+
+
+    // Section 3. Calculated Properties
+    $scope.calculatedProperties = data["bm:m_vocabulary:drugbank_calculatedProperty"];
+    console.log($scope.calculatedProperties);
+
+
+    // $scope.xrefs = []
+    // if (main["oboInOwl:hasDbXref"] != undefined) {
+    //   _.each(main["oboInOwl:hasDbXref"], function(elem) {
+    //     $scope.xrefs.push(elem)
+    //   });
+    // }
 
     // Bookmark status and saving -----
     function bookmarkLookUpCall (tx, results) {

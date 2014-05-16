@@ -173,7 +173,8 @@ construct {
       ?journal <http://bio2rdf.org/pubmed_vocabulary:issue> ?journalIssue .
     }
   }
-  filter (?uri = <http://bio2rdf.org/pubmed:19770275>)
+  # filter (?uri = <http://bio2rdf.org/pubmed:19770275>)
+  bind (<http://bio2rdf.org/pubmed:19770275> as ?uri)
 }
 
 
@@ -318,9 +319,92 @@ WHERE {
 }LIMIT 20 OFFSET $PARM2$
 
 
+#describe
+construct {
+  ?uri rdfs:label ?label .
+  ?uri rdfs:seeAlso ?xref .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_molType> ?molTypeLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_description> ?description .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_synonyms> ?synonymLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_indication> ?indicationLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_pharmacology> ?pharmacologyLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_mechanism> ?mechanismLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_absorption> ?absorptionLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_elimination> ?eliminationLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_toxicity> ?toxicityLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_halfLife> ?halflifeLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_volumeDistribution> ?volumedistributionLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_proteinBinding> ?proteinbindingLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_affectedOrganism> ?affectedorganismLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_bioTransformation> ?biotransformationLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_toxicity> ?toxicityLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_calculatedProperty> ?calculatedPropertyLabel .
+} where {
+  ?uri rdfs:label ?label .
+  ?uri dcterms:description ?description .
+  ?uri rdfs:seeAlso ?xref .
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:type> ?molType .
+    ?molType rdfs:label ?molTypeLabel .
+  }
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:synonym> ?synonym .
+    ?synonym rdfs:label ?synonymLabel .
+  }
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:indication> ?indication .
+    ?indication dcterms:description ?indicationLabel .
+  }
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:pharmacology> ?pharmacology .
+    ?pharmacology dcterms:description ?pharmacologyLabel .
+  }
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:mechanism-of-action> ?mechanism .
+    ?mechanism dcterms:description ?mechanismLabel .
+  }
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:absorption> ?absorption .
+    ?absorption dcterms:description ?absorptionLabel .
+  }
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:route-of-elimination> ?elimination .
+    ?elimination dcterms:description ?eliminationLabel .
+  }
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:half-life> ?halflife .
+    ?halflife dcterms:description ?halflifeLabel .
+  }
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:volume-of-distribution> ?volumedistribution .
+    ?volumedistribution dcterms:description ?volumedistributionLabel .
+  }
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:protein-binding> ?proteinbinding .
+    ?proteinbinding dcterms:description ?proteinbindingLabel .
+  }
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:affected-organism> ?affectedorganism .
+    ?affectedorganism rdfs:label ?affectedorganismLabel .
+  }
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:biotransformation> ?biotransformation .
+    ?biotransformation dcterms:description ?biotransformationLabel .
+  }
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:toxicity> ?toxicity .
+    ?toxicity dcterms:description ?toxicityLabel .
+  }
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:calculated-property> ?calculatedProperty .
+    ?calculatedProperty rdfs:label ?calculatedPropertyLabel .
+  }
+  filter(?uri = <http://bio2rdf.org/drugbank:DB01224>)
+}
+
+
 
 # DBpedia
-
 http://dbpedia.org/sparql
 
 # go 

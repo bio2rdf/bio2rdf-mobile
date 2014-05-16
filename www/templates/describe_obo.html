@@ -34,7 +34,7 @@
 	  <!-- <ion-scroll direction="x" style="z-index: 99999999 !important;"> -->
 	  <!-- <ion-scroll direction="x" style="display: inline-block;"> -->
 	    <span ng-repeat="i in obosuperclasses track by $index">
-              <a class="button button-small button-royal" href="#/tab/describe-chebi?uri={{i['@id']}}">{{ i['rdfs:label'] }}</a>
+              <a class="button button-small button-royal" href="#/tab/describe-{{currentDB}}?uri={{i['@id']}}">{{ i['rdfs:label'] }}</a>
 	    </span>
 	  </ion-scroll>
 	</div>
@@ -45,7 +45,7 @@
 	<div class="item" drag-content="false" ng-hide="subclassesCheck">
 	  <ion-scroll direction="x" on-scroll="unSetDragging()">
 	    <span ng-repeat="j in obosubclasses track by $index">
-	      <a class="button button-small button-royal" href="#/tab/describe-chebi?uri={{j['@id']}}">{{ j['rdfs:label'] }}</a>
+	      <a class="button button-small button-royal" href="#/tab/describe-{{currentDB}}?uri={{j['@id']}}">{{ j['rdfs:label'] }}</a>
 	    </span>
 	  </ion-scroll>
 	</div>
