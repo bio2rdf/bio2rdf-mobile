@@ -49,3 +49,8 @@
 .item.item-divider.inactive {
     background-color: #dcdcdc;
 }
+.item.item-divider.unloaded {
+    background-color: #8a6de9;
+    color: white;
+}
+

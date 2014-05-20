@@ -319,10 +319,11 @@ WHERE {
 }LIMIT 20 OFFSET $PARM2$
 
 
-#describe
+# First Describe Section 1. 2. 3. (Indentification, Pharmacology, Calculated Property)
 construct {
   ?uri rdfs:label ?label .
   ?uri rdfs:seeAlso ?xref .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_category> ?category .
   ?uri <http://bio2rdf.org/m_vocabulary:drugbank_molType> ?molTypeLabel .
   ?uri <http://bio2rdf.org/m_vocabulary:drugbank_description> ?description .
   ?uri <http://bio2rdf.org/m_vocabulary:drugbank_synonyms> ?synonymLabel .
@@ -343,6 +344,10 @@ construct {
   ?uri rdfs:label ?label .
   ?uri dcterms:description ?description .
   ?uri rdfs:seeAlso ?xref .
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:category> ?category .
+    ?category rdfs:label ?categoryLabel .
+  }
   optional {
     ?uri <http://bio2rdf.org/drugbank_vocabulary:type> ?molType .
     ?molType rdfs:label ?molTypeLabel .
@@ -402,6 +407,85 @@ construct {
   filter(?uri = <http://bio2rdf.org/drugbank:DB01224>)
 }
 
+# Section 4. Pharmacoeconomics (describePharmEco)
+construct {
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_manufacturer> ?manufacturerLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_dosage> ?dosageLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_product> ?product .
+  ?product <http://bio2rdf.org/m_vocabulary:drugbank_productLabel> ?productLabel .
+  ?product <http://bio2rdf.org/m_vocabulary:drugbank_productPrice> ?productPrice .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_patent> ?patent .
+  ?patent <http://bio2rdf.org/m_vocabulary:drugbank_patentLabel> ?patentLabel .
+  ?patent <http://bio2rdf.org/m_vocabulary:drugbank_patentApproved> ?patentApproved .
+  ?patent <http://bio2rdf.org/m_vocabulary:drugbank_patentExpires> ?patentExpires .
+} where {
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:manufacturer> ?manufacturer .
+    ?manufacturer rdf:value ?manufacturerLabel .
+  }
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:dosage> ?dosage .
+    ?dosage dcterms:description ?dosageLabel .
+  }
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:product> ?product .
+    ?product rdfs:label ?productLabel .
+    ?product <http://bio2rdf.org/drugbank_vocabulary:price> ?productPrice .
+  }
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:patent> ?patent .
+    ?patent rdfs:label ?patentLabel .
+    ?patent <http://bio2rdf.org/drugbank_vocabulary:approved> ?patentApproved .
+    ?patent <http://bio2rdf.org/drugbank_vocabulary:expires> ?patentExpires .
+  }
+  filter(?uri = <http://bio2rdf.org/drugbank:DB01224>)
+}
+
+
+# Section 5. Drug-Drug Interaction (describeDDI)
+construct {
+  ?ddi <http://bio2rdf.org/m_vocabulary:drugbank_ddiLabel> ?ddiLabel .
+  ?ddi <http://bio2rdf.org/m_vocabulary:drugbank_ddiInteractor> ?drugInteractor .
+  ?ddi <http://bio2rdf.org/m_vocabulary:drugbank_ddiInteractorLabel> ?drugInteractorLabel .
+} where {
+  optional {
+    ?uri <http://bio2rdf.org/drugbank_vocabulary:ddi-interactor-in> ?ddi .
+    ?drugInteractor <http://bio2rdf.org/drugbank_vocabulary:ddi-interactor-in> ?ddi .
+    ?drugInteractor rdfs:label ?drugInteractorLabel .
+    ?ddi rdfs:label ?ddiLabel .
+    filter (?drugInteractor != ?uri)
+  }
+  filter(?uri = <http://bio2rdf.org/drugbank:DB01224>)
+}
+
+
+# Section 6. Target (describeTarget)
+construct {
+  ?target ?p ?o
+} where {
+  ?uri <http://bio2rdf.org/drugbank_vocabulary:target> ?target .
+  ?target ?p ?o .
+  filter(?uri = <http://bio2rdf.org/drugbank:DB01224>)
+}
+
+# Section 7. Enzyme (describeEnzyme)
+construct {
+  ?enzyme ?p ?o
+} where {
+  ?uri <http://bio2rdf.org/drugbank_vocabulary:enzyme> ?enzyme .
+  ?enzyme ?p ?o .
+  filter(?uri = <http://bio2rdf.org/drugbank:DB01224>)
+}
+
+
+# Section 8. Transporter (describeTransporter)
+construct {
+  ?transporter ?p ?o
+} where {
+  ?uri <http://bio2rdf.org/drugbank_vocabulary:transporter> ?transporter .
+  ?transporter ?p ?o .
+  filter(?uri = <http://bio2rdf.org/drugbank:DB01224>)
+}
 
 
 # DBpedia

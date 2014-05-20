@@ -10,7 +10,7 @@
       <div class="icon ion-loading-a" style="font-size: 50px;"></div>
     </div>
 
-    <div ng-show="showData" style="text-align: left">
+    <div ng-show="showData1" style="text-align: left">
 
       <div class="item">
 	<img src="{{bookmarkStateImg}}" style="width: 30px; display: block;" align="right" ng-click="toggleBookmarkState()"> <br>
@@ -93,7 +93,6 @@
 	</span>
       </div>
 
-
       <div class="item item-divider" ng-class="{'inactive':calcpropCheck}" ng-click="calcpropCheck = !calcpropCheck">
 	Calculated properties
       </div>
@@ -106,15 +105,209 @@
         </ul>
       </div>
 
+    </div>
 
+
+    <div class="item item-divider" ng-show="loadSectionDiv4" ng-class="'unloaded'" ng-click="loadSection4()">
+      Pharmacoeconomics
+    </div>
+    <div ng-show="section4" style="text-align: left">
+
+       <div class="item item-divider" ng-class="{'inactive':pharmacoeconoCheck}" ng-click="pharmacoeconoCheck = !pharmacoeconoCheck">
+	 Pharmacoeconomics
+       </div>
+
+      <div ng-show="section4loading" style="text-align: center">
+	<div class="icon ion-loading-a" style="font-size: 50px;"></div>
+      </div>
+
+     <div ng-show="section4data" style="text-align: left">
+
+       <div class="item item-text-wrap" ng-hide="pharmacoeconoCheck"> 
+	 <span ng-show="manufacturers">
+	   <b>Manufacturer:</b>
+	   <br>{{ manufacturers }}<br>
+           <hr style="width: 75%">
+	 </span>
+	 <span ng-show="dosages"> 
+	   <b>Administration Forms:</b> 
+	   <br> <span ng-bind-html="dosages"></span> <br>
+	   <hr style="width: 75%">
+	 </span>
+	 <span ng-show="patents"> 
+	   <b>Patents:</b>
+	   <br> <span ng-bind-html="patents"></span> <br>
+           <hr style="width: 75%">
+	 </span>
+	 <span ng-show="products"> 
+	   <b>Products:</b>
+	   <br> <span ng-bind-html="products"></span> <br>
+	   <hr style="width: 75%">
+	 </span>
+       </div>
+     </div>
+
+    </div>
+
+
+
+    <div class="item item-divider" ng-show="loadSectionDiv5" ng-class="'unloaded'" ng-click="loadSection5()">
+      Drug-Drug Interactions      
+    </div>    
+    <div ng-show="section5" style="text-align: left">
+      
+      <div class="item item-divider" ng-class="{'inactive':ddiCheck}" ng-click="ddiCheck = !ddiCheck">
+	Drug-Drug Interactions
+      </div>
+      
+      <div ng-show="section5loading" style="text-align: center">
+	<div class="icon ion-loading-a" style="font-size: 50px;"></div>
+      </div>
+      
+      <div ng-show="section5data" style="text-align: left">
+	
+	<div class="item item-text-wrap" ng-hide="ddiCheck">
+	 <span ng-show="ddiInteractors" ng-repeat="interactor in ddiInteractors">
+	   <a class='button button-small button-stable' href='{{interactor.href}}'>
+	     <img src='{{interactor.dblogo}}' style='height: 20px; vertical-align: middle'>
+	     {{interactor.label}}
+	   </a>
+	   <br>
+	   <p> {{interactor.description}} </p>
+	   <hr style='width: 75%'>
+	 </span>
+	</div>
+      </div>
+
+    </div> 
+
+
+
+    <div class="item item-divider" ng-show="loadSectionDiv6" ng-class="'unloaded'" ng-click="loadSection6()">
+      Drug Targets
+    </div>
+    <div ng-show="section6" style="text-align: left">
+
+      <div class="item item-divider" ng-class="{'inactive':targetCheck}" ng-click="targetCheck = !targetCheck">
+	Drug Targets
+      </div>
+      
+      <div ng-show="section6loading" style="text-align: center">
+	<div class="icon ion-loading-a" style="font-size: 50px;"></div>
+      </div>
+      
+      <div ng-show="section6data" style="text-align: left">
+
+	<div class="item item-text-wrap" ng-hide="targetCheck">
+	 <span ng-show="targets[0].showItem" ng-repeat="target in targets">
+	   <a class='button button-small button-stable' href='{{target.href}}'>
+	     <img src='{{target.dblogo}}' style='height: 20px; vertical-align: middle'>
+	     {{target.label}}
+	   </a>
+	   <br> <br>
+	   <p> <b>Organism: </b> {{target.organism}} </p>
+	   <p> <b>Cellular Location: </b> {{target.cellularLocation}} </p>
+	   <p> <b>General Function: </b> {{target.generalFunction}} </p>
+	   <p> <b>Specific Function: </b> {{target.specificFunction}} </p>
+	   <hr style='width: 75%'>
+	 </span>
+	 <span ng-show="!targets[0].showItem" ng-repeat="target in targets">
+	   No Target Found
+	 </span>
+	</div>
+      </div>
+
+    </div> 
+
+
+    <div class="item item-divider" ng-show="loadSectionDiv7" ng-class="'unloaded'" ng-click="loadSection7()">
+      Drug Enzymes
+    </div>
+    <div ng-show="section7" style="text-align: left">
+
+      <div class="item item-divider" ng-class="{'inactive':enzymeCheck}" ng-click="enzymeCheck = !enzymeCheck">
+	Drug Enzymes
+      </div>
+      
+      <div ng-show="section7loading" style="text-align: center">
+	<div class="icon ion-loading-a" style="font-size: 50px;"></div>
+      </div>
+      
+      <div ng-show="section7data" style="text-align: left">
+
+	<div class="item item-text-wrap" ng-hide="enzymeCheck">
+	 <span ng-show="enzymes[0].showItem" ng-repeat="enzyme in enzymes">
+	   <a class='button button-small button-stable' href='{{enzyme.href}}'>
+	     <img src='{{enzyme.dblogo}}' style='height: 20px; vertical-align: middle'>
+	     {{enzyme.label}}
+	   </a>
+	   <br> <br>
+	   <p> <b>Organism: </b> {{enzyme.organism}} </p>
+	   <p> <b>Cellular Location: </b> {{enzyme.cellularLocation}} </p>
+	   <p> <b>General Function: </b> {{enzyme.generalFunction}} </p>
+	   <p> <b>Specific Function: </b> {{enzyme.specificFunction}} </p>
+	   <hr style='width: 75%'>
+	 </span>
+	 <span ng-show="!enzymes[0].showItem" ng-repeat="enzyme in enzymes">
+	   No Enzyme Found
+	 </span>
+	</div>
+      </div>
+
+    </div> 
+
+
+    <div class="item item-divider" ng-show="loadSectionDiv8" ng-class="'unloaded'" ng-click="loadSection8()">
+      Drug Transporters
+    </div>
+    <div ng-show="section8" style="text-align: left">
+
+      <div class="item item-divider" ng-class="{'inactive':transporterCheck}" ng-click="transporterCheck = !transporterCheck">
+	Drug Transporters
+      </div>
+      
+      <div ng-show="section8loading" style="text-align: center">
+	<div class="icon ion-loading-a" style="font-size: 50px;"></div>
+      </div>
+
+      <div ng-show="section8data" style="text-align: left">
+
+	<div class="item item-text-wrap" ng-hide="transporterCheck">
+	 <span ng-show="transporters[0].showItem" ng-repeat="transporter in transporters">
+	   <a class='button button-small button-stable' href='{{transporter.href}}'>
+	     <img src='{{transporter.dblogo}}' style='height: 20px; vertical-align: middle'>
+	     {{transporter.label}}
+	   </a>
+	   <br> <br>
+	   <p> <b>Organism: </b> {{transporter.organism}} </p>
+	   <p> <b>Cellular Location: </b> {{transporter.cellularLocation}} </p>
+	   <p> <b>General Function: </b> {{transporter.generalFunction}} </p>
+	   <p> <b>Specific Function: </b> {{transporter.specificFunction}} </p>
+	   <hr style='width: 75%'>
+	 </span>
+	 <span ng-show="!transporters[0].showItem" ng-repeat="transporter in transporters">
+	   No Transporter Found
+	 </span>
+	</div>
+
+      </div>
+
+    </div> 
+
+
+
+    <div ng-show="showData1" style="text-align: left">
       <div class="item item-divider" ng-class="{'inactive':seealsoCheck}" ng-click="seealsoCheck = !seealsoCheck">
 	See also
       </div>
-      <div class="item item-text-wrap" ng-hide="seealsoCheck"> 
-	<ul ng-repeat="i in main['rdfs:seeAlso']">
-          <li><a href="{{i['@id']}}">{{i['@id']}}</a></li>
-        </ul>
+      <div class="item item-text-wrap" ng-hide="seealsoCheck">
+	<span ng-repeat="xref in seeAlso">
+	  <a href="{{xref}}"> {{xref}} </a>
+	  <br>
+	</span>
       </div>
+    </div>
+
       
   </ion-content>
 </ion-view>
