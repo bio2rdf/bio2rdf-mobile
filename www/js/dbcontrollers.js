@@ -107,7 +107,6 @@ module.controller('OboCtrl', function($scope, $stateParams, $ionicSideMenuDelega
     $scope.loading = 0;
 
 
-
   });
 
   
@@ -247,7 +246,7 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
   var removedLabelID = function (label) {
     return label.replace(/\[drugbank_resource:.*/g, "");
   }
-  
+
   $scope.cleanCalcProp = function (label) {
     var outHTML = removedLabelID(label);
     var out = outHTML.split(":");
@@ -307,15 +306,13 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
   Queryer.setQuery('drugbank' ,'describe', 'json-ld', {"uri" : $scope.uri});
   Queryer.getJson().success(function(data){
 
-    // var idList=ProcessGraph.graph(data);
-    // var main = idList[$stateParams.uri];
-    // $scope.main=data;
-    // $scope.idList=idList;
-
     // Section 1. Identification
     $scope.title = Utilities.capitalize(data["rdfs:label"]["@value"]);
     $scope.molType = data["bm:m_vocabulary:drugbank_molType"]["@value"];
-    $scope.description = data["bm:m_vocabulary:drugbank_description"]["@value"];
+
+    // $scope.description = data["bm:m_vocabulary:drugbank_description"]["@value"];
+    $scope.description = checkDataAvailibility(data, "bm:m_vocabulary:drugbank_description");
+
     // No arrays yet for synonym.. mistake in the endpoint
     if (data["bm:m_vocabulary:drugbank_synonyms"]){
       if(data["bm:m_vocabulary:drugbank_synonyms"] instanceof Array){
@@ -345,16 +342,20 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
 
     // Section 9. See Also
     var seeAlso = [];
-    if (data["rdfs:seeAlso"] instanceof Array) {
-      _.each(data["rdfs:seeAlso"], function(elem) {
-        seeAlso.push(elem["@id"]);
-      });
-    } else {
-      if(data["rdfs:seeAlso"]["@id"]){
-        seeAlso.push(data["rdfs:seeAlso"]["@id"]);
+    if (data["rdfs:seeAlso"]) {
+      if (data["rdfs:seeAlso"] instanceof Array) {
+        _.each(data["rdfs:seeAlso"], function(elem) {
+          seeAlso.push(elem["@id"]);
+        });
+      } else {
+        if(data["rdfs:seeAlso"]["@id"]){
+          seeAlso.push(data["rdfs:seeAlso"]["@id"]);
+        }
       }
+      $scope.seeAlso = seeAlso;
+    } else {
+      $scope.seeAlso = "# No Data Available";
     }
-    $scope.seeAlso = seeAlso;
 
 
     // Bookmark status and saving -----
@@ -422,84 +423,111 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
       var main = idList[$stateParams.uri];
 
       var manufacturers = "";
-      if (main['bm:m_vocabulary:drugbank_manufacturer'] instanceof Array) {
-        manufacturers = "<ul>";
-        _.each(main['bm:m_vocabulary:drugbank_manufacturer'], function(elem) {
-          manufacturers += "<li>";
-          manufacturers += elem;
-          manufacturers += "</li>";
-        });
-        manufacturers += "</ul>";
-      } else {
-        manufacturers = main['bm:m_vocabulary:drugbank_manufacturer'];
-      }
-
       var products = "";
-      if (main['bm:m_vocabulary:drugbank_product'] instanceof Array) {
-        _.each(main['bm:m_vocabulary:drugbank_product'], function(elem) {
-          products += "<div class='row'>";
-          products += "<div class='col col-50'>";
-          products += removedLabelID(idList[elem["@id"]]['bm:m_vocabulary:drugbank_productLabel']["@value"]);
-          products += "</div>";
-          products += "<div class='col'>";
-          products += idList[elem["@id"]]['bm:m_vocabulary:drugbank_productPrice']["@value"] + "  $ USD";
-          products += "</div>";
-          products += "</div>";
-        });
-      } else {
-        products += "<div class='row'>";
-        products += "<div class='col col-50'>";
-        products += removedLabelID(idList[elem["@id"]]['bm:m_vocabulary:drugbank_productLabel']["@value"]);
-        products += "</div>";
-        products += "<div class='col'>";
-        products += idList[elem["@id"]]['bm:m_vocabulary:drugbank_productPrice']["@value"] + "  $ USD";
-        products += "</div>";
-        products += "</div>";
-      }
+      var dosages = "";
+      var patents = "";
 
-
-      var dosages = "";      
-      if (main['bm:m_vocabulary:drugbank_dosage'] instanceof Array) {
-        dosages = "<ul>";
-        _.each(main['bm:m_vocabulary:drugbank_dosage'], function(elem) {
-          dosages += "<li>";
-          dosages += elem["@value"];
-          dosages += "</li>";
-        });
-        dosages += "</ul>";
+      if (! main) {
+        manufacturers = products = dosages = patents = "No Data Available";
       } else {
-        dosages = main['bm:m_vocabulary:drugbank_dosage'];
-      }
 
-      var patents = "";  
-      if (main['bm:m_vocabulary:drugbank_patent'] instanceof Array) {
-        console.log(main['bm:m_vocabulary:drugbank_patent']);
-        _.each(main['bm:m_vocabulary:drugbank_patent'], function(elem) {
-          patents += "<div class='row'>";
-          patents += "<div class='col col-50'>";
-          // patents += elem["@id"];
-          patents += idList[elem["@id"]]['bm:m_vocabulary:drugbank_patentLabel']["@value"];
-          patents += "</div>";
-          patents += "<div class='col col-25'>";
-          patents += "Approved: <br>" + idList[elem["@id"]]['bm:m_vocabulary:drugbank_patentApproved']["@value"];
-          patents += "</div>";
-          patents += "<div class='col col-25'>";
-          patents += "Expires: <br>" + idList[elem["@id"]]['bm:m_vocabulary:drugbank_patentExpires']["@value"];
-          patents += "</div>";
-          patents += "</div>";
-        });
-      } else {
-        patents += "<div class='row'>";
-        patents += "<div class='col col-50'>";
-        patents += idList[main['bm:m_vocabulary:drugbank_patent']["@id"]]['bm:m_vocabulary:drugbank_patentLabel']["@value"];
-        patents += "</div>";
-        patents += "<div class='col col-25'>";
-        patents += "Approved: <br>" + idList[main['bm:m_vocabulary:drugbank_patent']["@id"]]['bm:m_vocabulary:drugbank_patentApproved']["@value"];
-        patents += "</div>";
-        patents += "<div class='col col-25'>";
-        patents += "Expires: <br>" + idList[main['bm:m_vocabulary:drugbank_patent']["@id"]]['bm:m_vocabulary:drugbank_patentExpires']["@value"];
-        patents += "</div>";
-        patents += "</div>";
+        // var manufacturers = "";
+        if(main['bm:m_vocabulary:drugbank_manufacturer']) {
+          if (main['bm:m_vocabulary:drugbank_manufacturer'] instanceof Array) {
+            manufacturers = "<ul>";
+            _.each(main['bm:m_vocabulary:drugbank_manufacturer'], function(elem) {
+              manufacturers += "<li>";
+              manufacturers += elem;
+              manufacturers += "</li>";
+            });
+            manufacturers += "</ul>";
+          } else {
+            manufacturers = main['bm:m_vocabulary:drugbank_manufacturer'];
+          }
+        } else {
+          manufacturers = "No Data Available";
+        }
+
+        // var products = "";
+        if (main['bm:m_vocabulary:drugbank_product']) {
+          if (main['bm:m_vocabulary:drugbank_product'] instanceof Array) {
+            _.each(main['bm:m_vocabulary:drugbank_product'], function(elem) {
+              products += "<div class='row'>";
+              products += "<div class='col col-50'>";
+              products += removedLabelID(idList[elem["@id"]]['bm:m_vocabulary:drugbank_productLabel']["@value"]);
+              products += "</div>";
+              products += "<div class='col'>";
+              products += idList[elem["@id"]]['bm:m_vocabulary:drugbank_productPrice']["@value"] + "  $ USD";
+              products += "</div>";
+              products += "</div>";
+            });
+          } else {
+            products += "<div class='row'>";
+            products += "<div class='col col-50'>";
+            products += removedLabelID(idList[elem["@id"]]['bm:m_vocabulary:drugbank_productLabel']["@value"]);
+            products += "</div>";
+            products += "<div class='col'>";
+            products += idList[elem["@id"]]['bm:m_vocabulary:drugbank_productPrice']["@value"] + "  $ USD";
+            products += "</div>";
+            products += "</div>";
+          }
+
+        } else {
+          products = "No Data Available";
+        }
+
+        // var dosages = "";
+        if (main['bm:m_vocabulary:drugbank_dosage']) {
+          if (main['bm:m_vocabulary:drugbank_dosage'] instanceof Array) {
+            dosages = "<ul>";
+            _.each(main['bm:m_vocabulary:drugbank_dosage'], function(elem) {
+              dosages += "<li>";
+              dosages += elem["@value"];
+              dosages += "</li>";
+            });
+            dosages += "</ul>";
+          } else {
+            dosages = main['bm:m_vocabulary:drugbank_dosage'];
+          }
+        } else {
+          dosages = "No Data Available";
+        }
+
+        // var patents = "";  
+        if (main['bm:m_vocabulary:drugbank_patent']) {
+          if (main['bm:m_vocabulary:drugbank_patent'] instanceof Array) {
+            console.log(main['bm:m_vocabulary:drugbank_patent']);
+            _.each(main['bm:m_vocabulary:drugbank_patent'], function(elem) {
+              patents += "<div class='row'>";
+              patents += "<div class='col col-50'>";
+              // patents += elem["@id"];
+              patents += idList[elem["@id"]]['bm:m_vocabulary:drugbank_patentLabel']["@value"];
+              patents += "</div>";
+              patents += "<div class='col col-25'>";
+              patents += "Approved: <br>" + idList[elem["@id"]]['bm:m_vocabulary:drugbank_patentApproved']["@value"];
+              patents += "</div>";
+              patents += "<div class='col col-25'>";
+              patents += "Expires: <br>" + idList[elem["@id"]]['bm:m_vocabulary:drugbank_patentExpires']["@value"];
+              patents += "</div>";
+              patents += "</div>";
+            });
+          } else {
+            patents += "<div class='row'>";
+            patents += "<div class='col col-50'>";
+            patents += idList[main['bm:m_vocabulary:drugbank_patent']["@id"]]['bm:m_vocabulary:drugbank_patentLabel']["@value"];
+            patents += "</div>";
+            patents += "<div class='col col-25'>";
+            patents += "Approved: <br>" + idList[main['bm:m_vocabulary:drugbank_patent']["@id"]]['bm:m_vocabulary:drugbank_patentApproved']["@value"];
+            patents += "</div>";
+            patents += "<div class='col col-25'>";
+            patents += "Expires: <br>" + idList[main['bm:m_vocabulary:drugbank_patent']["@id"]]['bm:m_vocabulary:drugbank_patentExpires']["@value"];
+            patents += "</div>";
+            patents += "</div>";
+          }      
+        } else {
+          patents = "No Data Available";
+        }
+
       }
 
       // Set HTML expressions
@@ -510,7 +538,6 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
 
       $scope.section4loading = 0;
       $scope.section4data = 1;
-
 
     });
         
@@ -527,31 +554,39 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
 
     Queryer.setQuery('drugbank' ,'describeDDI', 'json-ld', {"uri" : $scope.uri});
     Queryer.getJson().success(function(data){
+
       graph = data["@graph"];
+
       var ddiInteractors = [];
-      if (graph instanceof Array) {
-        _.each(graph, function(elem) {
-          var href = '#/tab/describe-drugbank?uri=' + "http://bio2rdf.org/" + elem['bm:m_vocabulary:drugbank_ddiInteractor']['@id'];
-          var label = elem['bm:m_vocabulary:drugbank_ddiInteractorLabel']['@value'];
+      if (graph) {
+
+        // var ddiInteractors = [];
+        if (graph instanceof Array) {
+          _.each(graph, function(elem) {
+            var href = '#/tab/describe-drugbank?uri=' + "http://bio2rdf.org/" + elem['bm:m_vocabulary:drugbank_ddiInteractor']['@id'];
+            var label = elem['bm:m_vocabulary:drugbank_ddiInteractorLabel']['@value'];
+            var DBlogo = DatasetStore.all['drugbank'].foafDepiction;
+            ddiInteractors.push({
+              'href': href,
+              'dblogo' : DBlogo,
+              'label' : label,
+              'description' : elem['bm:m_vocabulary:drugbank_ddiLabel']['@value']
+            })
+          });
+        } else {
+          
+          var href = '#/tab/describe-drugbank?uri=' + "http://bio2rdf.org/" + graph['bm:m_vocabulary:drugbank_ddiInteractor']['@id'];
+          var label = graph['bm:m_vocabulary:drugbank_ddiInteractorLabel']['@value'];
           var DBlogo = DatasetStore.all['drugbank'].foafDepiction;
           ddiInteractors.push({
             'href': href,
             'dblogo' : DBlogo,
             'label' : label,
-            'description' : elem['bm:m_vocabulary:drugbank_ddiLabel']['@value']
+            'description' : graph['bm:m_vocabulary:drugbank_ddiLabel']['@value']
           })
-        });
-      } else {
-        
-        var href = '#/tab/describe-drugbank?uri=' + "http://bio2rdf.org/" + graph['bm:m_vocabulary:drugbank_ddiInteractor']['@id'];
-        var label = graph['bm:m_vocabulary:drugbank_ddiInteractorLabel']['@value'];
-        var DBlogo = DatasetStore.all['drugbank'].foafDepiction;
-        ddiInteractors.push({
-          'href': href,
-          'dblogo' : DBlogo,
-          'label' : label,
-          'description' : graph['bm:m_vocabulary:drugbank_ddiLabel']['@value']
-        })
+        }
+
+
       }
 
       // Set HTML expressions
@@ -575,76 +610,84 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
 
     Queryer.setQuery('drugbank' ,'describeTarget', 'json-ld', {"uri" : $scope.uri});
     Queryer.getJson().success(function(data){
+
       graph = data["@graph"];
       var targets = [];
-      if (graph instanceof Array) {
-        _.each(graph, function(elem) {
-          var uniprotID = elem['drugbank_vocabulary:x-uniprot']['@id'].split("uniprot:")[1];
-          var uniprotURI = "http://purl.uniprot.org/uniprot/" + uniprotID;
-          var href = '#/tab/describe-uniprot?uri=' + uniprotURI;
-          var DBlogo = DatasetStore.all['uniprot'].foafDepiction;
-          var label = elem['drugbank_vocabulary:name'];
-          var organism = elem['drugbank_vocabulary:organism'];
-          var cellularLocation = elem['drugbank_vocabulary:cellular-location']
-          var generalFunction = elem['drugbank_vocabulary:general-function'];
-          var specificFunction = elem['drugbank_vocabulary:specific-function'];
 
-          targets.push({
-            'showItem' : 1,
-            'href': href,
-            'dblogo' : DBlogo,
-            'label' : label,
-            'uniprotID' : uniprotID,
-            'organism' : organism,
-            'cellularLocation' : cellularLocation,
-            'generalFunction' : generalFunction,
-            'specificFunction' : specificFunction
-          })
+      if (graph) {
 
-        });
-      } else {
-        
-        if (data['drugbank_vocabulary:x-uniprot']){
+        if (graph instanceof Array) {
+          _.each(graph, function(elem) {
+            var uniprotID = elem['drugbank_vocabulary:x-uniprot']['@id'].split("uniprot:")[1];
+            var uniprotURI = "http://purl.uniprot.org/uniprot/" + uniprotID;
+            var href = '#/tab/describe-uniprot?uri=' + uniprotURI;
+            var DBlogo = DatasetStore.all['uniprot'].foafDepiction;
+            var label = elem['drugbank_vocabulary:name'];
+            var organism = elem['drugbank_vocabulary:organism'];
+            var cellularLocation = elem['drugbank_vocabulary:cellular-location']
+            var generalFunction = elem['drugbank_vocabulary:general-function'];
+            var specificFunction = elem['drugbank_vocabulary:specific-function'];
 
-          var uniprotID = data['drugbank_vocabulary:x-uniprot']['@id'].split("uniprot:")[1];
-          var uniprotURI = "http://purl.uniprot.org/uniprot/" + uniprotID;
-          var href = '#/tab/describe-uniprot?uri=' + uniprotURI;
-          var DBlogo = DatasetStore.all['uniprot'].foafDepiction;
-          var label = data['drugbank_vocabulary:name'];
-          var organism = data['drugbank_vocabulary:organism'];
-          var cellularLocation = data['drugbank_vocabulary:cellular-location']
-          var generalFunction = data['drugbank_vocabulary:general-function'];
-          var specificFunction = data['drugbank_vocabulary:specific-function'];
+            targets.push({
+              'showItem' : 1,
+              'href': href,
+              'dblogo' : DBlogo,
+              'label' : label,
+              'uniprotID' : uniprotID,
+              'organism' : organism,
+              'cellularLocation' : cellularLocation,
+              'generalFunction' : generalFunction,
+              'specificFunction' : specificFunction
+            })
 
-          targets.push({
-            'showItem' : 1,
-            'href': href,
-            'dblogo' : DBlogo,
-            'label' : label,
-            'uniprotID' : uniprotID,
-            'organism' : organism,
-            'cellularLocation' : cellularLocation,
-            'generalFunction' : generalFunction,
-            'specificFunction' : specificFunction
-          })
-
+          });
         } else {
+          
+          if (data['drugbank_vocabulary:x-uniprot']){
 
-          targets.push({
-            'showItem' : 0,
-            'href': "",
-            'dblogo' : "",
-            'label' : "",
-            'uniprotID' : "",
-            'organism' : "",
-            'cellularLocation' : "",
-            'generalFunction' : "",
-            'specificFunction' : ""
-          })
+            var uniprotID = data['drugbank_vocabulary:x-uniprot']['@id'].split("uniprot:")[1];
+            var uniprotURI = "http://purl.uniprot.org/uniprot/" + uniprotID;
+            var href = '#/tab/describe-uniprot?uri=' + uniprotURI;
+            var DBlogo = DatasetStore.all['uniprot'].foafDepiction;
+            var label = data['drugbank_vocabulary:name'];
+            var organism = data['drugbank_vocabulary:organism'];
+            var cellularLocation = data['drugbank_vocabulary:cellular-location']
+            var generalFunction = data['drugbank_vocabulary:general-function'];
+            var specificFunction = data['drugbank_vocabulary:specific-function'];
+
+            targets.push({
+              'showItem' : 1,
+              'href': href,
+              'dblogo' : DBlogo,
+              'label' : label,
+              'uniprotID' : uniprotID,
+              'organism' : organism,
+              'cellularLocation' : cellularLocation,
+              'generalFunction' : generalFunction,
+              'specificFunction' : specificFunction
+            })
+
+          } else {
+
+            targets.push({
+              'showItem' : 0,
+              'href': "",
+              'dblogo' : "",
+              'label' : "",
+              'uniprotID' : "",
+              'organism' : "",
+              'cellularLocation' : "",
+              'generalFunction' : "",
+              'specificFunction' : ""
+            })
+            
+          }
           
         }
-        
+
+
       }
+
 
       // Set HTML expressions
       $scope.targets = targets;
@@ -666,76 +709,84 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
 
     Queryer.setQuery('drugbank' ,'describeEnzyme', 'json-ld', {"uri" : $scope.uri});
     Queryer.getJson().success(function(data){
+
       graph = data["@graph"];
       var enzymes = [];
-      if (graph instanceof Array) {
-        _.each(graph, function(elem) {
-          var uniprotID = elem['drugbank_vocabulary:x-uniprot']['@id'].split("uniprot:")[1];
-          var uniprotURI = "http://purl.uniprot.org/uniprot/" + uniprotID;
-          var href = '#/tab/describe-uniprot?uri=' + uniprotURI;
-          var DBlogo = DatasetStore.all['uniprot'].foafDepiction;
-          var label = elem['drugbank_vocabulary:name'];
-          var organism = elem['drugbank_vocabulary:organism'];
-          var cellularLocation = elem['drugbank_vocabulary:cellular-location']
-          var generalFunction = elem['drugbank_vocabulary:general-function'];
-          var specificFunction = elem['drugbank_vocabulary:specific-function'];
 
-          enzymes.push({
-            'showItem': 1,
-            'href': href,
-            'dblogo' : DBlogo,
-            'label' : label,
-            'uniprotID' : uniprotID,
-            'organism' : organism,
-            'cellularLocation' : cellularLocation,
-            'generalFunction' : generalFunction,
-            'specificFunction' : specificFunction
-          })
+      if (graph) {
 
-        });
-      } else {
+        if (graph instanceof Array) {
+          _.each(graph, function(elem) {
+            var uniprotID = elem['drugbank_vocabulary:x-uniprot']['@id'].split("uniprot:")[1];
+            var uniprotURI = "http://purl.uniprot.org/uniprot/" + uniprotID;
+            var href = '#/tab/describe-uniprot?uri=' + uniprotURI;
+            var DBlogo = DatasetStore.all['uniprot'].foafDepiction;
+            var label = elem['drugbank_vocabulary:name'];
+            var organism = elem['drugbank_vocabulary:organism'];
+            var cellularLocation = elem['drugbank_vocabulary:cellular-location']
+            var generalFunction = elem['drugbank_vocabulary:general-function'];
+            var specificFunction = elem['drugbank_vocabulary:specific-function'];
 
-        if (data['drugbank_vocabulary:x-uniprot']){
+            enzymes.push({
+              'showItem': 1,
+              'href': href,
+              'dblogo' : DBlogo,
+              'label' : label,
+              'uniprotID' : uniprotID,
+              'organism' : organism,
+              'cellularLocation' : cellularLocation,
+              'generalFunction' : generalFunction,
+              'specificFunction' : specificFunction
+            })
 
-          var uniprotID = data['drugbank_vocabulary:x-uniprot']['@id'].split("uniprot:")[1];
-          var uniprotURI = "http://purl.uniprot.org/uniprot/" + uniprotID;
-          var href = '#/tab/describe-uniprot?uri=' + uniprotURI;
-          var DBlogo = DatasetStore.all['uniprot'].foafDepiction;
-          var label = data['drugbank_vocabulary:name'];
-          var organism = data['drugbank_vocabulary:organism'];
-          var cellularLocation = data['drugbank_vocabulary:cellular-location']
-          var generalFunction = data['drugbank_vocabulary:general-function'];
-          var specificFunction = data['drugbank_vocabulary:specific-function'];
-
-          enzymes.push({
-            'showItem': 1,
-            'href': href,
-            'dblogo' : DBlogo,
-            'label' : label,
-            'uniprotID' : uniprotID,
-            'organism' : organism,
-            'cellularLocation' : cellularLocation,
-            'generalFunction' : generalFunction,
-            'specificFunction' : specificFunction
-          })
-
+          });
         } else {
 
-          targets.push({
-            'showItem' : 0,
-            'href': "",
-            'dblogo' : "",
-            'label' : "",
-            'uniprotID' : "",
-            'organism' : "",
-            'cellularLocation' : "",
-            'generalFunction' : "",
-            'specificFunction' : ""
-          }) 
+          if (data['drugbank_vocabulary:x-uniprot']){
+
+            var uniprotID = data['drugbank_vocabulary:x-uniprot']['@id'].split("uniprot:")[1];
+            var uniprotURI = "http://purl.uniprot.org/uniprot/" + uniprotID;
+            var href = '#/tab/describe-uniprot?uri=' + uniprotURI;
+            var DBlogo = DatasetStore.all['uniprot'].foafDepiction;
+            var label = data['drugbank_vocabulary:name'];
+            var organism = data['drugbank_vocabulary:organism'];
+            var cellularLocation = data['drugbank_vocabulary:cellular-location']
+            var generalFunction = data['drugbank_vocabulary:general-function'];
+            var specificFunction = data['drugbank_vocabulary:specific-function'];
+
+            enzymes.push({
+              'showItem': 1,
+              'href': href,
+              'dblogo' : DBlogo,
+              'label' : label,
+              'uniprotID' : uniprotID,
+              'organism' : organism,
+              'cellularLocation' : cellularLocation,
+              'generalFunction' : generalFunction,
+              'specificFunction' : specificFunction
+            })
+
+          } else {
+
+            targets.push({
+              'showItem' : 0,
+              'href': "",
+              'dblogo' : "",
+              'label' : "",
+              'uniprotID' : "",
+              'organism' : "",
+              'cellularLocation' : "",
+              'generalFunction' : "",
+              'specificFunction' : ""
+            }) 
+
+          }
 
         }
 
+
       }
+
       // Set HTML expressions
       $scope.enzymes = enzymes;
       $scope.section7loading = 0;
@@ -756,78 +807,85 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
 
     Queryer.setQuery('drugbank' ,'describeTransporter', 'json-ld', {"uri" : $scope.uri});
     Queryer.getJson().success(function(data){
+
       graph = data["@graph"];
       var transporters = [];
-      if (graph instanceof Array) {
-        _.each(graph, function(elem) {
-          var uniprotID = elem['drugbank_vocabulary:x-uniprot']['@id'].split("uniprot:")[1];
-          var uniprotURI = "http://purl.uniprot.org/uniprot/" + uniprotID;
-          var href = '#/tab/describe-uniprot?uri=' + uniprotURI;
-          var DBlogo = DatasetStore.all['uniprot'].foafDepiction;
-          var label = elem['drugbank_vocabulary:name'];
-          var organism = elem['drugbank_vocabulary:organism'];
-          var cellularLocation = elem['drugbank_vocabulary:cellular-location']
-          var generalFunction = elem['drugbank_vocabulary:general-function'];
-          var specificFunction = elem['drugbank_vocabulary:specific-function'];
 
-          transporters.push({
-            'showItem': 1,
-            'href': href,
-            'dblogo' : DBlogo,
-            'label' : label,
-            'uniprotID' : uniprotID,
-            'organism' : organism,
-            'cellularLocation' : cellularLocation,
-            'generalFunction' : generalFunction,
-            'specificFunction' : specificFunction
-          })
+      if(graph) {
 
-        });
-      } else {
+        if (graph instanceof Array) {
+          _.each(graph, function(elem) {
+            var uniprotID = elem['drugbank_vocabulary:x-uniprot']['@id'].split("uniprot:")[1];
+            var uniprotURI = "http://purl.uniprot.org/uniprot/" + uniprotID;
+            var href = '#/tab/describe-uniprot?uri=' + uniprotURI;
+            var DBlogo = DatasetStore.all['uniprot'].foafDepiction;
+            var label = elem['drugbank_vocabulary:name'];
+            var organism = elem['drugbank_vocabulary:organism'];
+            var cellularLocation = elem['drugbank_vocabulary:cellular-location']
+            var generalFunction = elem['drugbank_vocabulary:general-function'];
+            var specificFunction = elem['drugbank_vocabulary:specific-function'];
 
-        if (data['drugbank_vocabulary:x-uniprot']){
+            transporters.push({
+              'showItem': 1,
+              'href': href,
+              'dblogo' : DBlogo,
+              'label' : label,
+              'uniprotID' : uniprotID,
+              'organism' : organism,
+              'cellularLocation' : cellularLocation,
+              'generalFunction' : generalFunction,
+              'specificFunction' : specificFunction
+            })
 
-
-          var uniprotID = data['drugbank_vocabulary:x-uniprot']['@id'].split("uniprot:")[1];
-          var uniprotURI = "http://purl.uniprot.org/uniprot/" + uniprotID;
-          var href = '#/tab/describe-uniprot?uri=' + uniprotURI;
-          var DBlogo = DatasetStore.all['uniprot'].foafDepiction;
-          var label = data['drugbank_vocabulary:name'];
-          var organism = data['drugbank_vocabulary:organism'];
-          var cellularLocation = data['drugbank_vocabulary:cellular-location']
-          var generalFunction = data['drugbank_vocabulary:general-function'];
-          var specificFunction = data['drugbank_vocabulary:specific-function'];
-
-          transporters.push({
-            'showItem': 1,
-            'href': href,
-            'dblogo' : DBlogo,
-            'label' : label,
-            'uniprotID' : uniprotID,
-            'organism' : organism,
-            'cellularLocation' : cellularLocation,
-            'generalFunction' : generalFunction,
-            'specificFunction' : specificFunction
-          })
-
+          });
         } else {
 
-          transporters.push({
-            'showItem': 0,
-            'href': "",
-            'dblogo' : "",
-            'label' : "",
-            'uniprotID' : "",
-            'organism' : "",
-            'cellularLocation' : "",
-            'generalFunction' : "",
-            'specificFunction' : ""
-          })
-
-        }
+          if (data['drugbank_vocabulary:x-uniprot']){
 
 
-      } 
+            var uniprotID = data['drugbank_vocabulary:x-uniprot']['@id'].split("uniprot:")[1];
+            var uniprotURI = "http://purl.uniprot.org/uniprot/" + uniprotID;
+            var href = '#/tab/describe-uniprot?uri=' + uniprotURI;
+            var DBlogo = DatasetStore.all['uniprot'].foafDepiction;
+            var label = data['drugbank_vocabulary:name'];
+            var organism = data['drugbank_vocabulary:organism'];
+            var cellularLocation = data['drugbank_vocabulary:cellular-location']
+            var generalFunction = data['drugbank_vocabulary:general-function'];
+            var specificFunction = data['drugbank_vocabulary:specific-function'];
+
+            transporters.push({
+              'showItem': 1,
+              'href': href,
+              'dblogo' : DBlogo,
+              'label' : label,
+              'uniprotID' : uniprotID,
+              'organism' : organism,
+              'cellularLocation' : cellularLocation,
+              'generalFunction' : generalFunction,
+              'specificFunction' : specificFunction
+            })
+
+          } else {
+
+            transporters.push({
+              'showItem': 0,
+              'href': "",
+              'dblogo' : "",
+              'label' : "",
+              'uniprotID' : "",
+              'organism' : "",
+              'cellularLocation' : "",
+              'generalFunction' : "",
+              'specificFunction' : ""
+            })
+
+          }
+
+
+        } 
+
+
+      }
 
       // Set HTML expressions
       $scope.transporters = transporters;
@@ -835,16 +893,6 @@ module.controller('DrugBankCtrl', function($scope, $stateParams, $ionicSideMenuD
       $scope.section8data = 1;
 
     });
-
-
-
-    
-    
-  }
-
-
-  // Section 9. Xref
-  $scope.loadSection9 = function () {
     
     
   }

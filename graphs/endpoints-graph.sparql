@@ -342,8 +342,10 @@ construct {
   ?uri <http://bio2rdf.org/m_vocabulary:drugbank_calculatedProperty> ?calculatedPropertyLabel .
 } where {
   ?uri rdfs:label ?label .
-  ?uri dcterms:description ?description .
-  ?uri rdfs:seeAlso ?xref .
+  optional {
+    ?uri dcterms:description ?description .
+    ?uri rdfs:seeAlso ?xref .
+  }
   optional {
     ?uri <http://bio2rdf.org/drugbank_vocabulary:category> ?category .
     ?category rdfs:label ?categoryLabel .
