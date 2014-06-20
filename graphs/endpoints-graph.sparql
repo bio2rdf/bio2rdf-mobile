@@ -114,8 +114,9 @@ where {
   filter (?p = dcterms:title ||
           ?p = dcterms:description) .
   ?s dcterms:title ?title .
-  ?s <http://bio2rdf.org/pubmed_vocabulary:journal> ?journal .
-  ?journal <http://bio2rdf.org/pubmed_vocabulary:journal_title> ?journalLabel .
+  ?s <http://bio2rdf.org/pubmed_vocabulary:journal_publication> ?publication .
+  ?publication <http://bio2rdf.org/pubmed_vocabulary:journal> ?journal .
+  ?journal dcterms:title ?journalLabel .
 } limit 20 offset 0
 
 # search_ns
@@ -140,8 +141,8 @@ where {
 # describe
 construct {
   ?uri rdfs:label ?o .
-  ?uri <http://bio2rdf.org/m_vocabulary:pubmed_author> ?author .
-  ?author rdfs:label ?authorName .
+  ?uri <http://bio2rdf.org/m_vocabulary:pubmed_author> ?contributor .
+  ?contributor rdfs:label ?authorName .
   ?uri <http://bio2rdf.org/m_vocabulary:pubmed_meshterm> ?meshLabel .
   ?uri <http://bio2rdf.org/m_vocabulary:pubmed_abstract> ?abstractText .
   ?uri <http://bio2rdf.org/m_vocabulary:pubmed_journalTitle> ?journalLabel .
@@ -151,7 +152,8 @@ construct {
 } where {
   ?uri rdfs:label ?o .
   optional {
-    ?uri dcterms:contributor ?author .
+    ?uri dcterms:contributor ?contributor .
+    ?contributor <http://bio2rdf.org/pubmed_vocabulary:author> ?author .
     ?author rdfs:label ?authorName .
   }
   optional {
@@ -163,18 +165,18 @@ construct {
     ?abstract dcterms:description ?abstractText .
   }
   optional {
-    ?uri <http://bio2rdf.org/pubmed_vocabulary:journal> ?journal .
-    ?journal rdfs:label ?journalLabel .
+    ?uri <http://bio2rdf.org/pubmed_vocabulary:journal_publication> ?publication .
+    ?publication <http://bio2rdf.org/pubmed_vocabulary:journal> ?journal .
+    ?journal dcterms:title ?journalLabel .
     optional {
-      ?journal <http://bio2rdf.org/pubmed_vocabulary:publication_date> ?journalDate .
+      ?publication <http://bio2rdf.org/pubmed_vocabulary:publication_date> ?journalDate .
     }
     optional {
-      ?journal <http://bio2rdf.org/pubmed_vocabulary:journal_volume> ?journalVolume .
-      ?journal <http://bio2rdf.org/pubmed_vocabulary:issue> ?journalIssue .
+      ?publication <http://bio2rdf.org/pubmed_vocabulary:journal_volume> ?journalVolume .
+      ?publication <http://bio2rdf.org/pubmed_vocabulary:issue> ?journalIssue .
     }
   }
-  # filter (?uri = <http://bio2rdf.org/pubmed:19770275>)
-  bind (<http://bio2rdf.org/pubmed:19770275> as ?uri)
+  filter (?uri = <http://bio2rdf.org/pubmed:19770275>)
 }
 
 
@@ -324,7 +326,7 @@ construct {
   ?uri rdfs:label ?label .
   ?uri rdfs:seeAlso ?xref .
   ?uri <http://bio2rdf.org/m_vocabulary:drugbank_category> ?category .
-  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_molType> ?molTypeLabel .
+  ?uri <http://bio2rdf.org/m_vocabulary:drugbank_molType> "Drug Molecule" .
   ?uri <http://bio2rdf.org/m_vocabulary:drugbank_description> ?description .
   ?uri <http://bio2rdf.org/m_vocabulary:drugbank_synonyms> ?synonymLabel .
   ?uri <http://bio2rdf.org/m_vocabulary:drugbank_indication> ?indicationLabel .
